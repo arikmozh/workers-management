@@ -56,4 +56,15 @@
   body {
     @apply bg-background text-foreground;
   }
+  .violet {
+    @apply text-violet-600;
+  }
+  .violetHover:hover {
+    @apply hover:text-violet-600;
+  }
+  .violetBG {
+    @apply bg-violet-300;
+    height: 40px;
+    width: 100%;
+  }
 }

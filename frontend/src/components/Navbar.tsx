@@ -26,14 +26,7 @@ import {
   // SheetFooter,
   // SheetClose,
 } from "@/components/ui/sheet";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Link } from "react-router-dom";
 
 export function Navbar() {
   // const [isMobileNavClicked, setIsMobileNavClicked] = useState(false);
@@ -41,14 +34,14 @@ export function Navbar() {
   return (
     <div className="container flex items-center ">
       <div className="flex space-x-4 mr-8 max-lg:flex-1">
-        <CubeIcon className="h-6 w-6" style={{ color: "#7c3aee" }} />
+        <CubeIcon className="h-6 w-6 violet" />
         <h3>Factory management</h3>
       </div>
       <div className="hidden lg:flex flex-1 space-x-4 ">
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="hover:text-violet-600">
+              <NavigationMenuTrigger className="violetHover">
                 Item one
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -89,23 +82,23 @@ export function Navbar() {
         {/* <span className="sr-only">Open main menu</span>
         <Bars3Icon className="h-6 w-6" aria-hidden="true" /> */}
 
-        <Button variant="ghost" className="hover:text-violet-600">
+        <Button variant="ghost" className="violetHover">
           Item two
         </Button>
-        <Button variant="ghost" className="hover:text-violet-600">
+        <Button variant="ghost" className="violetHover">
           Item three
         </Button>
       </div>
       <div className=" space-x-4 hidden md:flex">
-        <Button variant="ghost" className="hover:text-violet-600">
-          Log In
-        </Button>
-
+        <Link to="login">
+          <Button variant="ghost" className="violetHover">
+            Log In
+          </Button>
+        </Link>
         <Button variant="default" className="gap-2 ">
           <GiftIcon className="h-5 w-5" />
           Register
         </Button>
-
         <ModeToggle />
         <div className="hidden max-lg:flex">
           <MobileNav />
@@ -132,7 +125,7 @@ const ListItem = React.forwardRef<
         <a
           ref={ref}
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground hover:text-violet-700",
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground hover:text-violet-600",
             className
           )}
           {...props}
@@ -153,13 +146,13 @@ const MobileNav: React.FC = () => {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon">
-          <HamburgerMenuIcon className="h-5 w-5 text-violet-700" />
+          <HamburgerMenuIcon className="h-5 w-5 text-violet-600" />
         </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <div className="flex space-x-4 mr-8 max-lg:flex-1">
-            <CubeIcon className="h-6 w-6" style={{ color: "#7c3aee" }} />
+            <CubeIcon className="h-6 w-6 violetHover" />
             <SheetTitle>Factory management</SheetTitle>
           </div>
           <SheetDescription>
@@ -168,7 +161,7 @@ const MobileNav: React.FC = () => {
         </SheetHeader>
 
         <div className="grid gap-4 py-4">
-          <Button variant="outline" className="hover:text-violet-600">
+          <Button variant="outline" className="violetHover">
             Log In{" "}
           </Button>
           <Button variant="default" className="">
@@ -200,22 +193,22 @@ const MobileNav: React.FC = () => {
               </AccordionContent>
             </AccordionItem>
           </Accordion> */}
-          <Button variant="ghost" className="hover:text-violet-600">
+          <Button variant="ghost" className="violetHover">
             Item two
           </Button>
-          <Button variant="ghost" className="hover:text-violet-600">
+          <Button variant="ghost" className="violetHover">
             Item two
           </Button>
-          <Button variant="ghost" className="hover:text-violet-600">
+          <Button variant="ghost" className="violetHover">
             Item two
           </Button>
-          <Button variant="ghost" className="hover:text-violet-600">
+          <Button variant="ghost" className="violetHover">
             Item two
           </Button>
-          <Button variant="ghost" className="hover:text-violet-600">
+          <Button variant="ghost" className="violetHover">
             Item two
           </Button>
-          <Button variant="ghost" className="hover:text-violet-600">
+          <Button variant="ghost" className="violetHover">
             Item three
           </Button>
         </div>
