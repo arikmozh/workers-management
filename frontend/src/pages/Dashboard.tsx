@@ -1,30 +1,20 @@
-// import React from 'react'
-
-// const Dashboard = () => {
-//   return (
-//     <div>Dashboard</div>
-//   )
-// }
-
-// export default Dashboard
-
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDateRangePicker } from "@/components/Dashboard/date-range-picker";
+// import { Button } from "@/components/ui/button";
+// import {
+//   Card,
+//   CardContent,
+//   CardDescription,
+//   CardHeader,
+//   CardTitle,
+// } from "@/components/ui/card";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { CalendarDateRangePicker } from "@/components/Dashboard/date-range-picker";
 import { MainNav } from "@/components/Dashboard/main-nav";
-import { Overview } from "@/components/Dashboard/overview";
-import { RecentSales } from "@/components/Dashboard/recent-sales";
+// import { Overview } from "@/components/Dashboard/overview";
+// import { RecentSales } from "@/components/Dashboard/recent-sales";
 import { Search } from "@/components/Dashboard/search";
-// import { TeamSwitcher } from "@/components/Dashboard/team-switcher";
 import { UserNav } from "@/components/Dashboard/user-nav";
 import TeamSwitcher from "@/components/Dashboard/team-switcher";
+import { Outlet } from "react-router-dom";
 export default function DashboardPage() {
   return (
     <>
@@ -55,7 +45,8 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-        <div className="flex-1 space-y-4 p-8 pt-6">
+        <Outlet />
+        {/* <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
             <div className="flex items-center space-x-2">
@@ -203,7 +194,7 @@ export default function DashboardPage() {
               </div>
             </TabsContent>
           </Tabs>
-        </div>
+        </div> */}
       </div>
     </>
   );

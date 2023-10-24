@@ -52,7 +52,7 @@ const groups = [
     ],
   },
   {
-    label: "Teams",
+    label: "Departments",
     teams: [
       {
         label: "Acme Inc.",
@@ -152,7 +152,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                     }}
                   >
                     <PlusCircledIcon className="mr-2 h-5 w-5" />
-                    Create Team
+                    Add Department
                   </CommandItem>
                 </DialogTrigger>
               </CommandGroup>
