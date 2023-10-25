@@ -1,18 +1,9 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarDateRangePicker } from "@/components/Dashboard/date-range-picker";
-import { Overview } from "@/components/Dashboard/overview";
-import { RecentSales } from "@/components/Dashboard/recent-sales";
-
+import { Outlet, useNavigate } from "react-router-dom";
 const OverviewComp = () => {
+  const navigate = useNavigate();
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
@@ -24,18 +15,25 @@ const OverviewComp = () => {
       </div>
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="analytics" disabled>
+          <TabsTrigger value="overview" onClick={() => navigate("")}>
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="analytics" onClick={() => navigate("analytics")}>
             Analytics
           </TabsTrigger>
-          <TabsTrigger value="reports" disabled>
+          <TabsTrigger value="reports" onClick={() => navigate("reports")}>
             Reports
           </TabsTrigger>
-          <TabsTrigger value="notifications" disabled>
+          <TabsTrigger
+            value="notifications"
+            onClick={() => navigate("notifications")}
+          >
             Notifications
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="overview" className="space-y-4">
+        <Outlet />
+        {/* <TabsOverview /> */}
+        {/* <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -160,7 +158,7 @@ const OverviewComp = () => {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   );
