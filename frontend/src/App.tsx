@@ -13,12 +13,16 @@ import OverviewTab1 from "./components/Overview/overview-tab-1";
 import OverviewTab2 from "./components/Overview/overview-tab-2";
 import OverviewTab3 from "./components/Overview/overview-tab-3";
 import OverviewTab4 from "./components/Overview/overview-tab-4";
+import Register from "./pages/Register";
+import RegisterPassword from "./pages/RegisterPassword";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="" element={<Homepage />} />
+        <Route path="register" element={<Register />} />
+        <Route path="register-password" element={<RegisterPassword />} />
         <Route path="login" element={<Login />} />
         <Route path="login-password" element={<LoginPassword />} />
         <Route path="dashboard" element={<Dashboard />}>

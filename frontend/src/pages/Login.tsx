@@ -16,14 +16,7 @@ const Login = () => {
 
   const [username, setUsername] = useState("");
   const [validate, setValidate] = useState(true);
-  // const validationSchema = Yup.object().shape({
-  //   name: Yup.string().required("Email / Phone is required"),
-  // });
 
-  // const handleSubmit = (values) => {
-  //   // Handle form submission here
-  //   console.log("Form data:", values);
-  // };
   const handleSubmit = () => {
     setIsLoading(true);
 
@@ -35,10 +28,11 @@ const Login = () => {
       : setIsLoading(false),
       setValidate(false);
   };
+
   return (
     <>
       <NavbarBlank />
-      <div className="violetBG  left-0 fixed flex items-center ">
+      <div className="violetBG  left-0 absolute flex items-center ">
         <p className="text-center w-full text-sm flex justify-center items-center gap-2">
           URL <LockClosedIcon className="w-4 h-4 violet" /> verification:
           https://accounts.workers.com
@@ -64,7 +58,7 @@ const Login = () => {
               />
               {!validate ? (
                 <div>
-                  <p>enter please</p>
+                  <p className="font-small text-red-400">please try again</p>
                 </div>
               ) : (
                 ""
@@ -101,7 +95,14 @@ const Login = () => {
               </svg>
               Continue with Apple
             </Button>
-            <p className="w-60 violet font-medium">Create a Factory Account</p>
+            <p
+              className="w-60 violet font-medium hover:cursor-pointer"
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              Create a Factory Account
+            </p>
           </div>
           <div className="flex flex-col items-center justify-end space-y-6">
             <div className="relative">
