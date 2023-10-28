@@ -9,6 +9,17 @@ const initialState = {
     email: "",
   },
 };
+const clear = {
+  register: {
+    fullName: "",
+    email: "",
+    phone: "",
+    // password: "",
+  },
+  login: {
+    email: "",
+  },
+};
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -36,12 +47,8 @@ const rootReducer = (state = initialState, action) => {
       };
     }
 
-    case "REMOVE": {
-      const products = state.products.filter(
-        (prod) => prod.id !== action.payload
-      );
-
-      return { ...state, products };
+    case "doLogout": {
+      return { clear };
     }
 
     default:

@@ -3,9 +3,9 @@ const cors = require("cors");
 const connectDB = require("./configs/db");
 
 const authRouter = require("./routers/authRouter");
+const departmentsRouter = require("./routers/departmentsRouter");
 // const usersRouter = require("./routers/usersRouter");
 // const employeesRouter = require("./routers/employeesRouter");
-// const departmentsRouter = require("./routers/departmentsRouter");
 // const shiftsRouter = require("./routers/shiftsRouter");
 
 const app = express();
@@ -18,6 +18,8 @@ app.use(express.json());
 
 // routers
 app.use("/auth", authRouter);
+app.use("/departments", departmentsRouter);
+
 // app.use("/users", usersRouter);
 // app.use("/employees", employeesRouter);
 // app.use("/departments", departmentsRouter);

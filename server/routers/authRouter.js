@@ -24,6 +24,7 @@ router.route("/register").post(async (req, res) => {
 });
 
 router.route("/login").post(async (req, res) => {
+  console.log(res.body);
   const { email, password } = req.body;
   const user = await usersBLL.getUserEmail(email);
   if (!user) {
@@ -46,7 +47,7 @@ router.route("/login").post(async (req, res) => {
   );
 
   // Send a success response with the token, user data, or a success message
-  res.status(200).json({ token });
+  res.status(200).json({ token: token, id: user[0]._id });
 });
 
 module.exports = router;

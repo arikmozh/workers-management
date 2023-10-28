@@ -10,6 +10,11 @@ const doAddLoginPage1 = (obj) => {
     payload: obj,
   };
 };
+const doLogout = () => {
+  return {
+    type: "doLogout",
+  };
+};
 
 // const doRemoveProduct = (prodId) => {
 //   return {
@@ -18,4 +23,4 @@ const doAddLoginPage1 = (obj) => {
 //   };
 // };
 
-export { doAddRegisterPage1, doAddLoginPage1 };
+export { doAddRegisterPage1, doAddLoginPage1, doLogout };

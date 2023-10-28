@@ -13,12 +13,37 @@ import {
 import { useNavigate } from "react-router-dom";
 import { ModeToggle } from "../ui/mode-toggle";
 import { logout } from "@/utils/authUtils";
+import { useDispatch, useSelector } from "react-redux";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import { doLogout } from "../../redux/actions";
+import { RootState } from "@/redux/interface";
+
+const getFirstAndLastLetters = (email: string): string => {
+  // Ensure the email string is not empty and has at least two characters
+  if (email && email.length >= 2) {
+    const firstLetter = email[0].toUpperCase(); // Retrieve the first letter
+    const lastLetter = email[email.length - 1].toUpperCase(); // Retrieve the last letter
+    return firstLetter + lastLetter; // Return the combination of first and last letters
+  } else {
+    return ""; // Return an empty string if the email is empty or has less than two characters
+  }
+};
+
 export function UserNav() {
+  const store = useSelector((state: RootState) => state);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const logoutFunc = () => {
     logout;
+    dispatch(doLogout());
+
     navigate("/");
   };
+
+  const letters = getFirstAndLastLetters(store.login.email);
+
   return (
     <DropdownMenu>
       <ModeToggle />
@@ -27,7 +52,7 @@ export function UserNav() {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
             <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-            <AvatarFallback>SC</AvatarFallback>
+            <AvatarFallback>{letters}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

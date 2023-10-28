@@ -44,11 +44,30 @@ const RegisterPassword = () => {
   const handlePasswordEncryption = () => {
     const secretKey = "Workers"; // Replace with your secret key
 
-    // Encrypt the password using AES encryption
-    return CryptoJS.AES.encrypt(password, secretKey).toString();
+    // // Encrypt the password using AES encryption
+    // // return CryptoJS.AES.encrypt(password, secretKey).toString();
+    // const fixedIV = CryptoJS.enc.Utf8.parse("ThisIsA16ByteIV");
 
+    // // Encrypt the password using AES encryption
+    // // return CryptoJS.AES.encrypt(password, secretKey).toString();
+    // const encrypted = CryptoJS.AES.encrypt(password, secretKey, {
+    //   iv: fixedIV,
+    // }).toString();
+
+    // return encrypted;
     // Now you can send `encryptedPassword` to the server.
     // Implement the server-side decryption and password hashing as described in previous responses.
+    const derivedKey = CryptoJS.EvpKDF(secretKey, secretKey, {
+      keySize: 128 / 32, // AES key size (128 bits)
+      iterations: 1, // Increase the number of iterations for stronger key derivation
+    });
+
+    const encrypted = CryptoJS.AES.encrypt(password, derivedKey, {
+      mode: CryptoJS.mode.ECB, // Electronic Codebook mode (ECB)
+      padding: CryptoJS.pad.Pkcs7, // PKCS#7 padding
+    }).toString();
+
+    return encrypted;
   };
 
   const handleSubmit = async () => {
@@ -107,7 +126,11 @@ const RegisterPassword = () => {
               const token: string = res.token;
               sessionStorage.setItem(
                 "Workers",
-                JSON.stringify({ token: token, email: store.register.email })
+                JSON.stringify({
+                  token: token,
+                  email: store.register.email,
+                  id: res.id,
+                })
               );
               navigate("/dashboard");
             })
