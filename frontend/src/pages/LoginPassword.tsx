@@ -4,6 +4,9 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { CaretLeftIcon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/interface";
+import { useEffect } from "react";
 
 const LoginPassword = () => {
   // const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -16,8 +19,28 @@ const LoginPassword = () => {
   //     setIsLoading(false);
   //   }, 3000);
   // }
-  const navigate = useNavigate();
+  const store = useSelector((state: RootState) => state);
 
+  const navigate = useNavigate();
+  const maskEmail = (email: string) => {
+    if (typeof email !== "string") {
+      return email; // Return the input if it's not a string
+    }
+
+    const parts = email.split("@");
+    if (parts.length !== 2) {
+      return email; // Return the input if it doesn't have exactly one '@'
+    }
+
+    const username = parts[0];
+    const maskedUsername = username[0] + "*".repeat(username.length - 1);
+    const domain = parts[1];
+
+    return `${maskedUsername}@${domain}`;
+  };
+  useEffect(() => {
+    console.log(store.login);
+  }, []);
   return (
     <>
       <NavbarBlank />
@@ -36,7 +59,9 @@ const LoginPassword = () => {
         <div className="grid grid-cols-2">
           <div className="text-left max-w-xs space-y-6">
             <h1 className="text-3xl font-medium">Welcome back!</h1>
-            <h1 className="text-lg font-medium">a****@gmail.com</h1>
+            <h1 className="text-lg font-medium">
+              {maskEmail(store.login.email)}
+            </h1>
             <div>
               <Label>Password</Label>
               <Input type="password" />

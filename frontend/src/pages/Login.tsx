@@ -5,28 +5,44 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-// import { Formik, Form, Field, ErrorMessage } from "formik";
-// import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { Icons } from "../components/ui/icons";
-
+import { useDispatch } from "react-redux";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import { doAddLoginPage1 } from "../redux/actions";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/interface";
 const Login = () => {
+  const dispatch = useDispatch();
+  const store = useSelector((state: RootState) => state);
+
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(store.login.email);
   const [validate, setValidate] = useState(true);
+
+  const emailIsValid = (email: string) => {
+    // A simple email validation regex pattern
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    return emailPattern.test(email);
+  };
 
   const handleSubmit = () => {
     setIsLoading(true);
 
-    username != ""
-      ? setTimeout(() => {
-          setIsLoading(false);
-          navigate("/login-password");
-        }, 3000)
-      : setIsLoading(false),
+    if (username !== "" && emailIsValid(username)) {
+      // Both username is not empty and it's a valid email
+      setTimeout(() => {
+        setIsLoading(false);
+        dispatch(doAddLoginPage1(username));
+
+        navigate("/login-password");
+      }, 1000);
+    } else {
+      setIsLoading(false);
       setValidate(false);
+    }
   };
 
   return (
@@ -50,10 +66,11 @@ const Login = () => {
           <div className="text-left max-w-xs space-y-6">
             <h1 className="text-3xl font-medium">Log In</h1>
             <div>
-              <Label>Email / Phone number</Label>
+              <Label>Email</Label>
               <Input
                 type="text"
                 placeholder="name@example.com"
+                value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
               {!validate ? (

@@ -3,7 +3,10 @@ const initialState = {
     fullName: "",
     email: "",
     phone: "",
-    password: "",
+    // password: "",
+  },
+  login: {
+    email: "",
   },
 };
 
@@ -18,6 +21,17 @@ const rootReducer = (state = initialState, action) => {
           fullName: fullName || state.register.fullName,
           email: email || state.register.email,
           phone: phone || state.register.phone,
+        },
+      };
+    }
+
+    case "doAddLoginPage1": {
+      const email = action.payload;
+      return {
+        ...state,
+        login: {
+          ...state.login,
+          email: email || state.login.email,
         },
       };
     }

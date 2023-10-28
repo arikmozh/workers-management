@@ -12,9 +12,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 import { ModeToggle } from "../ui/mode-toggle";
-
+import { logout } from "@/utils/authUtils";
 export function UserNav() {
   const navigate = useNavigate();
+  const logoutFunc = () => {
+    logout;
+    navigate("/");
+  };
   return (
     <DropdownMenu>
       <ModeToggle />
@@ -53,11 +57,7 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={() => {
-            navigate("/");
-          }}
-        >
+        <DropdownMenuItem onClick={logoutFunc}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

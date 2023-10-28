@@ -4,12 +4,18 @@ const doAddRegisterPage1 = (obj) => {
     payload: obj,
   };
 };
-
-const doRemoveProduct = (prodId) => {
+const doAddLoginPage1 = (obj) => {
   return {
-    type: "REMOVE",
-    payload: prodId,
+    type: "doAddLoginPage1",
+    payload: obj,
   };
 };
 
-export { doAddRegisterPage1, doRemoveProduct };
+// const doRemoveProduct = (prodId) => {
+//   return {
+//     type: "REMOVE",
+//     payload: prodId,
+//   };
+// };
+
+export { doAddRegisterPage1, doAddLoginPage1 };

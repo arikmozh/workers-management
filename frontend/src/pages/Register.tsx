@@ -1,5 +1,5 @@
 import NavbarBlank from "@/components/Navbar-blank";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LockClosedIcon } from "@heroicons/react/24/solid";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,42 +11,69 @@ import { useDispatch } from "react-redux";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 import { doAddRegisterPage1 } from "../redux/actions";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/interface";
 
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const store = useSelector((state: RootState) => state);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
   const [username, setUsername] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
+    fullName: store.register.fullName,
+    email: store.register.email,
+    phone: store.register.phone,
   });
 
-  // const [validate, setValidate] = useState(true);
   const [validate, setValidate] = useState({
     fullName: true,
     email: true,
-    // phone: true,
   });
 
   const usual = {
     fullName: true,
     email: true,
-    // phone: true,
+  };
+
+  const fullNameIsValid = (fullName: string) => {
+    // A simple validation for a full name (assuming it consists of at least two words)
+    const namePattern = /^[A-Za-z]+\s[A-Za-z]+/;
+    return namePattern.test(fullName);
+  };
+
+  const emailIsValid = (email: string) => {
+    // A simple email validation regex pattern
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    return emailPattern.test(email);
   };
 
   const handleSubmit = async () => {
     setIsLoading(true);
     let updatedValidate = { ...validate };
-    if (username.fullName === "" || username.email === "") {
-      if (username.fullName === "") {
-        updatedValidate = { ...updatedValidate, fullName: false };
-      }
-      if (username.email === "") {
-        updatedValidate = { ...updatedValidate, email: false };
-      }
-      setValidate(updatedValidate);
+
+    // Validate full name (mandatory)
+    if (username.fullName === "") {
+      updatedValidate = { ...updatedValidate, fullName: false };
+    } else if (!fullNameIsValid(username.fullName)) {
+      updatedValidate = { ...updatedValidate, fullName: false };
+    }
+
+    // Validate email (mandatory)
+    if (username.email === "") {
+      updatedValidate = { ...updatedValidate, email: false };
+    } else if (!emailIsValid(username.email)) {
+      updatedValidate = { ...updatedValidate, email: false };
+    }
+
+    // Validate phone (optional)
+    // if (username.phone !== "" && /* add phone validation logic here */) {
+    //   // You can add phone validation logic if needed
+    //   // If invalid, update updatedValidate as needed
+    // }
+
+    setValidate(updatedValidate);
+
+    if (!updatedValidate.fullName || !updatedValidate.email) {
       setTimeout(() => {
         setValidate(usual);
       }, 3500);
@@ -56,9 +83,13 @@ const Register = () => {
       setTimeout(() => {
         dispatch(doAddRegisterPage1(username));
         navigate("/register-password");
-      }, 3500);
+      }, 1000);
     }
   };
+
+  useEffect(() => {
+    console.log(store);
+  }, []);
 
   return (
     <>
@@ -79,6 +110,7 @@ const Register = () => {
               <Input
                 type="text"
                 placeholder="Jhon Smith"
+                value={username.fullName}
                 onChange={(e) =>
                   setUsername({ ...username, fullName: e.target.value })
                 }
@@ -98,6 +130,7 @@ const Register = () => {
               <Input
                 type="email"
                 placeholder="email@test.com"
+                value={username.email}
                 onChange={(e) =>
                   setUsername({ ...username, email: e.target.value })
                 }
@@ -117,6 +150,7 @@ const Register = () => {
               <Input
                 type="text"
                 placeholder="+972544123456"
+                value={username.phone}
                 onChange={(e) =>
                   setUsername({ ...username, phone: e.target.value })
                 }
