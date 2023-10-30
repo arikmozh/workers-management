@@ -18,7 +18,18 @@ const addUser = async (obj) => {
   return "Created!";
 };
 
+const updateUser = async (userId, updatedData) => {
+  const updatedUser = await EmployeeModel.findByIdAndUpdate(
+    userId,
+    updatedData,
+    { new: true }
+  );
+  return updatedUser;
+};
+
 module.exports = {
+  getUser,
   getUserEmail,
   addUser,
+  updateUser,
 };

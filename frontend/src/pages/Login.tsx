@@ -10,16 +10,18 @@ import { Icons } from "../components/ui/icons";
 import { useDispatch } from "react-redux";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
-import { doAddLoginPage1 } from "../redux/actions";
+import { doAddLoginPage1, updateUsername } from "../redux/actions";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/interface";
 const Login = () => {
   const dispatch = useDispatch();
-  const store = useSelector((state: RootState) => state);
+  // const store = useSelector((state: RootState) => state);
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [username, setUsername] = useState(store.login.email);
+  // const [username, setUsername] = useState(store?.login?.email);
+  const username = useSelector((state: RootState) => state.login.email);
+
   const [validate, setValidate] = useState(true);
 
   const emailIsValid = (email: string) => {
@@ -67,7 +69,10 @@ const Login = () => {
                   type="text"
                   placeholder="name@example.com"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => {
+                    const newUsername = e.target.value;
+                    dispatch(updateUsername(newUsername)); // Dispatch the action to update username
+                  }}
                 />
                 {!validate ? (
                   <div>

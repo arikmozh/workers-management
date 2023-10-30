@@ -1,3 +1,4 @@
+////////////////////////     Auth      //////////////////////
 const doAddRegisterPage1 = (obj) => {
   return {
     type: "doAddRegisterPage1",
@@ -16,11 +17,20 @@ const doLogout = () => {
   };
 };
 
-// const doRemoveProduct = (prodId) => {
-//   return {
-//     type: "REMOVE",
-//     payload: prodId,
-//   };
-// };
+export const updateUsername = (username) => {
+  return {
+    type: "UPDATE_USERNAME",
+    payload: username,
+  };
+};
 
-export { doAddRegisterPage1, doAddLoginPage1, doLogout };
+////////////////////////     updateRootState after login     //////////////////////
+
+const updateRootState = (data) => {
+  return {
+    type: "UPDATE_ROOT_STATE",
+    payload: data,
+  };
+};
+
+export { doAddRegisterPage1, doAddLoginPage1, doLogout, updateRootState };

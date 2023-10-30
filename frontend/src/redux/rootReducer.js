@@ -8,6 +8,10 @@ const initialState = {
   login: {
     email: "",
   },
+  user: [],
+  departments: [],
+  shifts: [],
+  employees: [],
 };
 const clear = {
   register: {
@@ -19,6 +23,10 @@ const clear = {
   login: {
     email: "",
   },
+  user: [],
+  departments: [],
+  shifts: [],
+  employees: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -48,8 +56,28 @@ const rootReducer = (state = initialState, action) => {
     }
 
     case "doLogout": {
-      return { clear };
+      return { ...clear };
     }
+
+    // case "UPDATE_ROOT_STATE":
+    //   return action.payload;
+    case "UPDATE_ROOT_STATE":
+      return {
+        ...state,
+        user: action.payload.user[0],
+        departments: action.payload.departments,
+        shifts: action.payload.shifts,
+        employees: action.payload.employees,
+      };
+
+    case "UPDATE_USERNAME":
+      return {
+        ...state,
+        login: {
+          ...state.login,
+          email: action.payload,
+        },
+      };
 
     default:
       return state;

@@ -14,7 +14,6 @@ router.route("/register").post(async (req, res) => {
       res.status(401).json({ message: "User is already exists" });
     } else {
       const obj = req.body;
-      console.log(req.body);
       const user = await usersBLL.addUser(obj);
       res.json(user); // 200 - OK
     }
@@ -26,7 +25,6 @@ router.route("/register").post(async (req, res) => {
 
 //Login
 router.route("/login").post(async (req, res) => {
-  console.log(res.body);
   const { email, password } = req.body;
   const user = await usersBLL.getUserEmail(email);
   if (!user) {

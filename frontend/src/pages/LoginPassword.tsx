@@ -5,16 +5,19 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { CaretLeftIcon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/interface";
-import React, { useEffect, useState } from "react";
-import { login } from "../utils/authUtils";
+import React, { useState } from "react";
+import { getAllData, login } from "../utils/authUtils";
 import { Icons } from "../components/ui/icons";
 import CryptoJS from "crypto-js";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import { updateRootState } from "../redux/actions";
 
 const LoginPassword = () => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
   // async function onSubmit(event: React.SyntheticEvent) {
   //   event.preventDefault();
   //   setIsLoading(true);
@@ -23,7 +26,9 @@ const LoginPassword = () => {
   //     setIsLoading(false);
   //   }, 3000);
   // }
-  const store = useSelector((state: RootState) => state);
+  // const store = useSelector((state: RootState) => state);
+  const email = useSelector((state: RootState) => state.login.email);
+
   const [passwordValidation1, setPasswordValidation1] = useState(true);
   const [password, setPassword] = useState("");
 
@@ -47,15 +52,6 @@ const LoginPassword = () => {
 
   const handlePasswordEncryption = () => {
     const secretKey = "Workers"; // Replace with your secret key
-    // const fixedIV = CryptoJS.enc.Utf8.parse("ThisIsA16ByteIV");
-
-    // // Encrypt the password using AES encryption
-    // // return CryptoJS.AES.encrypt(password, secretKey).toString();
-    // const encrypted = CryptoJS.AES.encrypt(password, secretKey, {
-    //   iv: fixedIV,
-    // }).toString();
-
-    // return encrypted;
     const derivedKey = CryptoJS.EvpKDF(secretKey, secretKey, {
       keySize: 128 / 32, // AES key size (128 bits)
       iterations: 1, // Increase the number of iterations for stronger key derivation
@@ -67,9 +63,6 @@ const LoginPassword = () => {
     }).toString();
 
     return encrypted;
-
-    // Now you can send `encryptedPassword` to the server.
-    // Implement the server-side decryption and password hashing as described in previous responses.
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -87,24 +80,23 @@ const LoginPassword = () => {
 
     setPasswordValidation1(true);
     const pass = handlePasswordEncryption();
-    console.log(pass);
-    // const obj = {
-    //   email: store.login.email,
-    //   password: pass,
-    // };
     setTimeout(() => {
-      login({ email: store.login.email, password: pass })
-        .then((res: any) => {
+      login({ email: email, password: pass })
+        .then(async (res: any) => {
           console.log(res);
           const token: string = res.token;
           sessionStorage.setItem(
             "Workers",
             JSON.stringify({
               token: token,
-              email: store.register.email,
+              email: email,
               id: res.id,
             })
           );
+          const allData = await getAllData();
+          // console.log(allData);
+          dispatch(updateRootState(allData));
+
           navigate("/dashboard");
         })
         .catch((error: any) => {
@@ -113,10 +105,6 @@ const LoginPassword = () => {
       setIsLoading(false);
     }, 1000);
   };
-
-  useEffect(() => {
-    console.log(store.login);
-  }, []);
 
   return (
     <>
@@ -136,9 +124,7 @@ const LoginPassword = () => {
           <div className="grid grid-cols-2">
             <div className="text-left max-w-xs space-y-6">
               <h1 className="text-3xl font-medium">Welcome back!</h1>
-              <h1 className="text-lg font-medium">
-                {maskEmail(store.login.email)}
-              </h1>
+              <h1 className="text-lg font-medium">{maskEmail(email)}</h1>
               <div>
                 <Label>Password</Label>
                 <Input

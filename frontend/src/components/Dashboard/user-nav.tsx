@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 // @ts-ignore
 import { doLogout } from "../../redux/actions";
 import { RootState } from "@/redux/interface";
+import { useEffect } from "react";
 
 const getFirstAndLastLetters = (email: string): string => {
   // Ensure the email string is not empty and has at least two characters
@@ -36,13 +37,18 @@ export function UserNav() {
 
   const navigate = useNavigate();
   const logoutFunc = () => {
-    logout;
+    logout();
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
     dispatch(doLogout());
-
-    navigate("/");
   };
 
-  const letters = getFirstAndLastLetters(store.login.email);
+  const letters = getFirstAndLastLetters(store.user.email);
+
+  useEffect(() => {
+    console.log(store);
+  }, []);
 
   return (
     <DropdownMenu>
@@ -59,9 +65,11 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">shadcn</p>
+            <p className="text-sm font-medium leading-none">
+              {store.user.fullName}
+            </p>
             <p className="text-xs leading-none text-muted-foreground">
-              m@example.com
+              {store.user.email}
             </p>
           </div>
         </DropdownMenuLabel>
