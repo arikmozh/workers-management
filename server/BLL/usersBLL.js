@@ -2,6 +2,10 @@
 // const usersFile = require("../DAL/usersFile");
 const UserModel = require("../models/userModel");
 
+const getUser = (userId) => {
+  return UserModel.find({ _id: userId });
+};
+
 const getUserEmail = (email) => {
   return UserModel.find({ email: email });
 };

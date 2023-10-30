@@ -1,10 +1,10 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const departmentsBLL = require("../BLL/departmentsBLL");
+const shiftsBLL = require("../BLL/departmentsBLL");
 const router = express.Router();
 
-//Get Departments
-router.route("/getDepartments").get(async (req, res) => {
+//Get Shifts
+router.route("/getShifts").get(async (req, res) => {
   const { userId } = req.body;
   const token = req.headers.authorization;
 
@@ -15,8 +15,8 @@ router.route("/getDepartments").get(async (req, res) => {
   try {
     const decoded = jwt.verify(token, "Workers");
     if (decoded.userId === userId) {
-      const department = await departmentsBLL.getDepartments(userId);
-      res.status(200).json(department); // 200 - OK
+      const shift = await shiftsBLL.getShifts(userId);
+      res.status(200).json(shift); // 200 - OK
     } else {
       res.status(401).json({ message: "Some thing went wrong" });
     }
@@ -25,10 +25,10 @@ router.route("/getDepartments").get(async (req, res) => {
   }
 });
 
-//Get Departments by id
-router.route("/getDepartments/:id").get(async (req, res) => {
+//Get Shift by id
+router.route("/getShifts/:id").get(async (req, res) => {
   const { userId } = req.body;
-  const departmentId = req.params.id; // Extract the department ID from the URL
+  const shiftId = req.params.id;
   const token = req.headers.authorization;
 
   if (!token) {
@@ -38,8 +38,8 @@ router.route("/getDepartments/:id").get(async (req, res) => {
   try {
     const decoded = jwt.verify(token, "Workers");
     if (decoded.userId === userId) {
-      const department = await departmentsBLL.getDepartmentById(departmentId);
-      res.status(200).json(department); // 200 - OK
+      const shift = await shiftsBLL.getShiftById(shiftId);
+      res.status(200).json(shift); // 200 - OK
     } else {
       res.status(401).json({ message: "Some thing went wrong" });
     }
@@ -48,65 +48,9 @@ router.route("/getDepartments/:id").get(async (req, res) => {
   }
 });
 
-//Add Department
-router.route("/addDepartment").post(async (req, res) => {
-  const { userId, departmentName } = req.body;
-  const token = req.headers.authorization;
-
-  if (!token) {
-    return res.status(401).json({ message: "Access denied, token missing" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, "Workers");
-    if (decoded.userId === userId) {
-      const obj = {
-        departmentName: departmentName,
-        userId: userId,
-      };
-
-      const department = await departmentsBLL.addDepartment(obj);
-      res.status(200).json(department); // 200 - OK
-    } else {
-      res.status(401).json({ message: "Some thing went wrong" });
-    }
-  } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
-  }
-});
-
-//Update Department by id
-router.route("/updateDepartment/:id").put(async (req, res) => {
-  const { userId, departmentName } = req.body;
-  const updatedData = req.body; // Data to update the department
-
-  const departmentId = req.params.id; // Extract the department ID from the URL
-  const token = req.headers.authorization;
-
-  if (!token) {
-    return res.status(401).json({ message: "Access denied, token missing" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, "Workers");
-    if (decoded.userId === userId) {
-      const department = await departmentsBLL.updateDepartment(
-        departmentId,
-        updatedData
-      );
-      res.status(200).json(department); // 200 - OK
-    } else {
-      res.status(401).json({ message: "Some thing went wrong" });
-    }
-  } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
-  }
-});
-
-//Delete Department by id
-router.route("/deleteDepartment/:id").delete(async (req, res) => {
+//Add Shift
+router.route("/addShift").post(async (req, res) => {
   const { userId } = req.body;
-  const departmentId = req.params.id; // Extract the department ID from the URL
   const token = req.headers.authorization;
 
   if (!token) {
@@ -116,8 +60,55 @@ router.route("/deleteDepartment/:id").delete(async (req, res) => {
   try {
     const decoded = jwt.verify(token, "Workers");
     if (decoded.userId === userId) {
-      const department = await departmentsBLL.deleteDepartment(departmentId);
-      res.status(200).json(department); // 200 - OK
+      const shift = await shiftsBLL.addShift(req.body);
+      res.status(200).json(shift); // 200 - OK
+    } else {
+      res.status(401).json({ message: "Some thing went wrong" });
+    }
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token" });
+  }
+});
+
+//Update Shift by id
+router.route("/updateShift/:id").put(async (req, res) => {
+  const { userId } = req.body;
+  const updatedData = req.body;
+  const shiftId = req.params.id;
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res.status(401).json({ message: "Access denied, token missing" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, "Workers");
+    if (decoded.userId === userId) {
+      const shift = await shiftsBLL.updateShift(shiftId, updatedData);
+      res.status(200).json(shift); // 200 - OK
+    } else {
+      res.status(401).json({ message: "Some thing went wrong" });
+    }
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token" });
+  }
+});
+
+//Delete Shift by id
+router.route("/deleteShift/:id").delete(async (req, res) => {
+  const { userId } = req.body;
+  const shiftId = req.params.id;
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res.status(401).json({ message: "Access denied, token missing" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, "Workers");
+    if (decoded.userId === userId) {
+      const shift = await shiftsBLL.deleteShift(shiftId);
+      res.status(200).json(shift); // 200 - OK
     } else {
       res.status(401).json({ message: "Some thing went wrong" });
     }

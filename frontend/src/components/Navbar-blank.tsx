@@ -12,7 +12,7 @@ const NavbarBlank = () => {
         onClick={() => navigate("/")}
       >
         <CubeIcon className="h-6 w-6 violet" />
-        <h3>Factory management</h3>
+        <h3>Workers management</h3>
       </div>
       <ModeToggle />
     </div>

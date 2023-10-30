@@ -10,7 +10,7 @@ const Hero = () => {
           <h1 className="md:text-7xl leading-none text-left text-4xl">
             <span className="violet md:text-9xl text-6xl">Streamline</span>{" "}
             <br />
-            Your Factory Operations
+            Your Workers Operations
           </h1>
           <p className="text-left">
             Efficiently manage production, inventory, and workforce with our

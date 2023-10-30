@@ -57,12 +57,6 @@ const Login = () => {
       </div>
 
       <div className="py-20 max-w-3xl m-auto">
-        {/* <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          <Form> */}
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2">
             <div className="text-left max-w-xs space-y-6">

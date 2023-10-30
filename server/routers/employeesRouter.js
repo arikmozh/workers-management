@@ -1,10 +1,10 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const departmentsBLL = require("../BLL/departmentsBLL");
+const employeesBLL = require("../BLL/employeesBLL");
 const router = express.Router();
 
-//Get Departments
-router.route("/getDepartments").get(async (req, res) => {
+//Get Employees
+router.route("/getEmployees").get(async (req, res) => {
   const { userId } = req.body;
   const token = req.headers.authorization;
 
@@ -15,8 +15,8 @@ router.route("/getDepartments").get(async (req, res) => {
   try {
     const decoded = jwt.verify(token, "Workers");
     if (decoded.userId === userId) {
-      const department = await departmentsBLL.getDepartments(userId);
-      res.status(200).json(department); // 200 - OK
+      const employees = await employeesBLL.getEmployees(userId);
+      res.status(200).json(employees); // 200 - OK
     } else {
       res.status(401).json({ message: "Some thing went wrong" });
     }
@@ -25,10 +25,10 @@ router.route("/getDepartments").get(async (req, res) => {
   }
 });
 
-//Get Departments by id
-router.route("/getDepartments/:id").get(async (req, res) => {
+//Get Employee by id
+router.route("/getEmployees/:id").get(async (req, res) => {
   const { userId } = req.body;
-  const departmentId = req.params.id; // Extract the department ID from the URL
+  const employeeId = req.params.id;
   const token = req.headers.authorization;
 
   if (!token) {
@@ -38,8 +38,8 @@ router.route("/getDepartments/:id").get(async (req, res) => {
   try {
     const decoded = jwt.verify(token, "Workers");
     if (decoded.userId === userId) {
-      const department = await departmentsBLL.getDepartmentById(departmentId);
-      res.status(200).json(department); // 200 - OK
+      const employee = await employeesBLL.getEmployeeById(employeeId);
+      res.status(200).json(employee); // 200 - OK
     } else {
       res.status(401).json({ message: "Some thing went wrong" });
     }
@@ -48,9 +48,9 @@ router.route("/getDepartments/:id").get(async (req, res) => {
   }
 });
 
-//Add Department
-router.route("/addDepartment").post(async (req, res) => {
-  const { userId, departmentName } = req.body;
+//Add Employee
+router.route("/addEmployee").post(async (req, res) => {
+  const { userId } = req.body;
   const token = req.headers.authorization;
 
   if (!token) {
@@ -60,13 +60,8 @@ router.route("/addDepartment").post(async (req, res) => {
   try {
     const decoded = jwt.verify(token, "Workers");
     if (decoded.userId === userId) {
-      const obj = {
-        departmentName: departmentName,
-        userId: userId,
-      };
-
-      const department = await departmentsBLL.addDepartment(obj);
-      res.status(200).json(department); // 200 - OK
+      const employee = await employeesBLL.addEmployee(req.body);
+      res.status(200).json(employee); // 200 - OK
     } else {
       res.status(401).json({ message: "Some thing went wrong" });
     }
@@ -75,12 +70,11 @@ router.route("/addDepartment").post(async (req, res) => {
   }
 });
 
-//Update Department by id
-router.route("/updateDepartment/:id").put(async (req, res) => {
-  const { userId, departmentName } = req.body;
-  const updatedData = req.body; // Data to update the department
-
-  const departmentId = req.params.id; // Extract the department ID from the URL
+//Update Employee by id
+router.route("/updateEmployee/:id").put(async (req, res) => {
+  const { userId } = req.body;
+  const updatedData = req.body;
+  const employeeId = req.params.id;
   const token = req.headers.authorization;
 
   if (!token) {
@@ -90,11 +84,11 @@ router.route("/updateDepartment/:id").put(async (req, res) => {
   try {
     const decoded = jwt.verify(token, "Workers");
     if (decoded.userId === userId) {
-      const department = await departmentsBLL.updateDepartment(
-        departmentId,
+      const employee = await employeesBLL.updateEmployee(
+        employeeId,
         updatedData
       );
-      res.status(200).json(department); // 200 - OK
+      res.status(200).json(employee); // 200 - OK
     } else {
       res.status(401).json({ message: "Some thing went wrong" });
     }
@@ -103,10 +97,10 @@ router.route("/updateDepartment/:id").put(async (req, res) => {
   }
 });
 
-//Delete Department by id
-router.route("/deleteDepartment/:id").delete(async (req, res) => {
+//Delete Employees by id
+router.route("/deleteEmployee/:id").delete(async (req, res) => {
   const { userId } = req.body;
-  const departmentId = req.params.id; // Extract the department ID from the URL
+  const employeeId = req.params.id;
   const token = req.headers.authorization;
 
   if (!token) {
@@ -116,8 +110,8 @@ router.route("/deleteDepartment/:id").delete(async (req, res) => {
   try {
     const decoded = jwt.verify(token, "Workers");
     if (decoded.userId === userId) {
-      const department = await departmentsBLL.deleteDepartment(departmentId);
-      res.status(200).json(department); // 200 - OK
+      const employee = await employeesBLL.deleteEmployee(employeeId);
+      res.status(200).json(employee); // 200 - OK
     } else {
       res.status(401).json({ message: "Some thing went wrong" });
     }

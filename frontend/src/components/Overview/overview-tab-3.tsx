@@ -1,4 +1,3 @@
-import React from "react";
 import { Overview } from "@/components/Dashboard/overview";
 import { RecentSales } from "@/components/Dashboard/recent-sales";
 import { TabsContent } from "@/components/ui/tabs";
