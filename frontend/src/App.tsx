@@ -26,8 +26,8 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="login-password" element={<LoginPassword />} />
         <Route path="dashboard" element={<Dashboard />}>
-          <Route path="" element={<OverviewComp />}>
-            <Route path="" element={<OverviewTab1 />}></Route>
+          <Route path="overview" element={<OverviewComp />}>
+            <Route path="overview" element={<OverviewTab1 />}></Route>
             <Route path="analytics" element={<OverviewTab2 />}></Route>
             <Route path="reports" element={<OverviewTab3 />}></Route>
             <Route path="notifications" element={<OverviewTab4 />}></Route>

@@ -19,11 +19,9 @@ const addUser = async (obj) => {
 };
 
 const updateUser = async (userId, updatedData) => {
-  const updatedUser = await EmployeeModel.findByIdAndUpdate(
-    userId,
-    updatedData,
-    { new: true }
-  );
+  const updatedUser = await UserModel.findByIdAndUpdate(userId, updatedData, {
+    new: true,
+  });
   return updatedUser;
 };
 

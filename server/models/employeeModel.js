@@ -4,10 +4,10 @@ const employeeSchema = new mongoose.Schema(
   {
     userId: String,
     departmentId: String,
-    shiftIds: {
-      type: [String],
-      default: [],
-    },
+    // shiftIds: {
+    //   type: [String],
+    //   default: [],
+    // },
     startingDate: Date,
     employeeName: String,
     employeeAge: String,

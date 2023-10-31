@@ -1,18 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import {
+//   Card,
+//   CardContent,
+//   CardDescription,
+//   CardHeader,
+//   CardTitle,
+// } from "@/components/ui/card";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarDateRangePicker } from "@/components/Dashboard/date-range-picker";
-import { Overview } from "@/components/Dashboard/overview";
-import { RecentSales } from "@/components/Dashboard/recent-sales";
+// import { Overview } from "@/components/Dashboard/overview";
+// import { RecentSales } from "@/components/Dashboard/recent-sales";
 
 const ShiftsComp = () => {
+  useEffect(() => {
+    const time = new Date().toString();
+    console.log(time);
+  });
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+  };
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
@@ -22,7 +30,7 @@ const ShiftsComp = () => {
           <Button>Download</Button>
         </div>
       </div>
-      <Tabs defaultValue="overview" className="space-y-4">
+      {/* <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="analytics" disabled>
@@ -161,7 +169,10 @@ const ShiftsComp = () => {
             </Card>
           </div>
         </TabsContent>
-      </Tabs>
+      </Tabs> */}
+      <div className="space-y-4">
+        <form onSubmit={handleSubmit}></form>
+      </div>
     </div>
   );
 };

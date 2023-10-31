@@ -40,6 +40,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useSelector } from "react-redux";
+import { Department, RootState } from "@/redux/interface";
 
 const groups = [
   {
@@ -66,7 +68,7 @@ const groups = [
   },
 ];
 
-type Team = (typeof groups)[number]["teams"][number];
+// type Team = (typeof groups)[number]["teams"][number];
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -75,11 +77,11 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 interface TeamSwitcherProps extends PopoverTriggerProps {}
 
 export default function TeamSwitcher({ className }: TeamSwitcherProps) {
+  const store = useSelector((state: RootState) => state);
+
   const [open, setOpen] = React.useState(false);
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
-  const [selectedTeam, setSelectedTeam] = React.useState<Team>(
-    groups[0].teams[0]
-  );
+  const [selectedTeam, setSelectedTeam] = React.useState(store.departments[0]);
 
   return (
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
@@ -93,22 +95,19 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
             className={cn("w-[200px] justify-between", className)}
           >
             <Avatar className="mr-2 h-5 w-5">
-              <AvatarImage
-                src={`https://avatar.vercel.sh/${selectedTeam.value}.png`}
-                alt={selectedTeam.label}
-              />
+              <AvatarImage src={`https://avatar.vercel.sh/personal.png`} />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
-            {selectedTeam.label}
+            {store.user.fullName}
             <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           <Command>
             <CommandList>
-              <CommandInput placeholder="Search team..." />
-              <CommandEmpty>No team found.</CommandEmpty>
-              {groups.map((group) => (
+              <CommandInput placeholder="Search department..." />
+              <CommandEmpty>No department found.</CommandEmpty>
+              {/* {groups.map((group) => (
                 <CommandGroup key={group.label} heading={group.label}>
                   {group.teams.map((team) => (
                     <CommandItem
@@ -139,7 +138,41 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                     </CommandItem>
                   ))}
                 </CommandGroup>
-              ))}
+              ))} */}
+              {store.departments.map((dep: Department, index) => {
+                return (
+                  // <CommandGroup key={index} heading={dep.departmentName}>
+                  //  {group.teams.map((team) => (
+                  <CommandItem
+                    key={index}
+                    onSelect={() => {
+                      setSelectedTeam(dep);
+                      setOpen(false);
+                    }}
+                    className="text-sm"
+                  >
+                    <Avatar className="mr-2 h-5 w-5">
+                      <AvatarImage
+                        src={`https://avatar.vercel.sh/personal.png`}
+                        alt={dep.departmentName}
+                        className="grayscale"
+                      />
+                      <AvatarFallback>SC</AvatarFallback>
+                    </Avatar>
+                    {dep.departmentName}
+                    <CheckIcon
+                      className={cn(
+                        "ml-auto h-4 w-4",
+                        selectedTeam.departmentName === dep.departmentName
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                  // ))}
+                  // </CommandGroup>
+                );
+              })}
             </CommandList>
             <CommandSeparator />
             <CommandList>

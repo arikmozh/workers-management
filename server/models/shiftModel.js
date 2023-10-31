@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Employee = require("./employeeModel");
 
 const shiftSchema = new mongoose.Schema(
   {
@@ -9,10 +10,12 @@ const shiftSchema = new mongoose.Schema(
     shiftStartingHour: String,
     shiftEndingHour: String,
     shiftCreatedDate: Date,
-    shiftEmployees: {
-      type: [String],
-      default: [],
-    },
+    shiftEmployees: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Employee",
+      },
+    ],
   },
   { versionKey: false }
 );

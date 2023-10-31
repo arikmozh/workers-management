@@ -12,6 +12,7 @@ const initialState = {
   departments: [],
   shifts: [],
   employees: [],
+  data: [],
 };
 const clear = {
   register: {
@@ -27,6 +28,7 @@ const clear = {
   departments: [],
   shifts: [],
   employees: [],
+  data: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -68,6 +70,7 @@ const rootReducer = (state = initialState, action) => {
         departments: action.payload.departments,
         shifts: action.payload.shifts,
         employees: action.payload.employees,
+        data: action.payload.data,
       };
 
     case "UPDATE_USERNAME":

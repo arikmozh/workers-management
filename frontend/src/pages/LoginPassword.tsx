@@ -85,6 +85,7 @@ const LoginPassword = () => {
         .then(async (res: any) => {
           console.log(res);
           const token: string = res.token;
+          sessionStorage.clear();
           sessionStorage.setItem(
             "Workers",
             JSON.stringify({
@@ -97,7 +98,7 @@ const LoginPassword = () => {
           // console.log(allData);
           dispatch(updateRootState(allData));
 
-          navigate("/dashboard");
+          navigate("/dashboard/overview");
         })
         .catch((error: any) => {
           console.log(error);

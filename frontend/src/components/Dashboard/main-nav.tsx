@@ -1,42 +1,58 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 export function MainNav({
   className,
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
+  const location = useLocation();
+
+  const checkPage = (link: string) => {
+    return location.pathname.includes(link);
+  };
+
   return (
     <nav
       className={cn("flex items-center space-x-4 lg:space-x-6", className)}
       {...props}
     >
       <Link
-        to="/dashboard"
-        className="text-sm font-medium transition-colors hover:text-primary"
+        to="/dashboard/overview"
+        className={`text-sm font-medium  transition-colors hover:text-primary ${
+          checkPage("overview") == true ? "" : "text-muted-foreground"
+        }`}
       >
         Overview
       </Link>
       <Link
         to="/dashboard/departments"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+        className={`text-sm font-medium  transition-colors hover:text-primary ${
+          checkPage("departments") == true ? "" : "text-muted-foreground"
+        }`}
       >
         Departments
       </Link>
       <Link
         to="/dashboard/shifts"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+        className={`text-sm font-medium  transition-colors hover:text-primary ${
+          checkPage("shifts") == true ? "" : "text-muted-foreground"
+        }`}
       >
         Shifts
       </Link>
       <Link
         to="/dashboard/employees"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+        className={`text-sm font-medium  transition-colors hover:text-primary ${
+          checkPage("employees") == true ? "" : "text-muted-foreground"
+        }`}
       >
         Employees
       </Link>
       <Link
         to="/dashboard/settings"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+        className={`text-sm font-medium  transition-colors hover:text-primary ${
+          checkPage("settings") == true ? "" : "text-muted-foreground"
+        }`}
       >
         Settings
       </Link>
