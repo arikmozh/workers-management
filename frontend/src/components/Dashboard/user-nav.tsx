@@ -44,7 +44,7 @@ export function UserNav() {
     dispatch(doLogout());
   };
 
-  const letters = getFirstAndLastLetters(store.user.email);
+  const letters = getFirstAndLastLetters(store.user[0]?.email);
 
   useEffect(() => {
     console.log(store);
@@ -66,10 +66,10 @@ export function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {store.user.fullName}
+              {store.user[0]?.fullName}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {store.user.email}
+              {store.user[0]?.email}
             </p>
           </div>
         </DropdownMenuLabel>

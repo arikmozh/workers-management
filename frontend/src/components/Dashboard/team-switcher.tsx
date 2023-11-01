@@ -43,31 +43,6 @@ import {
 import { useSelector } from "react-redux";
 import { Department, RootState } from "@/redux/interface";
 
-const groups = [
-  {
-    label: "Personal Account",
-    teams: [
-      {
-        label: "Alicia Koch",
-        value: "personal",
-      },
-    ],
-  },
-  {
-    label: "Departments",
-    teams: [
-      {
-        label: "Acme Inc.",
-        value: "acme-inc",
-      },
-      {
-        label: "Monsters Inc.",
-        value: "monsters",
-      },
-    ],
-  },
-];
-
 // type Team = (typeof groups)[number]["teams"][number];
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
@@ -81,7 +56,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
 
   const [open, setOpen] = React.useState(false);
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
-  const [selectedTeam, setSelectedTeam] = React.useState(store.departments[0]);
+  // const [selectedTeam, setSelectedTeam] = React.useState(store.departments[0]);
 
   return (
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
@@ -98,7 +73,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
               <AvatarImage src={`https://avatar.vercel.sh/personal.png`} />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
-            {store.user.fullName}
+            {store.user[0].fullName}
             <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -146,7 +121,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                   <CommandItem
                     key={index}
                     onSelect={() => {
-                      setSelectedTeam(dep);
+                      // setSelectedTeam(dep);
                       setOpen(false);
                     }}
                     className="text-sm"
@@ -162,10 +137,10 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                     {dep.departmentName}
                     <CheckIcon
                       className={cn(
-                        "ml-auto h-4 w-4",
-                        selectedTeam.departmentName === dep.departmentName
-                          ? "opacity-100"
-                          : "opacity-0"
+                        "ml-auto h-4 w-4"
+                        // selectedTeam.departmentName === dep.departmentName
+                        //   ? "opacity-100"
+                        //   : "opacity-0"
                       )}
                     />
                   </CommandItem>

@@ -94,17 +94,27 @@ const LoginPassword = () => {
               id: res.id,
             })
           );
-          const allData = await getAllData();
-          // console.log(allData);
-          dispatch(updateRootState(allData));
+          fetchData();
 
-          navigate("/dashboard/overview");
+          // dispatch(updateRootState(allData));
         })
         .catch((error: any) => {
           console.log(error);
         });
       setIsLoading(false);
     }, 1000);
+  };
+
+  const fetchData = async () => {
+    try {
+      const allData = await getAllData();
+      dispatch(updateRootState(allData));
+      navigate("/dashboard/overview");
+
+      // Process or set state with allData here
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   return (

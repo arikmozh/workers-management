@@ -20,7 +20,7 @@ interface User {
 interface RootState {
   register: RegisterState;
   login: LoginState;
-  user: User;
+  user: User[];
   departments: Department[];
   shifts: Shift[];
   employees: Employee[];

@@ -17,21 +17,63 @@ export const login = async (obj: any) => {
   return result;
 };
 
+// export const getAllData = async () => {
+//   if (ss != null) {
+//     const storedUserData = JSON.parse(ss);
+//     const token = storedUserData.token;
+//     const userId = storedUserData.id;
+
+//     // Set the Authorization header with the token
+//     await axios
+//       .get(`${urlData}/${userId}`, {
+//         headers: {
+//           authorization: token,
+//         },
+//       })
+//       .then((response) => {
+//         // Handle the successful response here
+//         const result = response.data;
+//         console.log(result, "resultttt");
+//         return result;
+//       })
+//       .catch(() => {
+//         // Handle errors here
+//         // console.error("Error fetching data:", error);
+//         return [];
+//       });
+
+//     // return result;
+//   } else {
+//     console.log("resultttt");
+
+//     return;
+//   }
+// };
+
 export const getAllData = async () => {
   if (ss != null) {
-    const storedUserData = JSON.parse(ss);
-    const token = storedUserData.token;
-    const userId = storedUserData.id;
+    try {
+      const storedUserData = JSON.parse(ss);
+      const token = storedUserData.token;
+      const userId = storedUserData.id;
 
-    // Set the Authorization header with the token
-    const { data: result } = await axios.get(`${urlData}/${userId}`, {
-      headers: {
-        authorization: token,
-      },
-    });
-    return result;
+      // Set the Authorization header with the token
+      const response = await axios.get(`${urlData}/${userId}`, {
+        headers: {
+          authorization: token,
+        },
+      });
+
+      // Handle the successful response here
+      const result = response.data;
+      return result;
+    } catch (error) {
+      // Handle errors here
+      console.error("Error fetching data:", error);
+      return [];
+    }
   } else {
-    return;
+    return [];
   }
 };
 

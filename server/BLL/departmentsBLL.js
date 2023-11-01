@@ -17,7 +17,7 @@ const getDepartmentById = async (departmentId) => {
 const addDepartment = async (obj) => {
   const department = new DepartmentModel(obj);
   await department.save();
-  return "Created!";
+  return department;
 };
 
 const updateDepartment = async (departmentId, updatedData) => {

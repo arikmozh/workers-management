@@ -33,4 +33,19 @@ const updateRootState = (data) => {
   };
 };
 
-export { doAddRegisterPage1, doAddLoginPage1, doLogout, updateRootState };
+////////////////////////     updateRootState Departments     //////////////////////
+
+const doAddDepartment = (data) => {
+  return {
+    type: "ADD_DEPARTMENT",
+    payload: data,
+  };
+};
+
+export {
+  doAddRegisterPage1,
+  doAddLoginPage1,
+  doLogout,
+  updateRootState,
+  doAddDepartment,
+};

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -19,6 +18,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Check, Pencil, X } from "lucide-react";
 
 interface DataTableProps {
   filterSearch: string;
@@ -58,6 +58,7 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
       {/* <TableCaption>A list of your departments.</TableCaption> */}
       <TableHeader>
         <TableRow>
+          <TableHead className="text-left"></TableHead>
           <TableHead className="w-[140px] text-center">Name</TableHead>
           <TableHead className="text-center">Shifts</TableHead>
           <TableHead className="text-center">Employees</TableHead>
@@ -67,46 +68,66 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
       <TableBody>
         {filteredDepartments.map((dep: dataDepartment, index) => (
           <TableRow key={index}>
-            {/* <TableCell className="font-medium cursor-pointer">
-              <span>{dep.departmentName}</span>
-              <Input></Input>
-            </TableCell> */}
-            <TableCell className="font-medium cursor-pointer">
+            <TableCell className="text-left">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Pencil
+                      className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer"
+                      onClick={() => setEditingIndex(index)}
+                    />
+                    <Pencil
+                      className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer"
+                      onClick={() => setEditingIndex(index)}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Edit department name</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </TableCell>
+            <TableCell className="font-medium">
               {editingIndex === index ? ( // If currently editing this department
-                <div className="flex items-center">
-                  <Input className="" value={dep.departmentName} />
-                  <button
+                <div className="flex justify-between items-center ">
+                  <Input className="w-20" value={dep.departmentName} />
+
+                  <Check
+                    className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer"
                     onClick={() => {
-                      // Update the department name and exit edit mode
-                      // Save the updated value to your store or perform an action to save it
                       setEditingIndex(-1);
                     }}
-                  >
-                    Save
-                  </button>
+                  />
+                  <Check
+                    className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer"
+                    onClick={() => {
+                      setEditingIndex(-1);
+                    }}
+                  />
                 </div>
               ) : (
-                // <span
-                //   onClick={() => setEditingIndex(index)} // Enable edit mode when clicked
-                // >
-                //   {dep.departmentName}
-                // </span>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger onClick={() => setEditingIndex(index)}>
-                      {dep.departmentName}
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Edit department name</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <span className=" text-center  ">{dep.departmentName}</span>
+
+                // <TooltipProvider>
+                //   <Tooltip>
+                //     <TooltipTrigger>
+                //       <div className="flex text-center space-x-4 cursor-auto">
+                //         {dep.departmentName}
+                //       </div>
+                //     </TooltipTrigger>
+                //     <TooltipContent>
+                //       <p>Edit department name</p>
+                //     </TooltipContent>
+                //   </Tooltip>
+                // </TooltipProvider>
               )}
             </TableCell>
             <TableCell>
-              {dep.shiftsInThisDepartment.map((shift) => {
+              {dep.shiftsInThisDepartment.map((shift, index) => {
                 return (
-                  <Badge className="cursor-pointer">{shift.shiftName}</Badge>
+                  <Badge className="cursor-pointer" key={index}>
+                    {shift.shiftName}
+                  </Badge>
                 );
               })}
             </TableCell>
@@ -121,11 +142,10 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Button
-                      variant="outline"
-                      className="hover:bg-primary/90 hover:text-primary-foreground text-primary"
-                    >
-                      x
+                    <Button variant="ghost" size="icon">
+                      <X className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600" />
+                      <X className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 " />
+                      <span className="sr-only">Toggle theme</span>
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>

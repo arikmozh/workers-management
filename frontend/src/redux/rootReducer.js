@@ -61,12 +61,10 @@ const rootReducer = (state = initialState, action) => {
       return { ...clear };
     }
 
-    // case "UPDATE_ROOT_STATE":
-    //   return action.payload;
     case "UPDATE_ROOT_STATE":
       return {
-        ...state,
-        user: action.payload.user[0],
+        // ...state,
+        user: action.payload.user,
         departments: action.payload.departments,
         shifts: action.payload.shifts,
         employees: action.payload.employees,
@@ -82,6 +80,23 @@ const rootReducer = (state = initialState, action) => {
         },
       };
 
+    case "ADD_DEPARTMENT":
+      return {
+        ...state,
+        departments: [
+          ...state.departments,
+          action.payload, // Adding the new department to the existing array
+        ],
+        data: [
+          ...state.data,
+          {
+            departmentName: action.payload.departmentName,
+            shiftsInThisDepartment: [],
+            userId: action.payload.userId,
+            _id: action.payload._id,
+          },
+        ],
+      };
     default:
       return state;
   }
