@@ -37,9 +37,18 @@ const ShiftsComp = () => {
   const [shiftDate, setShiftDate] = React.useState<Date | undefined>(
     new Date()
   );
-  const [selectedHour, setSelectedHour] = useState<string>("");
-  const handleHourChange = (selectedValue: string) => {
-    setSelectedHour(selectedValue);
+  const [startHour, setStartHour] = useState<string>("");
+  const [endHour, setEndHour] = useState<string>("");
+  const [showEndHourSelect, setShowEndHourSelect] = useState<boolean>(false);
+
+  const handleStartHourChange = (selectedValue: string) => {
+    setStartHour(selectedValue);
+    setEndHour(""); // Reset end hour when start hour changes
+    setShowEndHourSelect(true); // Display end hour select after selecting a start hour
+  };
+
+  const handleEndHourChange = (selectedValue: string) => {
+    setEndHour(selectedValue);
   };
 
   const hours: string[] = [];
@@ -77,6 +86,25 @@ const ShiftsComp = () => {
       throw error;
     }
   };
+
+  const getEndHours = (startHour: string): string[] => {
+    const parsedHour = startHour.split(":").map(Number);
+    const startHourInMinutes = parsedHour[0] * 60 + parsedHour[1];
+
+    const availableDurations = [7 * 60, 9 * 60, 12 * 60];
+    const possibleEndHours = availableDurations.map((duration) => {
+      const minutes = startHourInMinutes + duration;
+      const endHour = `${String(Math.floor(minutes / 60)).padStart(
+        2,
+        "0"
+      )}:${String(minutes % 60).padStart(2, "0")}`;
+      return endHour;
+    });
+
+    return possibleEndHours;
+  };
+  const endHours: string[] =
+    showEndHourSelect && startHour ? getEndHours(startHour) : [];
 
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
@@ -226,12 +254,16 @@ const ShiftsComp = () => {
                 </div>
                 <div className="grid gap-2">
                   <div className="grid grid-cols-3 items-center gap-4">
-                    <Label htmlFor="width">Shift name:</Label>
-                    <Select onValueChange={handleHourChange}>
+                    <Label htmlFor="width">Start hour:</Label>
+                    <Select onValueChange={handleStartHourChange}>
                       <SelectTrigger>
-                        <span>Select Hour</span>
+                        {startHour ? (
+                          <span>{startHour}</span>
+                        ) : (
+                          <span>Select Hour</span>
+                        )}
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="max-h-48 overflow-y-auto">
                         <SelectGroup>
                           {/* <SelectItem value="">Select</SelectItem> */}
                           {hours.map((hour) => (
@@ -241,10 +273,37 @@ const ShiftsComp = () => {
                           ))}
                         </SelectGroup>
                       </SelectContent>
-                      {selectedHour && <p>Selected hour: {selectedHour}</p>}
+                      {startHour && <p> {startHour}</p>}
                     </Select>
                   </div>
                 </div>
+                {showEndHourSelect && startHour && (
+                  <div className="grid gap-2">
+                    <div className="grid grid-cols-3 items-center gap-4">
+                      <Label htmlFor="width">End hour:</Label>
+                      <Select onValueChange={handleEndHourChange}>
+                        <SelectTrigger>
+                          {endHour ? (
+                            <span>{endHour}</span>
+                          ) : (
+                            <span>Select Hour</span>
+                          )}
+                        </SelectTrigger>
+                        <SelectContent className="max-h-48 overflow-y-auto">
+                          <SelectGroup>
+                            {/* <SelectItem value="">Select</SelectItem> */}
+                            {endHours.map((hour) => (
+                              <SelectItem key={hour} value={hour}>
+                                {hour}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                        {endHour && <p> {endHour}</p>}
+                      </Select>
+                    </div>
+                  </div>
+                )}
                 <Button onClick={addDepartment}>Add</Button>
               </div>
             </PopoverContent>
