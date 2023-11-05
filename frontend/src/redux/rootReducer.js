@@ -97,6 +97,40 @@ const rootReducer = (state = initialState, action) => {
           },
         ],
       };
+
+    case "UPDATE_DEPARTMENT":
+      return {
+        ...state,
+        departments: state.departments.map((department) => {
+          if (department._id === action.payload._id) {
+            return {
+              ...department,
+              departmentName: action.payload.departmentName,
+            };
+          }
+          return department;
+        }),
+        data: [
+          ...state.data.map((d) => {
+            if (d._id === action.payload._id) {
+              return {
+                ...d,
+                departmentName: action.payload.departmentName,
+              };
+            }
+            return d;
+          }),
+        ],
+      };
+
+    case "DELETE_DEPARTMENT":
+      return {
+        ...state,
+        departments: state.departments.filter(
+          (department) => department._id !== action.payload._id
+        ),
+        data: state.data.filter((d) => d._id !== action.payload._id),
+      };
     default:
       return state;
   }

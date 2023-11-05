@@ -30,18 +30,81 @@ export const addDepartmentToAPI = async (departmentName: string) => {
   }
 };
 
-// export const getAllData = async () => {
+export const updateDepartmentToAPI = async (
+  departmentId: string,
+  departmentName: string
+) => {
+  if (ss != null) {
+    const storedUserData = JSON.parse(ss);
+    const token = storedUserData.token;
+    const userId = storedUserData.id;
+
+    // Set the Authorization header with the token
+    const { data: result } = await axios.put(
+      `${urlData}/departments/updateDepartment/${departmentId}`,
+      { userId: userId, departmentName: departmentName },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log(result);
+
+    return result;
+  } else {
+    return;
+  }
+};
+
+export const deleteDepartmentToAPI = async (departmentId: string) => {
+  if (ss !== null) {
+    const storedUserData = JSON.parse(ss);
+    const token = storedUserData.token;
+    const userId = storedUserData.id;
+
+    try {
+      const { data: result } = await axios.delete(
+        `${urlData}/departments/deleteDepartment/${departmentId}`, // Correct endpoint
+        {
+          headers: {
+            authorization: token,
+          },
+          data: {
+            userId: userId,
+          },
+        }
+      );
+      console.log(result);
+      return result;
+    } catch (error) {
+      // Handle the error, maybe log it
+      console.error("Error:", error);
+      throw error;
+    }
+  } else {
+    return;
+  }
+};
+
+// export const deleteDepartmentToAPI = async (departmentId: string) => {
 //   if (ss != null) {
 //     const storedUserData = JSON.parse(ss);
 //     const token = storedUserData.token;
 //     const userId = storedUserData.id;
 
 //     // Set the Authorization header with the token
-//     const { data: result } = await axios.get(`${urlData}/${userId}`, {
-//       headers: {
-//         authorization: token,
-//       },
-//     });
+//     const { data: result } = await axios.delete(
+//       `${urlData}/departments/deleteDepartment/${departmentId}`,
+//       { userId: userId },
+//       {
+//         headers: {
+//           authorization: token,
+//         },
+//       }
+//     );
+//     console.log(result);
+
 //     return result;
 //   } else {
 //     return;

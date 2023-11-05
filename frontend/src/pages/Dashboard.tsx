@@ -3,40 +3,35 @@ import { Search } from "@/components/Dashboard/search";
 import { UserNav } from "@/components/Dashboard/user-nav";
 import TeamSwitcher from "@/components/Dashboard/team-switcher";
 import { Link, Outlet } from "react-router-dom";
-import { getAllData, loggedIn } from "../utils/authUtils";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import { getAllData, loggedIn } from "../utils/authUtils";
+// import { useEffect } from "react";
+// import { useDispatch, useSelector } from "react-redux";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
-import { updateRootState } from "../redux/actions";
+// import { updateRootState } from "../redux/actions";
 import { CubeIcon } from "@radix-ui/react-icons";
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
-import { RootState } from "@/redux/interface";
+// import { RootState } from "@/redux/interface";
 
 export default function DashboardPage() {
-  const dispatch = useDispatch();
-  const store = useSelector((state: RootState) => state);
-  // const navigate = useNavigate();
-  useEffect(() => {
-    console.log(store, "store");
+  // const dispatch = useDispatch();
+  // const store = useSelector((state: RootState) => state);
+  // // const navigate = useNavigate();
+  // useEffect(() => {
+  //   console.log(store, "store");
 
-    const fetchData = async () => {
-      const allData = await getAllData();
-      console.log("aaaaa", allData);
-      dispatch(updateRootState(allData));
+  //   const fetchData = async () => {
+  //     const allData = await getAllData();
+  //     console.log("aaaaa", allData);
+  //     dispatch(updateRootState(allData));
 
-      // if (Array.isArray(allData) && allData.length == 0) {
-      //   navigate("/login");
-      // } else {
-      //   dispatch(updateRootState(allData));
-      // }
-    };
-    console.log("loggedIn", loggedIn());
+  //   };
+  //   console.log("loggedIn", loggedIn());
 
-    if (loggedIn() != null) {
-      fetchData();
-    }
-  }, []);
+  //   if (loggedIn() != null) {
+  //     fetchData();
+  //   }
+  // }, []);
 
   const checkPage = (link: string) => {
     return location.pathname.includes(link);

@@ -43,8 +43,6 @@ import {
 import { useSelector } from "react-redux";
 import { Department, RootState } from "@/redux/interface";
 
-// type Team = (typeof groups)[number]["teams"][number];
-
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
@@ -53,10 +51,17 @@ interface TeamSwitcherProps extends PopoverTriggerProps {}
 
 export default function TeamSwitcher({ className }: TeamSwitcherProps) {
   const store = useSelector((state: RootState) => state);
+  const firstName = useSelector(
+    (state: RootState) => state.user[0]?.fullName || ""
+  );
 
   const [open, setOpen] = React.useState(false);
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
   // const [selectedTeam, setSelectedTeam] = React.useState(store.departments[0]);
+
+  React.useEffect(() => {
+    console.log(store);
+  }, []);
 
   return (
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
@@ -73,7 +78,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
               <AvatarImage src={`https://avatar.vercel.sh/personal.png`} />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
-            {store.user[0].fullName}
+            {firstName}
             <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>

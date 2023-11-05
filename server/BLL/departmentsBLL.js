@@ -1,4 +1,5 @@
 const DepartmentModel = require("../models/departmentModel");
+const ShiftModel = require("../models/shiftModel");
 
 const getDepartments = async (userId) => {
   const departments = await DepartmentModel.find({
@@ -30,9 +31,16 @@ const updateDepartment = async (departmentId, updatedData) => {
 };
 
 const deleteDepartment = async (departmentId) => {
+  // const deletedDepartment = await DepartmentModel.findOneAndDelete({
+  //   _id: departmentId,
+  // });
+
   const deletedDepartment = await DepartmentModel.findOneAndDelete({
     _id: departmentId,
   });
+
+  // Delete shifts associated with the same departmentId
+  await ShiftModel.deleteMany({ departmentId: departmentId });
 
   return deletedDepartment; // Return the deleted department
 };

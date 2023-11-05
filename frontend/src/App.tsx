@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import LoginPassword from "./pages/LoginPassword";
@@ -15,8 +15,36 @@ import OverviewTab3 from "./components/Overview/overview-tab-3";
 import OverviewTab4 from "./components/Overview/overview-tab-4";
 import Register from "./pages/Register";
 import RegisterPassword from "./pages/RegisterPassword";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./redux/interface";
+import { useEffect } from "react";
+import { getAllData, loggedIn } from "./utils/authUtils";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import { updateRootState } from "./redux/actions";
+import ShiftComp from "./components/Shift/ShiftComp";
 
 function App() {
+  const dispatch = useDispatch();
+  const store = useSelector((state: RootState) => state);
+  const navigate = useNavigate();
+  useEffect(() => {
+    console.log(store, "store");
+
+    const fetchData = async () => {
+      const allData = await getAllData();
+      console.log("aaaaa", allData);
+      dispatch(updateRootState(allData));
+      navigate("dashboard/overview");
+    };
+    console.log("loggedIn", loggedIn());
+
+    if (loggedIn() != null) {
+      console.log(loggedIn());
+      fetchData();
+    }
+  }, []);
+
   return (
     <>
       <Routes>
@@ -33,7 +61,9 @@ function App() {
             <Route path="notifications" element={<OverviewTab4 />}></Route>
           </Route>
           <Route path="departments" element={<DepartmentsComp />}></Route>
-          <Route path="shifts" element={<ShiftsComp />}></Route>
+          <Route path="shifts" element={<ShiftsComp />}>
+            <Route path=":id" element={<ShiftComp />}></Route>
+          </Route>
           <Route path="employees" element={<EmployeesComp />}></Route>
           <Route path="settings" element={<SettingsComp />}></Route>
         </Route>

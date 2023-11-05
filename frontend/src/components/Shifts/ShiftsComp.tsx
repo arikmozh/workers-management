@@ -1,178 +1,269 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDateRangePicker } from "@/components/Dashboard/date-range-picker";
-// import { Overview } from "@/components/Dashboard/overview";
-// import { RecentSales } from "@/components/Dashboard/recent-sales";
+import DataTable from "./DataTable";
+import { Input } from "../ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Hash, KanbanSquare, Search, User2 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/interface";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  // SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { cn } from "@/lib/utils";
+
+import { addDepartmentToAPI } from "../../utils/workersUtils";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import { doAddDepartment } from "../../redux/actions";
 
 const ShiftsComp = () => {
-  useEffect(() => {
-    const time = new Date().toString();
-    console.log(time);
-  });
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
+  const [filterSearch, setFilterSearch] = useState("");
+  const store = useSelector((state: RootState) => state);
+  const [departmentName, setDepartmentName] = useState("");
+  const [shiftDate, setShiftDate] = React.useState<Date | undefined>(
+    new Date()
+  );
+  const [selectedHour, setSelectedHour] = useState<string>("");
+  const handleHourChange = (selectedValue: string) => {
+    setSelectedHour(selectedValue);
   };
+
+  const hours: string[] = [];
+  for (let h = 0; h < 24; h++) {
+    for (let m = 0; m < 60; m += 30) {
+      const hour = `${String(h).padStart(2, "0")}:${String(m).padStart(
+        2,
+        "0"
+      )}`;
+      hours.push(hour);
+    }
+  }
+
+  const [shift, setShift] = useState({
+    departmentId: "",
+    shiftName: "",
+    shiftDate: "",
+    shiftStartingHour: "",
+    shiftEndingHour: "",
+    shiftCreatedDate: "",
+    shiftEmployees: [],
+  });
+  const dispatch = useDispatch();
+
+  const addDepartment = async () => {
+    try {
+      const data = await addDepartmentToAPI(departmentName);
+      console.log(data); // Log the data received from the API call
+      if (data) {
+        dispatch(doAddDepartment(data));
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle the error if needed
+      throw error;
+    }
+  };
+
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Shifts</h2>
-        <div className="flex items-center space-x-2">
-          <CalendarDateRangePicker />
-          <Button>Download</Button>
+      </div>
+      {/* <TabsContent value="overview" className="space-y-4"> */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total Departments
+            </CardTitle>
+            <Hash className="dark:hidden h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer" />
+            <Hash className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{store.departments.length}</div>
+            <p className="text-xs text-muted-foreground">Departments</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Shifts</CardTitle>
+            <KanbanSquare className="dark:hidden h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer" />
+            <KanbanSquare className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{store.shifts.length}</div>
+            <p className="text-xs text-muted-foreground">Shifts</p>
+          </CardContent>
+        </Card>
+        <Card className="md:col-span-2 lg:col-span-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total Employees
+            </CardTitle>
+            <User2 className="dark:hidden h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer" />
+            <User2 className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{store.employees.length}</div>
+            <p className="text-xs text-muted-foreground">Employees</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* </TabsContent> */}
+      <div className="flex justify-between">
+        <div className="">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button>Add shift</Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <div className="grid gap-4">
+                <div className="space-y-2">
+                  <h4 className="font-medium leading-none">Add Shift</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Enter shift details.
+                  </p>
+                </div>
+                <div className="grid gap-2">
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <Label htmlFor="width">Department:</Label>
+                    <Select
+                      onValueChange={(selectedValue) => {
+                        setShift((prevShift) => ({
+                          ...prevShift,
+                          departmentId: selectedValue,
+                        }));
+                      }}
+                    >
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select department" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {store.departments.map((dep, index) => {
+                            return (
+                              <SelectItem key={index} value={dep._id}>
+                                {dep.departmentName}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <Label htmlFor="width">Shift name:</Label>
+                    <Input
+                      id="width"
+                      placeholder="Enter name"
+                      className="col-span-2 h-8"
+                      onChange={(e) => {
+                        setShift({ ...shift, shiftName: e.target.value });
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <div className="grid grid-cols-3 items-center gap-4 ">
+                    <Label htmlFor="width">Shift date:</Label>
+                    {/* <Calendar
+                      mode="single"
+                      selected={shiftDate}
+                      onSelect={setShiftDate}
+                      className="rounded-md border"
+                    />{" "} */}
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        {/* <FormControl> */}
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-[185px] pl-3 text-left font-normal",
+                            !shiftDate && "text-muted-foreground"
+                          )}
+                        >
+                          {shiftDate ? (
+                            shiftDate.getDate() +
+                            " / " +
+                            shiftDate.getMonth() +
+                            " / " +
+                            shiftDate.getFullYear()
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                        {/* </FormControl> */}
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={shiftDate}
+                          onSelect={setShiftDate}
+                          disabled={(date) => date <= new Date()}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <Label htmlFor="width">Shift name:</Label>
+                    <Select onValueChange={handleHourChange}>
+                      <SelectTrigger>
+                        <span>Select Hour</span>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {/* <SelectItem value="">Select</SelectItem> */}
+                          {hours.map((hour) => (
+                            <SelectItem key={hour} value={hour}>
+                              {hour}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                      {selectedHour && <p>Selected hour: {selectedHour}</p>}
+                    </Select>
+                  </div>
+                </div>
+                <Button onClick={addDepartment}>Add</Button>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div className="space-x-2 flex">
+          <Input
+            className="w-auto"
+            onChange={(e) => setFilterSearch(e.target.value)}
+          />
+          {/* <CalendarDateRangePicker /> */}
+          <Button>
+            <Search className="dark:hidden h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0  cursor-pointer" />
+            <Search className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100  cursor-pointer" />
+          </Button>
         </div>
       </div>
-      {/* <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="analytics" disabled>
-            Analytics
-          </TabsTrigger>
-          <TabsTrigger value="reports" disabled>
-            Reports
-          </TabsTrigger>
-          <TabsTrigger value="notifications" disabled>
-            Notifications
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="overview" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total Revenue
-                </CardTitle>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="h-4 w-4 text-muted-foreground"
-                >
-                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                </svg>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">$45,231.89</div>
-                <p className="text-xs text-muted-foreground">
-                  +20.1% from last month
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Subscriptions
-                </CardTitle>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="h-4 w-4 text-muted-foreground"
-                >
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                </svg>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">+2350</div>
-                <p className="text-xs text-muted-foreground">
-                  +180.1% from last month
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Sales</CardTitle>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="h-4 w-4 text-muted-foreground"
-                >
-                  <rect width="20" height="14" x="2" y="5" rx="2" />
-                  <path d="M2 10h20" />
-                </svg>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">+12,234</div>
-                <p className="text-xs text-muted-foreground">
-                  +19% from last month
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Active Now
-                </CardTitle>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="h-4 w-4 text-muted-foreground"
-                >
-                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                </svg>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">+573</div>
-                <p className="text-xs text-muted-foreground">
-                  +201 since last hour
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-4">
-              <CardHeader>
-                <CardTitle>Overview</CardTitle>
-              </CardHeader>
-              <CardContent className="pl-2">
-                <Overview />
-              </CardContent>
-            </Card>
-            <Card className="col-span-3">
-              <CardHeader>
-                <CardTitle>Recent Sales</CardTitle>
-                <CardDescription>
-                  You made 265 sales this month.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RecentSales />
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs> */}
-      <div className="space-y-4">
-        <form onSubmit={handleSubmit}></form>
-      </div>
+
+      <DataTable filterSearch={filterSearch} />
     </div>
   );
 };

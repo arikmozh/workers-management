@@ -42,10 +42,26 @@ const doAddDepartment = (data) => {
   };
 };
 
+const doUpdateDepartment = (data) => {
+  return {
+    type: "UPDATE_DEPARTMENT",
+    payload: data,
+  };
+};
+
+const doDeleteDepartment = (data) => {
+  return {
+    type: "DELETE_DEPARTMENT",
+    payload: data,
+  };
+};
+
 export {
   doAddRegisterPage1,
   doAddLoginPage1,
   doLogout,
   updateRootState,
   doAddDepartment,
+  doUpdateDepartment,
+  doDeleteDepartment,
 };

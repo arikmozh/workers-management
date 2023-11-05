@@ -34,6 +34,7 @@ interface Department {
 
 interface Shift {
   userId: string;
+  _id: string;
   departmentId: string;
   shiftName: string;
   shiftDate: Date;
@@ -62,6 +63,7 @@ interface dataDepartment {
 
 interface dataShift {
   userId: string;
+  _id: string;
   departmentId: string;
   shiftName: string;
   shiftDate: Date;

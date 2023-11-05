@@ -1,14 +1,5 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// import { CalendarDateRangePicker } from "@/components/Dashboard/date-range-picker";
 import DataTable from "./DataTable";
 import { Input } from "../ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,6 +22,7 @@ const DepartmentsComp = () => {
   const store = useSelector((state: RootState) => state);
   const [departmentName, setDepartmentName] = useState("");
   const dispatch = useDispatch();
+
   const addDepartment = async () => {
     try {
       const data = await addDepartmentToAPI(departmentName);
