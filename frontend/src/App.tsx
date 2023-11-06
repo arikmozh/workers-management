@@ -18,7 +18,7 @@ import RegisterPassword from "./pages/RegisterPassword";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./redux/interface";
 import { useEffect } from "react";
-import { getAllData, loggedIn } from "./utils/authUtils";
+import { getAllData, loggedIn, isLoggedIn } from "./utils/authUtils";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 import { updateRootState } from "./redux/actions";
@@ -26,27 +26,53 @@ import ShiftComp from "./components/Shift/ShiftComp";
 
 function App() {
   const dispatch = useDispatch();
-  const store = useSelector((state: RootState) => state);
+  // const store = useSelector((state: RootState) => state);
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log(store, "store");
 
+  useEffect(() => {
     const fetchData = async () => {
       const allData = await getAllData();
       console.log("aaaaa", allData);
-      if (Array.isArray(allData) && allData.length > 0) {
-        dispatch(updateRootState(allData));
-        navigate("dashboard/overview");
-      } else {
-        navigate("login");
-      }
+      // if (Array.isArray(allData) && allData.length > 0) {
+      dispatch(updateRootState(allData));
+      // }
     };
-    console.log("loggedIn", loggedIn());
 
-    if (loggedIn() != null) {
-      console.log(loggedIn());
-      fetchData();
-    }
+    isLoggedIn()
+      .then((res) => {
+        console.log("ressss", res);
+        if (res != "Success") {
+          navigate("login");
+        } else {
+          fetchData().then(() => {
+            // navigate("dashboard/overview");
+            const lastVisitedURL =
+              localStorage.getItem("lastVisitedURL") || "dashboard/overview";
+            navigate(lastVisitedURL);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("login");
+      });
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      // Handling the refresh event here
+      event.preventDefault();
+      localStorage.setItem("lastVisitedURL", window.location.pathname);
+
+      // Your logic before the page is refreshed
+      // For example, you can store necessary information in localStorage.
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, []);
 
   return (

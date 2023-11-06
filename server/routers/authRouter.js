@@ -43,4 +43,24 @@ router.route("/login").post(async (req, res) => {
   res.status(200).json({ token: token, id: user[0]._id });
 });
 
+router.route("/isLoggedIn/:id").get(async (req, res) => {
+  const userId = req.params.id; // Extract the department ID from the URL
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return res.status(401).json({ message: "Access denied, token missing" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, "Workers");
+    if (decoded.userId === userId) {
+      res.status(200).json({ message: "Success" }); // 200 - OK
+    } else {
+      res.status(401).json({ message: "Some thing went wrong" });
+    }
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token" });
+  }
+});
+
 module.exports = router;

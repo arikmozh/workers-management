@@ -122,7 +122,7 @@ export const updateShiftToAPI = async (
 
     // Set the Authorization header with the token
     const { data: result } = await axios.put(
-      `${urlData}/departments/updateDepartment/${departmentId}`,
+      `${urlData}/departments/updateDepartment/${shiftId}`,
       { userId: userId, departmentName: departmentName },
       {
         headers: {
