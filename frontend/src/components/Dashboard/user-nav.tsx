@@ -44,7 +44,10 @@ export function UserNav() {
     dispatch(doLogout());
   };
 
-  const letters = getFirstAndLastLetters(store.user[0]?.email);
+  // const letters = getFirstAndLastLetters(store.user[0]?.email);
+  const user = store.user && store.user.length > 0 ? store.user[0] : null; // Check for valid user
+
+  const letters = user ? getFirstAndLastLetters(user.email) : ""; // Safely access user.email
 
   useEffect(() => {
     console.log(store);
@@ -64,14 +67,24 @@ export function UserNav() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
+          {/* <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
               {store.user[0]?.fullName}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {store.user[0]?.email}
             </p>
-          </div>
+          </div> */}
+          {user && ( // Check if user exists before accessing its properties
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none">
+                {user.fullName}
+              </p>
+              <p className="text-xs leading-none text-muted-foreground">
+                {user.email}
+              </p>
+            </div>
+          )}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

@@ -25,30 +25,37 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 
-import { addDepartmentToAPI } from "../../utils/workersUtils";
+import { addShiftToAPI } from "../../utils/workersUtils";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
-import { doAddDepartment } from "../../redux/actions";
+import { doAddShift } from "../../redux/actions";
 
 const ShiftsComp = () => {
   const [filterSearch, setFilterSearch] = useState("");
-  const store = useSelector((state: RootState) => state);
-  const [departmentName, setDepartmentName] = useState("");
+  // const store = useSelector((state: RootState) => state);
+  const departments = useSelector((state: RootState) => state.departments);
+  const shifts = useSelector((state: RootState) => state.shifts);
+  const employees = useSelector((state: RootState) => state.employees);
+
+  // const [departmentName, setDepartmentName] = useState("");
   const [shiftDate, setShiftDate] = React.useState<Date | undefined>(
     new Date()
   );
   const [startHour, setStartHour] = useState<string>("");
   const [endHour, setEndHour] = useState<string>("");
   const [showEndHourSelect, setShowEndHourSelect] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   const handleStartHourChange = (selectedValue: string) => {
     setStartHour(selectedValue);
+    shift.shiftStartingHour = selectedValue;
     setEndHour(""); // Reset end hour when start hour changes
     setShowEndHourSelect(true); // Display end hour select after selecting a start hour
   };
 
   const handleEndHourChange = (selectedValue: string) => {
     setEndHour(selectedValue);
+    shift.shiftEndingHour = selectedValue;
   };
 
   const hours: string[] = [];
@@ -65,25 +72,48 @@ const ShiftsComp = () => {
   const [shift, setShift] = useState({
     departmentId: "",
     shiftName: "",
-    shiftDate: "",
+    shiftDate: shiftDate,
     shiftStartingHour: "",
     shiftEndingHour: "",
-    shiftCreatedDate: "",
+    shiftCreatedDate: new Date(),
     shiftEmployees: [],
   });
-  const dispatch = useDispatch();
 
-  const addDepartment = async () => {
-    try {
-      const data = await addDepartmentToAPI(departmentName);
-      console.log(data); // Log the data received from the API call
-      if (data) {
-        dispatch(doAddDepartment(data));
+  const isShiftComplete = () => {
+    if (
+      shift.departmentId == "" ||
+      shift.shiftName == "" ||
+      shift.shiftStartingHour == "" ||
+      shift.shiftEndingHour == ""
+    ) {
+      return false;
+    }
+    return true; // All keys are filled, return true
+  };
+
+  // const [toast, setToast] = useState(false);
+  // const { toast: showToast } = useToast(); // Assuming useToast is a hook from your toast library
+  const [error, setError] = useState(false);
+
+  const addShift = async () => {
+    console.log(shift);
+    if (isShiftComplete() == true) {
+      try {
+        const data = await addShiftToAPI(shift);
+        console.log(data); // Log the data received from the API call
+        if (data) {
+          dispatch(doAddShift(data));
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        // Handle the error if needed
+        throw error;
       }
-    } catch (error) {
-      console.error("Error:", error);
-      // Handle the error if needed
-      throw error;
+    } else {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
     }
   };
 
@@ -122,7 +152,7 @@ const ShiftsComp = () => {
             <Hash className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{store.departments.length}</div>
+            <div className="text-2xl font-bold">{departments.length}</div>
             <p className="text-xs text-muted-foreground">Departments</p>
           </CardContent>
         </Card>
@@ -133,7 +163,7 @@ const ShiftsComp = () => {
             <KanbanSquare className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{store.shifts.length}</div>
+            <div className="text-2xl font-bold">{shifts.length}</div>
             <p className="text-xs text-muted-foreground">Shifts</p>
           </CardContent>
         </Card>
@@ -146,7 +176,7 @@ const ShiftsComp = () => {
             <User2 className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{store.employees.length}</div>
+            <div className="text-2xl font-bold">{employees.length}</div>
             <p className="text-xs text-muted-foreground">Employees</p>
           </CardContent>
         </Card>
@@ -183,7 +213,7 @@ const ShiftsComp = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {store.departments.map((dep, index) => {
+                          {departments.map((dep, index) => {
                             return (
                               <SelectItem key={index} value={dep._id}>
                                 {dep.departmentName}
@@ -211,12 +241,6 @@ const ShiftsComp = () => {
                 <div className="grid gap-2">
                   <div className="grid grid-cols-3 items-center gap-4 ">
                     <Label htmlFor="width">Shift date:</Label>
-                    {/* <Calendar
-                      mode="single"
-                      selected={shiftDate}
-                      onSelect={setShiftDate}
-                      className="rounded-md border"
-                    />{" "} */}
                     <Popover>
                       <PopoverTrigger asChild>
                         {/* <FormControl> */}
@@ -304,7 +328,17 @@ const ShiftsComp = () => {
                     </div>
                   </div>
                 )}
-                <Button onClick={addDepartment}>Add</Button>
+                <Button onClick={addShift}>Add</Button>
+                {error && (
+                  <span className="text-red-500">Something is missing</span>
+                )}
+                {/* {toast && (
+                  <div>
+                    <h3>Scheduled: Catch up</h3>
+                    <p>Friday, February 10, 2023 at 5:57 PM</p>
+                    <button>Undo</button>
+                  </div>
+                )} */}
               </div>
             </PopoverContent>
           </Popover>
@@ -328,3 +362,24 @@ const ShiftsComp = () => {
 };
 
 export default ShiftsComp;
+
+// export function ToastDemo() {
+//   const { toast } = useToast();
+
+//   return (
+//     <Button
+//       variant="destructive"
+//       onClick={() => {
+//         toast({
+//           title: "Scheduled: Catch up ",
+//           description: "Friday, February 10, 2023 at 5:57 PM",
+//           action: (
+//             <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
+//           ),
+//         });
+//       }}
+//     >
+//       Add to calendar
+//     </Button>
+//   );
+// }

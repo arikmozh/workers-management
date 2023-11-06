@@ -27,7 +27,7 @@ const LoginPassword = () => {
   //   }, 3000);
   // }
   // const store = useSelector((state: RootState) => state);
-  const email = useSelector((state: RootState) => state.login.email);
+  const email = useSelector((state: RootState) => state.login?.email);
 
   const [passwordValidation1, setPasswordValidation1] = useState(true);
   const [password, setPassword] = useState("");
@@ -110,6 +110,7 @@ const LoginPassword = () => {
       const allData = await getAllData();
       dispatch(updateRootState(allData));
       navigate("/dashboard/overview");
+      console.log(allData, "loginPass");
 
       // Process or set state with allData here
     } catch (error) {

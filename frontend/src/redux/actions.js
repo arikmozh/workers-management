@@ -56,6 +56,29 @@ const doDeleteDepartment = (data) => {
   };
 };
 
+////////////////////////     updateRootState Departments     //////////////////////
+
+const doAddShift = (data) => {
+  return {
+    type: "ADD_SHIFT",
+    payload: data,
+  };
+};
+
+// const doUpdateDepartment = (data) => {
+//   return {
+//     type: "UPDATE_DEPARTMENT",
+//     payload: data,
+//   };
+// };
+
+const doDeleteShift = (data) => {
+  return {
+    type: "DELETE_SHIFT",
+    payload: data,
+  };
+};
+
 export {
   doAddRegisterPage1,
   doAddLoginPage1,
@@ -64,4 +87,6 @@ export {
   doAddDepartment,
   doUpdateDepartment,
   doDeleteDepartment,
+  doAddShift,
+  doDeleteShift,
 };

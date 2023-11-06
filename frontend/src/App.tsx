@@ -34,8 +34,12 @@ function App() {
     const fetchData = async () => {
       const allData = await getAllData();
       console.log("aaaaa", allData);
-      dispatch(updateRootState(allData));
-      navigate("dashboard/overview");
+      if (Array.isArray(allData) && allData.length > 0) {
+        dispatch(updateRootState(allData));
+        navigate("dashboard/overview");
+      } else {
+        navigate("login");
+      }
     };
     console.log("loggedIn", loggedIn());
 

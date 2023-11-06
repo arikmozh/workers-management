@@ -51,9 +51,11 @@ interface TeamSwitcherProps extends PopoverTriggerProps {}
 
 export default function TeamSwitcher({ className }: TeamSwitcherProps) {
   const store = useSelector((state: RootState) => state);
-  const firstName = useSelector(
-    (state: RootState) => state.user[0]?.fullName || ""
-  );
+  // const firstName = useSelector(
+  //   (state: RootState) => state.user[0]?.fullName || ""
+  // );
+  const firstName =
+    store.user && store.user.length > 0 ? store.user[0]?.fullName || "" : "";
 
   const [open, setOpen] = React.useState(false);
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
@@ -87,42 +89,8 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
             <CommandList>
               <CommandInput placeholder="Search department..." />
               <CommandEmpty>No department found.</CommandEmpty>
-              {/* {groups.map((group) => (
-                <CommandGroup key={group.label} heading={group.label}>
-                  {group.teams.map((team) => (
-                    <CommandItem
-                      key={team.value}
-                      onSelect={() => {
-                        setSelectedTeam(team);
-                        setOpen(false);
-                      }}
-                      className="text-sm"
-                    >
-                      <Avatar className="mr-2 h-5 w-5">
-                        <AvatarImage
-                          src={`https://avatar.vercel.sh/${team.value}.png`}
-                          alt={team.label}
-                          className="grayscale"
-                        />
-                        <AvatarFallback>SC</AvatarFallback>
-                      </Avatar>
-                      {team.label}
-                      <CheckIcon
-                        className={cn(
-                          "ml-auto h-4 w-4",
-                          selectedTeam.value === team.value
-                            ? "opacity-100"
-                            : "opacity-0"
-                        )}
-                      />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              ))} */}
-              {store.departments.map((dep: Department, index) => {
+              {store.departments?.map((dep: Department, index) => {
                 return (
-                  // <CommandGroup key={index} heading={dep.departmentName}>
-                  //  {group.teams.map((team) => (
                   <CommandItem
                     key={index}
                     onSelect={() => {
@@ -140,17 +108,8 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                       <AvatarFallback>SC</AvatarFallback>
                     </Avatar>
                     {dep.departmentName}
-                    <CheckIcon
-                      className={cn(
-                        "ml-auto h-4 w-4"
-                        // selectedTeam.departmentName === dep.departmentName
-                        //   ? "opacity-100"
-                        //   : "opacity-0"
-                      )}
-                    />
+                    <CheckIcon className={cn("ml-auto h-4 w-4")} />
                   </CommandItem>
-                  // ))}
-                  // </CommandGroup>
                 );
               })}
             </CommandList>

@@ -17,7 +17,7 @@ const getShiftById = async (shiftId) => {
 const addShift = async (obj) => {
   const shift = new ShiftModel(obj);
   await shift.save();
-  return "Created!";
+  return shift;
 };
 
 const updateShift = async (shiftId, updatedData) => {

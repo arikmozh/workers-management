@@ -20,7 +20,8 @@ const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   // const [username, setUsername] = useState(store?.login?.email);
-  const username = useSelector((state: RootState) => state.login.email);
+  // const username = useSelector((state: RootState) => state.login.email);
+  const username = useSelector((state: RootState) => state.login?.email || "");
 
   const [validate, setValidate] = useState(true);
 

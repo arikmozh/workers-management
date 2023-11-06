@@ -19,9 +19,14 @@ import { doAddDepartment } from "../../redux/actions";
 
 const DepartmentsComp = () => {
   const [filterSearch, setFilterSearch] = useState("");
-  const store = useSelector((state: RootState) => state);
-  const [departmentName, setDepartmentName] = useState("");
+  // const store = useSelector((state: RootState) => state);
+  const departments = useSelector((state: RootState) => state.departments); // Assuming departments is a part of the state
+  const shifts = useSelector((state: RootState) => state.shifts); // Assuming shifts is a part of the state
+  const employees = useSelector((state: RootState) => state.employees); // Assuming employees is a part of the state
   const dispatch = useDispatch();
+
+  const [departmentName, setDepartmentName] = useState("");
+  // const dispatch = useDispatch();
 
   const addDepartment = async () => {
     try {
@@ -53,7 +58,7 @@ const DepartmentsComp = () => {
             <Hash className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{store.departments.length}</div>
+            <div className="text-2xl font-bold">{departments.length}</div>
             <p className="text-xs text-muted-foreground">Departments</p>
           </CardContent>
         </Card>
@@ -64,7 +69,7 @@ const DepartmentsComp = () => {
             <KanbanSquare className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{store.shifts.length}</div>
+            <div className="text-2xl font-bold">{shifts.length}</div>
             <p className="text-xs text-muted-foreground">Shifts</p>
           </CardContent>
         </Card>
@@ -77,7 +82,7 @@ const DepartmentsComp = () => {
             <User2 className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{store.employees.length}</div>
+            <div className="text-2xl font-bold">{employees.length}</div>
             <p className="text-xs text-muted-foreground">Employees</p>
           </CardContent>
         </Card>

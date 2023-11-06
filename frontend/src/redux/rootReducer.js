@@ -131,6 +131,48 @@ const rootReducer = (state = initialState, action) => {
         ),
         data: state.data.filter((d) => d._id !== action.payload._id),
       };
+
+    case "ADD_SHIFT":
+      return {
+        ...state,
+        shifts: [
+          ...state.shifts,
+          action.payload, // Adding the new department to the existing array
+        ],
+        data: [
+          ...state.data.map((d) => {
+            if (d._id === action.payload.departmentId) {
+              return {
+                ...d,
+                shiftsInThisDepartment: [
+                  ...d.shiftsInThisDepartment,
+                  action.payload,
+                ],
+              };
+            }
+            return d;
+          }),
+        ],
+      };
+    case "DELETE_SHIFT":
+      return {
+        ...state,
+        shifts: state.shifts.filter(
+          (shift) => shift._id !== action.payload._id
+        ),
+        data: state.data.map((department) => {
+          if (department._id === action.payload.departmentId) {
+            return {
+              ...department,
+              shiftsInThisDepartment: department.shiftsInThisDepartment.filter(
+                (shift) => shift._id !== action.payload._id
+              ),
+            };
+          }
+          return department;
+        }),
+      };
+
     default:
       return state;
   }
