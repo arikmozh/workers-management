@@ -74,6 +74,7 @@ router.route("/addShift").post(async (req, res) => {
 
 //Update Shift by id
 router.route("/updateShift/:id").put(async (req, res) => {
+  console.log(req.body);
   const { userId } = req.body;
   const updatedData = req.body;
   const shiftId = req.params.id;

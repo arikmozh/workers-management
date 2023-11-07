@@ -65,12 +65,12 @@ const doAddShift = (data) => {
   };
 };
 
-// const doUpdateDepartment = (data) => {
-//   return {
-//     type: "UPDATE_DEPARTMENT",
-//     payload: data,
-//   };
-// };
+const doUpdateShift = (data) => {
+  return {
+    type: "UPDATE_SHIFT",
+    payload: data,
+  };
+};
 
 const doDeleteShift = (data) => {
   return {
@@ -88,5 +88,6 @@ export {
   doUpdateDepartment,
   doDeleteDepartment,
   doAddShift,
+  doUpdateShift,
   doDeleteShift,
 };

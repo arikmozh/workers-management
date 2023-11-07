@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import LoginPassword from "./pages/LoginPassword";
@@ -15,48 +15,48 @@ import OverviewTab3 from "./components/Overview/overview-tab-3";
 import OverviewTab4 from "./components/Overview/overview-tab-4";
 import Register from "./pages/Register";
 import RegisterPassword from "./pages/RegisterPassword";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./redux/interface";
+// import { useDispatch, useSelector } from "react-redux";
+// import { RootState } from "./redux/interface";
 import { useEffect } from "react";
-import { getAllData, loggedIn, isLoggedIn } from "./utils/authUtils";
+// import { getAllData, loggedIn, isLoggedIn } from "./utils/authUtils";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
-import { updateRootState } from "./redux/actions";
+// import { updateRootState } from "./redux/actions";
 import ShiftComp from "./components/Shift/ShiftComp";
 
 function App() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // const store = useSelector((state: RootState) => state);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const allData = await getAllData();
-      console.log("aaaaa", allData);
-      // if (Array.isArray(allData) && allData.length > 0) {
-      dispatch(updateRootState(allData));
-      // }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const allData = await getAllData();
+  //     console.log("aaaaa", allData);
+  //     // if (Array.isArray(allData) && allData.length > 0) {
+  //     dispatch(updateRootState(allData));
+  //     // }
+  //   };
 
-    isLoggedIn()
-      .then((res) => {
-        console.log("ressss", res);
-        if (res != "Success") {
-          navigate("login");
-        } else {
-          fetchData().then(() => {
-            // navigate("dashboard/overview");
-            const lastVisitedURL =
-              localStorage.getItem("lastVisitedURL") || "dashboard/overview";
-            navigate(lastVisitedURL);
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        navigate("login");
-      });
-  }, []);
+  //   isLoggedIn()
+  //     .then((res) => {
+  //       console.log("ressss", res);
+  //       if (res != "Success") {
+  //         navigate("login");
+  //       } else {
+  //         fetchData().then(() => {
+  //           // navigate("dashboard/overview");
+  //           const lastVisitedURL =
+  //             localStorage.getItem("lastVisitedURL") || "dashboard/overview";
+  //           navigate(lastVisitedURL);
+  //         });
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       navigate("login");
+  //     });
+  // }, []);
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -78,6 +78,8 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path="*" element={<Navigate to="/dashboard/overview" />} />
+
         <Route path="" element={<Homepage />} />
         <Route path="register" element={<Register />} />
         <Route path="register-password" element={<RegisterPassword />} />
@@ -91,9 +93,8 @@ function App() {
             <Route path="notifications" element={<OverviewTab4 />}></Route>
           </Route>
           <Route path="departments" element={<DepartmentsComp />}></Route>
-          <Route path="shifts" element={<ShiftsComp />}>
-            <Route path=":id" element={<ShiftComp />}></Route>
-          </Route>
+          <Route path="shifts" element={<ShiftsComp />}></Route>
+          <Route path="shifts/:id" element={<ShiftComp />}></Route>
           <Route path="employees" element={<EmployeesComp />}></Route>
           <Route path="settings" element={<SettingsComp />}></Route>
         </Route>

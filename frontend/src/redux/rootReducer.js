@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 const initialState = {
   register: {
     fullName: "",
@@ -154,6 +155,64 @@ const rootReducer = (state = initialState, action) => {
           }),
         ],
       };
+
+    case "UPDATE_SHIFT":
+      const updatedShifts = state.shifts.map((shift) => {
+        return shift._id === action.payload._id
+          ? { ...shift, ...action.payload }
+          : shift;
+      });
+
+      const updatedData = state.data.map((d) => {
+        return d._id === action.payload.departmentId
+          ? {
+              ...d,
+              shiftsInThisDepartment: d.shiftsInThisDepartment.map((s) => {
+                return s._id === action.payload._id
+                  ? { ...s, ...action.payload }
+                  : s;
+              }),
+            }
+          : d;
+      });
+
+      return {
+        ...state,
+        shifts: updatedShifts,
+        data: updatedData,
+      };
+
+    // return {
+    //   ...state,
+    //   shifts: state.shifts.map((shift) => {
+    //     if (shift._id === action.payload._id) {
+    // return {
+    //   ...shift,
+    //   ...action.payload,
+    // };
+    //     }
+    //     return shift;
+    //   }),
+    //   // data: [
+    //   //   ...state.data.map((d) => {
+    //   //     if (d._id === action.payload.departmentId) {
+    //   //       return {
+    //   //         ...d.shiftsInThisDepartment: d.shiftsInThisDepartment.map((s)=>{
+    //   //                     if (s._id === action.payload._id) {
+    //   //     return {
+    //   //       action.payload,
+    //   //     };
+    //   //   }
+
+    //   //         })
+
+    //   //       };
+    //   //     }
+    //   //     return d;
+    //   //   }),
+    //   // ],
+    // };
+
     case "DELETE_SHIFT":
       return {
         ...state,

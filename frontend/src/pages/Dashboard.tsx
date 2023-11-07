@@ -12,11 +12,50 @@ import { Link, Outlet } from "react-router-dom";
 import { CubeIcon } from "@radix-ui/react-icons";
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 // import { RootState } from "@/redux/interface";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getAllData, isLoggedIn } from "../utils/authUtils";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import { updateRootState } from "../redux/actions";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardPage() {
   const checkPage = (link: string) => {
     return location.pathname.includes(link);
   };
+  const dispatch = useDispatch();
+  // const store = useSelector((state: RootState) => state);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const allData = await getAllData();
+      console.log("aaaaa", allData);
+      // if (Array.isArray(allData) && allData.length > 0) {
+      dispatch(updateRootState(allData));
+      // }
+    };
+
+    isLoggedIn()
+      .then((res) => {
+        console.log("ressss", res);
+        if (res != "Success") {
+          navigate("overview");
+        } else {
+          fetchData().then(() => {
+            // navigate("dashboard/overview");
+            const lastVisitedURL =
+              localStorage.getItem("lastVisitedURL") || "dashboard/overview";
+            navigate(lastVisitedURL);
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/login");
+      });
+  }, []);
 
   return (
     <>

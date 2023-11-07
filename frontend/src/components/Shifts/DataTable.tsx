@@ -10,7 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, Shift } from "@/redux/interface";
 import { Button } from "../ui/button";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Input } from "../ui/input";
 import {
   Tooltip,
@@ -33,14 +33,16 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
+  // SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { deleteShiftToAPI, updateShiftToAPI } from "../../utils/workersUtils";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
-import { doDeleteShift } from "../../redux/actions";
+import { doDeleteShift, doUpdateShift } from "../../redux/actions";
+import { Badge } from "../ui/badge";
+import { useNavigate } from "react-router-dom";
 
 interface DataTableProps {
   filterSearch: string;
@@ -53,7 +55,7 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
   const [filteredShifts, setFilteredShifts] = useState(shifts);
   const [editingIndex, setEditingIndex] = useState(-1);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const handleShiftNameChange = (
     index: number,
     e: ChangeEvent<HTMLInputElement>
@@ -138,12 +140,20 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
       .padStart(2, "0")}`;
   };
 
-  const updateDepartment = async (shiftId: string, shiftName: string) => {
+  const updateShift = async (shiftId: string) => {
+    console.log(shiftId);
+    console.log(filteredShifts);
+
     try {
-      const data = await updateShiftToAPI(depId, depName);
+      const shift = filteredShifts.filter((s) => {
+        return s._id === shiftId;
+      });
+      console.log(shift);
+
+      const data = await updateShiftToAPI(shiftId, shift[0]);
       console.log(data);
       if (data) {
-        dispatch(doUpdateDepartment(data));
+        dispatch(doUpdateShift(data));
       }
     } catch (error) {
       console.error("Error:", error);
@@ -180,7 +190,6 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
     const dep = departments.filter((dep) => {
       return dep._id == departmentId;
     });
-    console.log(dep);
     if (dep.length > 0) {
       return dep[0].departmentName;
     } else {
@@ -247,19 +256,29 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
                     className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer"
                     onClick={() => {
                       setEditingIndex(-1);
-                      // updateDepartment(dep._id, dep.departmentName);
+                      updateShift(shift._id);
                     }}
                   />
                   <Check
                     className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer"
                     onClick={() => {
                       setEditingIndex(-1);
-                      // updateDepartment(dep._id, dep.departmentName);
+                      updateShift(shift._id);
                     }}
                   />
                 </div>
               ) : (
-                <span className=" text-center  ">{shift.shiftName}</span>
+                <span className=" text-center  ">
+                  <Badge
+                    className="cursor-pointer"
+                    key={index}
+                    onClick={() => {
+                      navigate(shift._id);
+                    }}
+                  >
+                    {shift.shiftName}
+                  </Badge>
+                </span>
               )}
             </TableCell>
             <TableCell>{getShiftDate(shift.shiftDate)}</TableCell>
@@ -297,14 +316,14 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
                     className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer"
                     onClick={() => {
                       setEditingIndex(-1);
-                      // updateDepartment(dep._id, dep.departmentName);
+                      updateShift(shift._id);
                     }}
                   />
                   <Check
                     className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer"
                     onClick={() => {
                       setEditingIndex(-1);
-                      // updateDepartment(dep._id, dep.departmentName);
+                      updateShift(shift._id);
                     }}
                   />
                 </div>
