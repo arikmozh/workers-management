@@ -36,6 +36,7 @@ import {
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
 import { doUpdateDepartment, doDeleteDepartment } from "../../redux/actions";
+import { useNavigate } from "react-router-dom";
 
 interface DataTableProps {
   filterSearch: string;
@@ -47,7 +48,7 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
   const [filteredDepartments, setFilteredDepartments] = useState(departments);
   const [editingIndex, setEditingIndex] = useState(-1); // Index of the department being edited
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const handleDepartmentNameChange = (
     index: number,
     e: ChangeEvent<HTMLInputElement>
@@ -182,7 +183,11 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
             <TableCell>
               {dep.shiftsInThisDepartment.map((shift, index) => {
                 return (
-                  <Badge className="cursor-pointer" key={index}>
+                  <Badge
+                    className="cursor-pointer"
+                    key={index}
+                    onClick={() => navigate(`/dashboard/shifts/${shift._id}`)}
+                  >
                     {shift.shiftName}
                   </Badge>
                 );

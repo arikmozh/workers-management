@@ -83,7 +83,7 @@ const LoginPassword = () => {
     setTimeout(() => {
       login({ email: email, password: pass })
         .then(async (res: any) => {
-          console.log(res);
+          console.log("res login", res);
           const token: string = res.token;
           sessionStorage.clear();
           sessionStorage.setItem(
@@ -95,26 +95,63 @@ const LoginPassword = () => {
             })
           );
           fetchData();
-
-          // dispatch(updateRootState(allData));
         })
         .catch((error: any) => {
+          setIsLoading(false);
           console.log(error);
+          alert("Login failed. Please check your credentials.");
+          // You can also set an error state in the component to display a message to the user.
         });
-      setIsLoading(false);
     }, 1000);
+
+    // setTimeout(() => {
+    //   login({ email: email, password: pass })
+    //     .then(async (res: any) => {
+    //       console.log("res login", res);
+    //       const token: string = res.token;
+    //       sessionStorage.clear();
+    //       sessionStorage.setItem(
+    //         "Workers",
+    //         JSON.stringify({
+    //           token: token,
+    //           email: email,
+    //           id: res.id,
+    //         })
+    //       );
+    //       fetchData();
+
+    //       // dispatch(updateRootState(allData));
+    //     })
+    //     .catch((error: any) => {
+    //       console.log(error);
+    //     });
+    //   setIsLoading(false);
+    // }, 1000);
   };
 
+  // const fetchData = async () => {
+  //   try {
+  //     const allData = await getAllData();
+  //     dispatch(updateRootState(allData));
+  //     navigate("/dashboard/overview");
+  //     console.log(allData, "loginPass");
+
+  //     // Process or set state with allData here
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
   const fetchData = async () => {
     try {
       const allData = await getAllData();
       dispatch(updateRootState(allData));
-      navigate("/dashboard/overview");
       console.log(allData, "loginPass");
-
+      navigate("/dashboard/overview");
       // Process or set state with allData here
     } catch (error) {
+      setIsLoading(false);
       console.error("Error fetching data:", error);
+      // Set an error state in the component to display an error message to the user.
     }
   };
 

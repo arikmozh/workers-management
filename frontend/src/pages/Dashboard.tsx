@@ -19,6 +19,7 @@ import { getAllData, isLoggedIn } from "../utils/authUtils";
 // @ts-ignore
 import { updateRootState } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
+// import { RootState } from "@/redux/interface";
 
 export default function DashboardPage() {
   const checkPage = (link: string) => {
@@ -33,7 +34,11 @@ export default function DashboardPage() {
       const allData = await getAllData();
       console.log("aaaaa", allData);
       // if (Array.isArray(allData) && allData.length > 0) {
+      // if (areAllValuesEmpty(allData) == false) {
       dispatch(updateRootState(allData));
+      // } else {
+      //   navigate("/login");
+      // }
       // }
     };
 
@@ -42,12 +47,18 @@ export default function DashboardPage() {
         console.log("ressss", res);
         if (res != "Success") {
           navigate("overview");
+          // navigate("/login");
         } else {
           fetchData().then(() => {
             // navigate("dashboard/overview");
+            // if (Array.isArray(allData) && allData.length > 0) {
+            // if (areAllValuesEmpty(store) == false) {
+            //   navigate("/login");
+            // } else {
             const lastVisitedURL =
               localStorage.getItem("lastVisitedURL") || "dashboard/overview";
             navigate(lastVisitedURL);
+            // }
           });
         }
       })
@@ -56,6 +67,22 @@ export default function DashboardPage() {
         navigate("/login");
       });
   }, []);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const areAllValuesEmpty = (obj: any) => {
+  //   for (const key in obj) {
+  //     if (Object.prototype.hasOwnProperty.call(obj, key)) {
+  //       if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
+  //         if (!areAllValuesEmpty(obj[key])) {
+  //           return false;
+  //         }
+  //       } else if (obj[key] !== "") {
+  //         return false;
+  //       }
+  //     }
+  //   }
+  //   return true;
+  // };
 
   return (
     <>

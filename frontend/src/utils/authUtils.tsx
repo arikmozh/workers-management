@@ -5,7 +5,6 @@ const url = "http://localhost:8000/auth";
 const urlData = "http://localhost:8000/allData";
 
 // Get the token from storage
-const ss = sessionStorage.getItem("Workers");
 
 export const register = async (obj: any) => {
   const { data: result } = await axios.post(`${url}/register`, obj);
@@ -18,6 +17,8 @@ export const login = async (obj: any) => {
 };
 
 export const isLoggedIn = async () => {
+  const ss = sessionStorage.getItem("Workers");
+
   if (ss != null) {
     try {
       const storedUserData = JSON.parse(ss);
@@ -48,6 +49,8 @@ export const isLoggedIn = async () => {
 };
 
 export const getAllData = async () => {
+  const ss = sessionStorage.getItem("Workers");
+
   if (ss != null) {
     try {
       const storedUserData = JSON.parse(ss);
@@ -67,14 +70,18 @@ export const getAllData = async () => {
     } catch (error) {
       // Handle errors here
       console.error("Error fetching data:", error);
-      return [];
+      throw error;
     }
   } else {
-    return [];
+    const error = new Error("No session storage found.");
+
+    throw error;
   }
 };
 
 export const loggedIn = () => {
+  const ss = sessionStorage.getItem("Workers");
+
   return ss;
 };
 export const logout = () => {
