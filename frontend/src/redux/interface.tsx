@@ -45,6 +45,7 @@ interface Shift {
 }
 
 interface Employee {
+  _id: string;
   userId: string;
   departmentId: string;
   startingDate: Date;
