@@ -56,6 +56,7 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
   const [editingIndex, setEditingIndex] = useState(-1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleShiftNameChange = (
     index: number,
     e: ChangeEvent<HTMLInputElement>

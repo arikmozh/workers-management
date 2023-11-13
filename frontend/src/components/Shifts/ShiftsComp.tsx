@@ -332,13 +332,6 @@ const ShiftsComp = () => {
                 {error && (
                   <span className="text-red-500">Something is missing</span>
                 )}
-                {/* {toast && (
-                  <div>
-                    <h3>Scheduled: Catch up</h3>
-                    <p>Friday, February 10, 2023 at 5:57 PM</p>
-                    <button>Undo</button>
-                  </div>
-                )} */}
               </div>
             </PopoverContent>
           </Popover>

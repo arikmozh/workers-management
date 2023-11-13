@@ -18,15 +18,6 @@ import { updateRootState } from "../redux/actions";
 const LoginPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  // async function onSubmit(event: React.SyntheticEvent) {
-  //   event.preventDefault();
-  //   setIsLoading(true);
-
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 3000);
-  // }
-  // const store = useSelector((state: RootState) => state);
   const email = useSelector((state: RootState) => state.login?.email);
 
   const [passwordValidation1, setPasswordValidation1] = useState(true);
@@ -100,47 +91,10 @@ const LoginPassword = () => {
           setIsLoading(false);
           console.log(error);
           alert("Login failed. Please check your credentials.");
-          // You can also set an error state in the component to display a message to the user.
         });
     }, 1000);
-
-    // setTimeout(() => {
-    //   login({ email: email, password: pass })
-    //     .then(async (res: any) => {
-    //       console.log("res login", res);
-    //       const token: string = res.token;
-    //       sessionStorage.clear();
-    //       sessionStorage.setItem(
-    //         "Workers",
-    //         JSON.stringify({
-    //           token: token,
-    //           email: email,
-    //           id: res.id,
-    //         })
-    //       );
-    //       fetchData();
-
-    //       // dispatch(updateRootState(allData));
-    //     })
-    //     .catch((error: any) => {
-    //       console.log(error);
-    //     });
-    //   setIsLoading(false);
-    // }, 1000);
   };
 
-  // const fetchData = async () => {
-  //   try {
-  //     const allData = await getAllData();
-  //     dispatch(updateRootState(allData));
-  //     navigate("/dashboard/overview");
-  //     console.log(allData, "loginPass");
-
-  //     // Process or set state with allData here
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
   const fetchData = async () => {
     try {
       const allData = await getAllData();

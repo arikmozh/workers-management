@@ -85,5 +85,6 @@ export const loggedIn = () => {
   return ss;
 };
 export const logout = () => {
+  localStorage.clear();
   sessionStorage.clear();
 };

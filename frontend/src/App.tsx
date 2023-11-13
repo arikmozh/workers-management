@@ -15,57 +15,34 @@ import OverviewTab3 from "./components/Overview/overview-tab-3";
 import OverviewTab4 from "./components/Overview/overview-tab-4";
 import Register from "./pages/Register";
 import RegisterPassword from "./pages/RegisterPassword";
-// import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "./redux/interface";
 import { useEffect } from "react";
-// import { getAllData, loggedIn, isLoggedIn } from "./utils/authUtils";
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-ignore
-// import { updateRootState } from "./redux/actions";
 import ShiftComp from "./components/Shift/ShiftComp";
 
 function App() {
-  // const dispatch = useDispatch();
-  // const store = useSelector((state: RootState) => state);
-  // const navigate = useNavigate();
-
   // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const allData = await getAllData();
-  //     console.log("aaaaa", allData);
-  //     // if (Array.isArray(allData) && allData.length > 0) {
-  //     dispatch(updateRootState(allData));
-  //     // }
+  //   const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+  //     event.preventDefault();
+  //     localStorage.setItem("lastVisitedURL", window.location.pathname);
   //   };
 
-  //   isLoggedIn()
-  //     .then((res) => {
-  //       console.log("ressss", res);
-  //       if (res != "Success") {
-  //         navigate("login");
-  //       } else {
-  //         fetchData().then(() => {
-  //           // navigate("dashboard/overview");
-  //           const lastVisitedURL =
-  //             localStorage.getItem("lastVisitedURL") || "dashboard/overview";
-  //           navigate(lastVisitedURL);
-  //         });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       navigate("login");
-  //     });
-  // }, []);
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
 
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, []);
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      // Handling the refresh event here
       event.preventDefault();
-      localStorage.setItem("lastVisitedURL", window.location.pathname);
 
-      // Your logic before the page is refreshed
-      // For example, you can store necessary information in localStorage.
+      // Check if the current route starts with "/dashboard"
+      const currentPath = window.location.pathname;
+      const isDashboardRoute = currentPath.startsWith("/dashboard");
+
+      // Save the URL only if it's a dashboard route
+      if (isDashboardRoute) {
+        localStorage.setItem("lastVisitedURL", currentPath);
+      }
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);

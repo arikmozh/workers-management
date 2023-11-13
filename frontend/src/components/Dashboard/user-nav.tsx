@@ -18,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 // @ts-ignore
 import { doLogout } from "../../redux/actions";
 import { RootState } from "@/redux/interface";
-import { useEffect } from "react";
 
 const getFirstAndLastLetters = (email: string): string => {
   // Ensure the email string is not empty and has at least two characters
@@ -32,7 +31,8 @@ const getFirstAndLastLetters = (email: string): string => {
 };
 
 export function UserNav() {
-  const store = useSelector((state: RootState) => state);
+  // const store = useSelector((state: RootState) => state);
+  const users = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -45,13 +45,9 @@ export function UserNav() {
   };
 
   // const letters = getFirstAndLastLetters(store.user[0]?.email);
-  const user = store.user && store.user.length > 0 ? store.user[0] : null; // Check for valid user
+  const user = users && users.length > 0 ? users[0] : null; // Check for valid user
 
   const letters = user ? getFirstAndLastLetters(user.email) : ""; // Safely access user.email
-
-  useEffect(() => {
-    console.log(store);
-  }, []);
 
   return (
     <DropdownMenu>

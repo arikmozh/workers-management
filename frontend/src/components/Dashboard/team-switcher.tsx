@@ -49,20 +49,16 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 interface TeamSwitcherProps extends PopoverTriggerProps {}
 
 export default function TeamSwitcher({ className }: TeamSwitcherProps) {
-  const store = useSelector((state: RootState) => state);
+  const user = useSelector((state: RootState) => state.user);
+  const departments = useSelector((state: RootState) => state.departments);
   // const firstName = useSelector(
   //   (state: RootState) => state.user[0]?.fullName || ""
   // );
-  const firstName =
-    store.user && store.user.length > 0 ? store.user[0]?.fullName || "" : "";
+  const firstName = user && user.length > 0 ? user[0]?.fullName || "" : "";
 
   const [open, setOpen] = React.useState(false);
   const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
   // const [selectedTeam, setSelectedTeam] = React.useState(store.departments[0]);
-
-  React.useEffect(() => {
-    console.log(store);
-  }, []);
 
   return (
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
@@ -88,7 +84,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
             <CommandList>
               <CommandInput placeholder="Search department..." />
               <CommandEmpty>No department found.</CommandEmpty>
-              {store.departments?.map((dep: Department, index) => {
+              {departments.map((dep: Department, index) => {
                 return (
                   <CommandItem
                     key={index}
