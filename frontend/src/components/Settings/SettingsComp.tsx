@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Hash, KanbanSquare, User2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/interface";
+import { Button } from "../ui/button";
 
 const SettingsComp = () => {
   const user = useSelector((state: RootState) => state.user[0]);
@@ -84,7 +85,7 @@ const SettingsComp = () => {
         <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
       </div>
 
-      <div className="max-w-md mx-auto p-6 rounded-md">
+      <div className="max-w-lg pt-6 gap-4 rounded-md grid grid-cols-2">
         <div className="mb-4">
           <label
             htmlFor="fullName"
@@ -96,7 +97,7 @@ const SettingsComp = () => {
             type="text"
             id="fullName"
             name="fullName"
-            value={formData.fullName}
+            value={formData?.fullName}
             onChange={handleChange}
             className="mt-1 p-2 w-full border rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           />
@@ -113,7 +114,7 @@ const SettingsComp = () => {
             type="email"
             id="email"
             name="email"
-            value={formData.email}
+            value={formData?.email}
             onChange={handleChange}
             className="mt-1 p-2 w-full border rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           />
@@ -130,24 +131,11 @@ const SettingsComp = () => {
             type="text"
             id="phone"
             name="phone"
-            value={formData.phone}
+            value={formData?.phone}
             onChange={handleChange}
             className="mt-1 p-2 w-full border rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           />
         </div>
-
-        <div className="mb-4">
-          <label
-            htmlFor="maxActions"
-            className="block text-sm font-medium text-left"
-          >
-            Max Actions
-          </label>
-          <p className="mt-1 p-2 border rounded-md bg-gray-100" readOnly>
-            {formData.maxActions}
-          </p>
-        </div>
-
         <div className="mb-4">
           <label
             htmlFor="password"
@@ -164,11 +152,26 @@ const SettingsComp = () => {
             type="password"
             id="password"
             name="password"
-            value={formData.password}
+            value={formData?.password}
             onChange={handleChange}
-            className="mt-1 p-2 w-full border rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            className="mt-1 p-2 w-full border rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-100"
             disabled
           />
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="maxActions"
+            className="block text-sm font-medium text-left"
+          >
+            Max Actions
+          </label>
+          <p
+            className="mt-1 p-2 border rounded-md bg-gray-100 opacity-50 text-left"
+            readOnly
+          >
+            {formData.maxActions}
+          </p>
         </div>
 
         <div className="mb-4">
@@ -191,21 +194,15 @@ const SettingsComp = () => {
             type="text"
             id="packageId"
             name="packageId"
-            value={formData.packageId}
+            value={formData?.packageId}
             onChange={handleChange}
             className="mt-1 p-2 w-full border rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             disabled
           />
         </div>
 
-        <div className="flex justify-end">
-          <button
-            type="button"
-            onClick={handleSave}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
-          >
-            Save
-          </button>
+        <div className="flex justify-start">
+          <Button onClick={handleSave}>save</Button>
         </div>
       </div>
     </div>
