@@ -61,6 +61,8 @@ export default function DashboardPage() {
     const fetchDataAndNavigate = async () => {
       try {
         const allData = await getAllData();
+        console.log(allData);
+
         dispatch(updateRootState(allData));
         const lastVisitedURL =
           localStorage.getItem("lastVisitedURL") || "/dashboard/overview";

@@ -39,6 +39,7 @@ router.route("/updateUser/:id").put(async (req, res) => {
     const decoded = jwt.verify(token, "Workers");
     if (decoded.userId === userId) {
       const user = await usersBLL.updateUser(userId, updatedData);
+      console.log(user);
       res.status(200).json(user); // 200 - OK
     } else {
       res.status(401).json({ message: "Some thing went wrong" });

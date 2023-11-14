@@ -2,6 +2,7 @@
 import axios from "axios";
 
 const url = "http://localhost:8000/auth";
+const urlUser = "http://localhost:8000/user";
 const urlData = "http://localhost:8000/allData";
 
 // Get the token from storage
@@ -84,7 +85,38 @@ export const loggedIn = () => {
 
   return ss;
 };
+
 export const logout = () => {
   localStorage.clear();
   sessionStorage.clear();
+};
+
+export const updateUserToApi = async (obj: any) => {
+  const ss = sessionStorage.getItem("Workers");
+
+  if (ss != null) {
+    try {
+      const storedUserData = JSON.parse(ss);
+      const token = storedUserData.token;
+
+      const { data: result } = await axios.put(
+        `${urlUser}/updateUser/${obj.userId}`,
+        obj,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      return result;
+    } catch (error) {
+      // Handle errors here
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  } else {
+    const error = new Error("No session storage found.");
+
+    throw error;
+  }
 };

@@ -81,6 +81,12 @@ const rootReducer = (state = initialState, action) => {
         },
       };
 
+    case "UPDATE_USER":
+      return {
+        ...state,
+        user: [action.payload],
+      };
+
     case "ADD_DEPARTMENT":
       return {
         ...state,
@@ -181,37 +187,6 @@ const rootReducer = (state = initialState, action) => {
         shifts: updatedShifts,
         data: updatedData,
       };
-
-    // return {
-    //   ...state,
-    //   shifts: state.shifts.map((shift) => {
-    //     if (shift._id === action.payload._id) {
-    // return {
-    //   ...shift,
-    //   ...action.payload,
-    // };
-    //     }
-    //     return shift;
-    //   }),
-    //   // data: [
-    //   //   ...state.data.map((d) => {
-    //   //     if (d._id === action.payload.departmentId) {
-    //   //       return {
-    //   //         ...d.shiftsInThisDepartment: d.shiftsInThisDepartment.map((s)=>{
-    //   //                     if (s._id === action.payload._id) {
-    //   //     return {
-    //   //       action.payload,
-    //   //     };
-    //   //   }
-
-    //   //         })
-
-    //   //       };
-    //   //     }
-    //   //     return d;
-    //   //   }),
-    //   // ],
-    // };
 
     case "DELETE_SHIFT":
       return {

@@ -24,11 +24,20 @@ export const updateUsername = (username) => {
   };
 };
 
-////////////////////////     updateRootState after login     //////////////////////
+////////////////////////     updateRootState User     //////////////////////
 
 const updateRootState = (data) => {
   return {
     type: "UPDATE_ROOT_STATE",
+    payload: data,
+  };
+};
+
+////////////////////////     updateRootState after login     //////////////////////
+
+const doUpdateUser = (data) => {
+  return {
+    type: "UPDATE_USER",
     payload: data,
   };
 };
@@ -56,7 +65,7 @@ const doDeleteDepartment = (data) => {
   };
 };
 
-////////////////////////     updateRootState Departments     //////////////////////
+////////////////////////     updateRootState Shifts     //////////////////////
 
 const doAddShift = (data) => {
   return {
@@ -84,6 +93,7 @@ export {
   doAddLoginPage1,
   doLogout,
   updateRootState,
+  doUpdateUser,
   doAddDepartment,
   doUpdateDepartment,
   doDeleteDepartment,

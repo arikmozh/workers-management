@@ -63,14 +63,6 @@ export function UserNav() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
-          {/* <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">
-              {store.user[0]?.fullName}
-            </p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {store.user[0]?.email}
-            </p>
-          </div> */}
           {user && ( // Check if user exists before accessing its properties
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">
@@ -84,22 +76,16 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Profile
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Billing
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => navigate("/dashboard/settings")}
+          >
             Settings
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={logoutFunc}>
+        <DropdownMenuItem onClick={logoutFunc} className="cursor-pointer">
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
