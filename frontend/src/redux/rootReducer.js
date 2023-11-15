@@ -207,6 +207,15 @@ const rootReducer = (state = initialState, action) => {
         }),
       };
 
+    case "ADD_EMPLOYEE":
+      return {
+        ...state,
+        employees: [
+          ...state.employees,
+          action.payload, // Adding the new department to the existing array
+        ],
+      };
+
     default:
       return state;
   }

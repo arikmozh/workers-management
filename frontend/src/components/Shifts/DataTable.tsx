@@ -43,6 +43,7 @@ import { deleteShiftToAPI, updateShiftToAPI } from "../../utils/workersUtils";
 import { doDeleteShift, doUpdateShift } from "../../redux/actions";
 import { Badge } from "../ui/badge";
 import { useNavigate } from "react-router-dom";
+import { Card, CardContent } from "../ui/card";
 
 interface DataTableProps {
   filterSearch: string;
@@ -204,184 +205,186 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
     return formattedDate;
   };
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="text-left"></TableHead>
-          <TableHead className="text-center">Department</TableHead>
-          <TableHead className="w-[140px] text-center">Name</TableHead>
-          <TableHead className="w-[140px] text-center">Date</TableHead>
-          <TableHead className="w-[140px] text-center">Start</TableHead>
-          <TableHead className="w-[140px] text-center">End</TableHead>
-          <TableHead className="text-center">Employees</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {filteredShifts.map((shift: Shift, index) => (
-          <TableRow key={index}>
-            <TableCell className="">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Pencil
-                      className="dark:hidden h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer"
-                      onClick={() => setEditingIndex(index)}
-                    />
-                    <Pencil
-                      className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer"
-                      onClick={() => setEditingIndex(index)}
-                    />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Edit department name</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </TableCell>
-            <TableCell className="text-center">
-              {getDepartmentName(shift.departmentId)}
-            </TableCell>
-            <TableCell className="font-medium">
-              {editingIndex === index ? ( // If currently editing this department
-                <div className="flex justify-between items-center ">
-                  <Input
-                    className=""
-                    value={filteredShifts[index].shiftName}
-                    onChange={(e) => {
-                      handleShiftNameChange(index, e);
-                    }}
-                  />
+    <Card>
+      <CardContent className="pl-2 pr-2 overflow-auto max-h-[350px]">
+        <Table className="table-auto">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-left"></TableHead>
+              <TableHead className="text-center">Department</TableHead>
+              <TableHead className="w-[140px] text-center">Name</TableHead>
+              <TableHead className="w-[140px] text-center">Date</TableHead>
+              <TableHead className="w-[140px] text-center">Start</TableHead>
+              <TableHead className="w-[140px] text-center">End</TableHead>
+              <TableHead className="text-center">Employees</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredShifts.map((shift: Shift, index) => (
+              <TableRow key={index}>
+                <TableCell className="">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Pencil
+                          className="dark:hidden h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer"
+                          onClick={() => setEditingIndex(index)}
+                        />
+                        <Pencil
+                          className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer"
+                          onClick={() => setEditingIndex(index)}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Edit department name</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </TableCell>
+                <TableCell className="text-center">
+                  {getDepartmentName(shift.departmentId)}
+                </TableCell>
+                <TableCell className="font-medium">
+                  {editingIndex === index ? ( // If currently editing this department
+                    <div className="flex justify-between items-center ">
+                      <Input
+                        className=""
+                        value={filteredShifts[index].shiftName}
+                        onChange={(e) => {
+                          handleShiftNameChange(index, e);
+                        }}
+                      />
 
-                  <Check
-                    className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer"
-                    onClick={() => {
-                      setEditingIndex(-1);
-                      updateShift(shift._id);
-                    }}
-                  />
-                  <Check
-                    className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer"
-                    onClick={() => {
-                      setEditingIndex(-1);
-                      updateShift(shift._id);
-                    }}
-                  />
-                </div>
-              ) : (
-                <span className=" text-center  ">
-                  <Badge
-                    className="cursor-pointer"
-                    key={index}
-                    onClick={() => {
-                      navigate(shift._id);
-                    }}
-                  >
-                    {shift.shiftName}
-                  </Badge>
-                </span>
-              )}
-            </TableCell>
-            <TableCell>{getShiftDate(shift.shiftDate)}</TableCell>
-            <TableCell>
-              {editingIndex === index ? ( // If currently editing this department
-                <div className="flex justify-between items-center ">
-                  {/* <Input
+                      <Check
+                        className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer"
+                        onClick={() => {
+                          setEditingIndex(-1);
+                          updateShift(shift._id);
+                        }}
+                      />
+                      <Check
+                        className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer"
+                        onClick={() => {
+                          setEditingIndex(-1);
+                          updateShift(shift._id);
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <span className=" text-center  ">
+                      <Badge
+                        className="cursor-pointer"
+                        key={index}
+                        onClick={() => {
+                          navigate(shift._id);
+                        }}
+                      >
+                        {shift.shiftName}
+                      </Badge>
+                    </span>
+                  )}
+                </TableCell>
+                <TableCell>{getShiftDate(shift.shiftDate)}</TableCell>
+                <TableCell>
+                  {editingIndex === index ? ( // If currently editing this department
+                    <div className="flex justify-between items-center ">
+                      {/* <Input
                     className=""
                     value={filteredShifts[index].shiftStartingHour}
                     onChange={(e) => {
                       handleShiftStartingHourChange(index, e);
                     }}
                   /> */}
-                  <Select
-                    onValueChange={(value) =>
-                      handleShiftStartingHourChange(value, index)
-                    }
-                    value={shift.shiftStartingHour}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select hour" />
-                    </SelectTrigger>
-                    <SelectContent className="max-h-48 overflow-y-auto">
-                      <SelectGroup>
-                        {hours.map((hour) => (
-                          <SelectItem key={hour} value={hour}>
-                            {hour}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                      <Select
+                        onValueChange={(value) =>
+                          handleShiftStartingHourChange(value, index)
+                        }
+                        value={shift.shiftStartingHour}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select hour" />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-48 overflow-y-auto">
+                          <SelectGroup>
+                            {hours.map((hour) => (
+                              <SelectItem key={hour} value={hour}>
+                                {hour}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
 
-                  <Check
-                    className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer"
-                    onClick={() => {
-                      setEditingIndex(-1);
-                      updateShift(shift._id);
-                    }}
-                  />
-                  <Check
-                    className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer"
-                    onClick={() => {
-                      setEditingIndex(-1);
-                      updateShift(shift._id);
-                    }}
-                  />
-                </div>
-              ) : (
-                <span className=" text-center  ">
-                  {shift.shiftStartingHour}
-                </span>
-              )}
-            </TableCell>
-            <TableCell>{shift.shiftEndingHour}</TableCell>
-            <TableCell>{shift.shiftEmployees.length}</TableCell>
-            <TableCell className="text-right">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Dialog>
-                      <DialogTrigger>
-                        <Button variant="ghost" size="icon">
-                          <X className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600" />
-                          <X className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 " />
-                          <span className="sr-only">Toggle theme</span>
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>
-                            Are you sure you want to delete this shift?
-                          </DialogTitle>
-                          <DialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete{" "}
-                            <span className="text-violet-600 font-semibold">
-                              {shift.shiftName}
-                            </span>{" "}
-                            and remove your data from our servers.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                          <Button
-                            type="submit"
-                            onClick={(e) => deleteShift(shift._id, e)}
-                          >
-                            Save changes
-                          </Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Delete shift</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </TableCell>
-          </TableRow>
-        ))}
-        {/* {filteredShifts.map((shift: dataShift, index) => (
+                      <Check
+                        className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer"
+                        onClick={() => {
+                          setEditingIndex(-1);
+                          updateShift(shift._id);
+                        }}
+                      />
+                      <Check
+                        className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer"
+                        onClick={() => {
+                          setEditingIndex(-1);
+                          updateShift(shift._id);
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <span className=" text-center  ">
+                      {shift.shiftStartingHour}
+                    </span>
+                  )}
+                </TableCell>
+                <TableCell>{shift.shiftEndingHour}</TableCell>
+                <TableCell>{shift.shiftEmployees.length}</TableCell>
+                <TableCell className="text-right">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Dialog>
+                          <DialogTrigger>
+                            <Button variant="ghost" size="icon">
+                              <X className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600" />
+                              <X className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 " />
+                              <span className="sr-only">Toggle theme</span>
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>
+                                Are you sure you want to delete this shift?
+                              </DialogTitle>
+                              <DialogDescription>
+                                This action cannot be undone. This will
+                                permanently delete{" "}
+                                <span className="text-violet-600 font-semibold">
+                                  {shift.shiftName}
+                                </span>{" "}
+                                and remove your data from our servers.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter>
+                              <Button
+                                type="submit"
+                                onClick={(e) => deleteShift(shift._id, e)}
+                              >
+                                Save changes
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Delete shift</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </TableCell>
+              </TableRow>
+            ))}
+            {/* {filteredShifts.map((shift: dataShift, index) => (
           <TableRow key={index}>
             <TableCell className="text-left">
               <TooltipProvider>
@@ -487,8 +490,10 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
             </TableCell>
           </TableRow>
         ))} */}
-      </TableBody>
-    </Table>
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
 };
 

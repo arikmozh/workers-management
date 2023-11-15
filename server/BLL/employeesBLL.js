@@ -17,7 +17,7 @@ const getEmployeeById = async (employeeId) => {
 const addEmployee = async (obj) => {
   const employee = new EmployeeModel(obj);
   await employee.save();
-  return "Created!";
+  return employee;
 };
 
 const updateEmployee = async (employeeId, updatedData) => {

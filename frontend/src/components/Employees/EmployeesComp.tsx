@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useEffect, useState } from "react";
+// import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,15 +8,30 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RecentSales } from "@/components/Dashboard/recent-sales";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Department, Employee, RootState, Shift } from "@/redux/interface";
 import { Gift, UserCheck, UserX2, Users } from "lucide-react";
 import { EmployeesByMonth } from "./employeesByMonth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AddEmployeeForm from "./AddEmployeeForm";
+import { addEmployeeToAPI } from "@/utils/workersUtils";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import { doAddEmployee } from "../../redux/actions";
+import { Label } from "../ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 const EmployeesComp = () => {
+  const dispatch = useDispatch();
   const employees: Employee[] = useSelector(
     (state: RootState) => state.employees
   );
@@ -24,6 +39,20 @@ const EmployeesComp = () => {
   const departments: Department[] = useSelector(
     (state: RootState) => state.departments
   );
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const [editableEmp, setEditableEmp] = useState({
+    _id: "",
+    userId: "",
+    departmentId: "",
+    startingDate: "",
+    employeeName: "",
+    employeeAge: "",
+    employeeContact: "",
+    employeeSalaryPerHour: 0,
+  });
+
+  const [showEmployeeListTab, setShowEmployeeListTab] = useState(false);
 
   useEffect(() => {
     console.log(employees);
@@ -130,36 +159,104 @@ const EmployeesComp = () => {
     return dep[0].departmentName;
   };
 
-  const onAddEmployee = (newEmployeeData) => {
+  const handleEditEmloyee = (emp: Employee) => {
+    console.log(emp);
+    setEditableEmp({
+      ...editableEmp,
+      _id: emp._id,
+      userId: emp.userId,
+      departmentId: emp.departmentId,
+      startingDate: emp.startingDate.toString(),
+      employeeName: emp.employeeName,
+      employeeAge: emp.employeeAge,
+      employeeContact: emp.employeeContact,
+      employeeSalaryPerHour: emp.employeeSalaryPerHour,
+    });
+    console.log(editableEmp, "edittttt");
+    setActiveTab("employee");
+    setShowEmployeeListTab(true);
+  };
+
+  const generateAges = (): number[] => {
+    return Array.from({ length: 50 }, (_, index) => index + 18);
+  };
+  const agesArray = generateAges();
+  const salariesArray = [35, 50];
+  const [error, setError] = useState(false);
+
+  type Employ = {
+    userId: string;
+    departmentId: string;
+
+    startingDate: string;
+    employeeName: string;
+    employeeAge: string;
+    employeeContact: string;
+    employeeSalaryPerHour: number;
+  };
+
+  const onAddEmployee = async (newEmployeeData: Employ) => {
     // Your logic for adding a new employee
     console.log("Adding employee:", newEmployeeData);
+    try {
+      const data = await addEmployeeToAPI(newEmployeeData);
+      console.log(data);
+      if (data) {
+        dispatch(doAddEmployee(data));
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      throw error;
+    }
   };
 
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Employees</h2>
-        <div className="flex items-center space-x-2">
-          {/* <CalendarDateRangePicker /> */}
-          {/* <Button>Add employee</Button> */}
-          <AddEmployeeForm
-            departments={departments}
-            onAddEmployee={onAddEmployee}
-          />
-        </div>
+
+        {activeTab != "employee" && (
+          <div className="flex items-center space-x-2">
+            <AddEmployeeForm onAddEmployee={onAddEmployee} />
+          </div>
+        )}
       </div>
-      <Tabs defaultValue="overview" className="space-y-4">
+      <Tabs
+        id="tabs"
+        value={activeTab}
+        defaultValue="overview"
+        className="space-y-4"
+      >
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="analytics" disabled>
-            Analytics
+          <TabsTrigger
+            value="overview"
+            onClick={() => {
+              setActiveTab("overview");
+              setShowEmployeeListTab(false);
+            }}
+          >
+            Overview
           </TabsTrigger>
-          <TabsTrigger value="reports" disabled>
-            Reports
+          <TabsTrigger
+            value="employeeList"
+            onClick={() => {
+              setActiveTab("employeeList");
+              setShowEmployeeListTab(false);
+            }}
+          >
+            Employee List
           </TabsTrigger>
-          <TabsTrigger value="notifications" disabled>
+          <TabsTrigger
+            id="employeeTabTrigger"
+            value="employee"
+            disabled
+            className={showEmployeeListTab ? "" : "hidden"}
+          >
+            {editableEmp.employeeName}
+          </TabsTrigger>
+          {/* <TabsTrigger value="notifications" disabled>
             Notifications
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -235,14 +332,22 @@ const EmployeesComp = () => {
                   You have {employees.length} employees.
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent
+                className="overflow-auto max-h-[350px]"
+                style={{
+                  scrollbarWidth: "thin", // Firefox
+                  scrollbarColor: "#4f46e5 #cbd5e0", // Firefox
+                }}
+              >
                 {/* <RecentSales /> */}
                 <div className="space-y-8">
                   {employees.map((emp, index) => {
                     return (
                       <div
                         key={index}
-                        className="flex items-center justify-between"
+                        onClick={() => handleEditEmloyee(emp)}
+                        // className="flex items-center justify-between"
+                        className="flex items-center justify-between hover:border p-2 pl-3 pr-3 hover:rounded-lg cursor-pointer"
                       >
                         <Avatar className="h-9 w-9">
                           <AvatarImage src="/avatars/01.png" alt="Avatar" />
@@ -272,6 +377,199 @@ const EmployeesComp = () => {
             </Card>
           </div>
         </TabsContent>
+
+        <TabsContent value="employeeList" className="space-y-4">
+          <Card className="col-span-3">
+            <CardHeader>
+              <CardTitle>Employees List</CardTitle>
+              <CardDescription>
+                You have {employees.length} employees.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="overflow-auto max-h-[350px]">
+              <div className="space-y-8">
+                {employees.map((emp, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between hover:border p-2 pl-3 pr-3 hover:rounded-lg cursor-pointer"
+                      onClick={() => handleEditEmloyee(emp)}
+                    >
+                      <Avatar className="h-9 w-9">
+                        <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                        <AvatarFallback>
+                          {getInitials(emp.employeeName)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="ml-4 space-y-1 text-center">
+                        <p className="text-sm font-medium leading-none">
+                          {emp.employeeName}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {emp.employeeContact}
+                        </p>
+                      </div>
+                      <div className=" font-medium">
+                        {getShiftDate(emp.startingDate)}
+                      </div>
+                      <div className=" font-medium">
+                        {getDepartmentName(emp.departmentId)}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {showEmployeeListTab && (
+          <TabsContent value="employee" className="space-y-4">
+            <Card className="">
+              <CardContent className="p-8 overflow-auto ">
+                <div className="grid gap-4">
+                  <div className="space-y-2">
+                    {/* <h4 className="font-medium leading-none">Add employee</h4> */}
+                    <p className="text-sm text-left text-muted-foreground">
+                      Edit employee details.
+                    </p>
+                  </div>
+                  <div className="grid gap-2">
+                    <div className="grid grid-cols-3 items-center gap-4">
+                      <Label htmlFor="width">Department:</Label>
+                      <Select
+                      // onValueChange={(selectedValue) => {
+                      //   setEmployee((prevEmployee) => ({
+                      //     ...prevEmployee,
+                      //     departmentId: selectedValue,
+                      //   }));
+                      // }}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select department" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {departments.map((dep, index) => {
+                              return (
+                                <SelectItem key={index} value={dep._id}>
+                                  {dep.departmentName}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="grid gap-2">
+                    <div className="grid grid-cols-3 items-center gap-4">
+                      <Label htmlFor="name">Full name:</Label>
+                      <Input
+                        id="name"
+                        placeholder="Enter name"
+                        className="col-span-2 h-8"
+                        // onChange={(e) => {
+                        //   setEmployee({
+                        //     ...employee,
+                        //     employeeName: e.target.value,
+                        //   });
+                        // }}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid gap-2">
+                    <div className="grid grid-cols-3 items-center gap-4">
+                      <Label htmlFor="phone">Phone:</Label>
+                      <Input
+                        type="text"
+                        id="phone"
+                        placeholder="Enter phone"
+                        className="col-span-2 h-8"
+                        // value={employee.employeeContact}
+                        // onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <Label htmlFor="age">Age:</Label>
+                    <Select
+                    // onValueChange={(selectedValue) => {
+                    //   setEmployee((prevEmployee) => ({
+                    //     ...prevEmployee,
+                    //     employeeAge: selectedValue,
+                    //   }));
+                    // }}
+                    >
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select age" />
+                      </SelectTrigger>
+                      <SelectContent
+                        style={{ maxHeight: "150px", overflowY: "auto" }}
+                      >
+                        <SelectGroup>
+                          {agesArray.map((age, index) => {
+                            return (
+                              <SelectItem
+                                key={index}
+                                value={age.toString()}
+                                className="cursor-pointer"
+                              >
+                                {age}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid grid-cols-3 items-center gap-4">
+                    <Label htmlFor="salary">Salary:</Label>
+                    <Select
+                    // onValueChange={(selectedValue) => {
+                    //   setEmployee((prevEmployee) => ({
+                    //     ...prevEmployee,
+                    //     employeeSalaryPerHour: +selectedValue,
+                    //   }));
+                    // }}
+                    >
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select salary" />
+                      </SelectTrigger>
+                      <SelectContent
+                        style={{ maxHeight: "150px", overflowY: "auto" }}
+                      >
+                        <SelectGroup>
+                          {salariesArray.map((amount, index) => {
+                            return (
+                              <SelectItem
+                                key={index}
+                                value={amount.toString()}
+                                className="cursor-pointer"
+                              >
+                                {index == 0 && "new employee"}
+                                {index == 1 && "manager"}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <Button
+                  // onClick={(e) => addEmployee(e)}
+                  >
+                    Add
+                  </Button>
+                  {error && (
+                    <span className="text-red-500">Something is missing</span>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        )}
       </Tabs>
     </div>
     // <div className="flex-1 space-y-4 p-8 pt-6">

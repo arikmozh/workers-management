@@ -88,6 +88,15 @@ const doDeleteShift = (data) => {
   };
 };
 
+////////////////////////     updateRootState Employee     //////////////////////
+
+const doAddEmployee = (data) => {
+  return {
+    type: "ADD_EMPLOYEE",
+    payload: data,
+  };
+};
+
 export {
   doAddRegisterPage1,
   doAddLoginPage1,
@@ -100,4 +109,5 @@ export {
   doAddShift,
   doUpdateShift,
   doDeleteShift,
+  doAddEmployee,
 };
