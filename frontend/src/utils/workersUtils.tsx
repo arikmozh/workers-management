@@ -188,3 +188,27 @@ export const addEmployeeToAPI = async (emp: any) => {
     return;
   }
 };
+
+export const editEmployeeToAPI = async (emp: any) => {
+  if (ss != null) {
+    const storedUserData = JSON.parse(ss);
+    const token = storedUserData.token;
+    const userId = storedUserData.id;
+    emp.userId = userId;
+    // Set the Authorization header with the token
+    const { data: result } = await axios.put(
+      `${urlData}/employees/updateEmployee/${emp._id}`,
+      emp,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    console.log(result);
+
+    return result;
+  } else {
+    return;
+  }
+};

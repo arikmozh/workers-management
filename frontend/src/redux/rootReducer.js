@@ -216,6 +216,24 @@ const rootReducer = (state = initialState, action) => {
         ],
       };
 
+    case "UPDATE_EMPLOYEE":
+      console.log("actiionnn", action.payload);
+
+      return {
+        ...state,
+        employees: state.employees.map((emp) => {
+          // If emp._id matches action.payload._id, update the employee
+          if (emp._id === action.payload._id) {
+            return {
+              // Update other properties from action.payload if needed
+              ...action.payload,
+            };
+          }
+          // Otherwise, return the original employee
+          return emp;
+        }),
+      };
+
     default:
       return state;
   }

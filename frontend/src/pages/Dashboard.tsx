@@ -61,7 +61,7 @@ export default function DashboardPage() {
     const fetchDataAndNavigate = async () => {
       try {
         const allData = await getAllData();
-        console.log(allData);
+        console.log("alll DATA", allData);
 
         dispatch(updateRootState(allData));
         const lastVisitedURL =

@@ -97,6 +97,13 @@ const doAddEmployee = (data) => {
   };
 };
 
+const doEditEmployee = (data) => {
+  return {
+    type: "UPDATE_EMPLOYEE",
+    payload: data,
+  };
+};
+
 export {
   doAddRegisterPage1,
   doAddLoginPage1,
@@ -110,4 +117,5 @@ export {
   doUpdateShift,
   doDeleteShift,
   doAddEmployee,
+  doEditEmployee,
 };

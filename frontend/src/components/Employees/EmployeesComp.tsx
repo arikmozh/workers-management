@@ -14,10 +14,10 @@ import { Gift, UserCheck, UserX2, Users } from "lucide-react";
 import { EmployeesByMonth } from "./employeesByMonth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AddEmployeeForm from "./AddEmployeeForm";
-import { addEmployeeToAPI } from "@/utils/workersUtils";
+import { addEmployeeToAPI, editEmployeeToAPI } from "@/utils/workersUtils";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-ignore
-import { doAddEmployee } from "../../redux/actions";
+import { doAddEmployee, doEditEmployee } from "../../redux/actions";
 import { Label } from "../ui/label";
 import {
   Select,
@@ -208,6 +208,33 @@ const EmployeesComp = () => {
       console.error("Error:", error);
       throw error;
     }
+  };
+
+  function isEmployeeValid(employee: Employ) {
+    return Object.values(employee).every((value) => value !== "");
+  }
+
+  const onEditEmployee = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (isEmployeeValid(editableEmp)) {
+      console.log("Edited employee:", editableEmp);
+      try {
+        const data = await editEmployeeToAPI(editableEmp);
+        console.log(data);
+        if (data) {
+          dispatch(doEditEmployee(data));
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        throw error;
+      }
+    } else {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
+    }
+    // Your logic for adding a new employee
   };
 
   return (
@@ -434,16 +461,17 @@ const EmployeesComp = () => {
                       Edit employee details.
                     </p>
                   </div>
-                  <div className="grid gap-2">
-                    <div className="grid grid-cols-3 items-center gap-4">
+                  <div className="grid gap-4 max-w-min	">
+                    <div className="flex items-center gap-4 justify-between">
                       <Label htmlFor="width">Department:</Label>
                       <Select
-                      // onValueChange={(selectedValue) => {
-                      //   setEmployee((prevEmployee) => ({
-                      //     ...prevEmployee,
-                      //     departmentId: selectedValue,
-                      //   }));
-                      // }}
+                        defaultValue={editableEmp.departmentId}
+                        onValueChange={(selectedValue) => {
+                          setEditableEmp((prevEmployee) => ({
+                            ...prevEmployee,
+                            departmentId: selectedValue,
+                          }));
+                        }}
                       >
                         <SelectTrigger className="w-[180px]">
                           <SelectValue placeholder="Select department" />
@@ -461,111 +489,125 @@ const EmployeesComp = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                  </div>
-                  <div className="grid gap-2">
-                    <div className="grid grid-cols-3 items-center gap-4">
+                    {/* </div>
+                  <div className="grid  "> */}
+                    <div className="flex items-center justify-between">
                       <Label htmlFor="name">Full name:</Label>
                       <Input
                         id="name"
                         placeholder="Enter name"
-                        className="col-span-2 h-8"
-                        // onChange={(e) => {
-                        //   setEmployee({
-                        //     ...employee,
-                        //     employeeName: e.target.value,
-                        //   });
-                        // }}
+                        className="col-span-2 h-8 w-[180px]"
+                        value={editableEmp.employeeName}
+                        onChange={(e) => {
+                          setEditableEmp({
+                            ...editableEmp,
+                            employeeName: e.target.value,
+                          });
+                        }}
                       />
                     </div>
-                  </div>
-                  <div className="grid gap-2">
-                    <div className="grid grid-cols-3 items-center gap-4">
+                    {/* </div> */}
+                    {/* <div className="grid  "> */}
+                    <div className="flex items-center justify-between">
                       <Label htmlFor="phone">Phone:</Label>
                       <Input
                         type="text"
                         id="phone"
                         placeholder="Enter phone"
-                        className="col-span-2 h-8"
-                        // value={employee.employeeContact}
-                        // onChange={handleChange}
+                        className="col-span-2 h-8 w-[180px]"
+                        value={editableEmp.employeeContact}
+                        onChange={(e) => {
+                          setEditableEmp({
+                            ...editableEmp,
+                            employeeContact: e.target.value,
+                          });
+                        }}
                       />
                     </div>
-                  </div>
-                  <div className="grid grid-cols-3 items-center gap-4">
-                    <Label htmlFor="age">Age:</Label>
-                    <Select
-                    // onValueChange={(selectedValue) => {
-                    //   setEmployee((prevEmployee) => ({
-                    //     ...prevEmployee,
-                    //     employeeAge: selectedValue,
-                    //   }));
-                    // }}
-                    >
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select age" />
-                      </SelectTrigger>
-                      <SelectContent
-                        style={{ maxHeight: "150px", overflowY: "auto" }}
+                    {/* </div> */}
+                    {/* <div className="grid  "> */}
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="age">Age:</Label>
+                      <Select
+                        defaultValue={editableEmp.employeeAge}
+                        onValueChange={(selectedValue) => {
+                          setEditableEmp((prevEmployee) => ({
+                            ...prevEmployee,
+                            employeeAge: selectedValue,
+                          }));
+                        }}
                       >
-                        <SelectGroup>
-                          {agesArray.map((age, index) => {
-                            return (
-                              <SelectItem
-                                key={index}
-                                value={age.toString()}
-                                className="cursor-pointer"
-                              >
-                                {age}
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="grid grid-cols-3 items-center gap-4">
-                    <Label htmlFor="salary">Salary:</Label>
-                    <Select
-                    // onValueChange={(selectedValue) => {
-                    //   setEmployee((prevEmployee) => ({
-                    //     ...prevEmployee,
-                    //     employeeSalaryPerHour: +selectedValue,
-                    //   }));
-                    // }}
-                    >
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select salary" />
-                      </SelectTrigger>
-                      <SelectContent
-                        style={{ maxHeight: "150px", overflowY: "auto" }}
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select age" />
+                        </SelectTrigger>
+                        <SelectContent
+                          style={{ maxHeight: "150px", overflowY: "auto" }}
+                        >
+                          <SelectGroup>
+                            {agesArray.map((age, index) => {
+                              return (
+                                <SelectItem
+                                  key={index}
+                                  value={age.toString()}
+                                  className="cursor-pointer"
+                                >
+                                  {age}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {/* </div> */}
+                    {/* <div className="grid "> */}
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="salary">Salary:</Label>
+                      <Select
+                        defaultValue={editableEmp.employeeSalaryPerHour.toString()}
+                        onValueChange={(selectedValue) => {
+                          setEditableEmp((prevEmployee) => ({
+                            ...prevEmployee,
+                            employeeSalaryPerHour: +selectedValue,
+                          }));
+                        }}
                       >
-                        <SelectGroup>
-                          {salariesArray.map((amount, index) => {
-                            return (
-                              <SelectItem
-                                key={index}
-                                value={amount.toString()}
-                                className="cursor-pointer"
-                              >
-                                {index == 0 && "new employee"}
-                                {index == 1 && "manager"}
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select salary" />
+                        </SelectTrigger>
+                        <SelectContent
+                          style={{ maxHeight: "150px", overflowY: "auto" }}
+                        >
+                          <SelectGroup>
+                            {salariesArray.map((amount, index) => {
+                              return (
+                                <SelectItem
+                                  key={index}
+                                  value={amount.toString()}
+                                  className="cursor-pointer"
+                                >
+                                  {index == 0 && "new employee"}
+                                  {index == 1 && "manager"}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
-
-                  <Button
-                  // onClick={(e) => addEmployee(e)}
-                  >
-                    Add
-                  </Button>
-                  {error && (
-                    <span className="text-red-500">Something is missing</span>
-                  )}
                 </div>
+                <Button
+                  className="flex mt-4"
+                  onClick={(e) => onEditEmployee(e)}
+                >
+                  Add
+                </Button>
+                {error && (
+                  <span className="flex mt-4 text-left text-red-500">
+                    Something is missing
+                  </span>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
