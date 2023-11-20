@@ -9,7 +9,7 @@ import DepartmentsComp from "./components/Departments/DepartmentsComp";
 import ShiftsComp from "./components/Shifts/ShiftsComp";
 import EmployeesComp from "./components/Employees/EmployeesComp";
 import SettingsComp from "./components/Settings/SettingsComp";
-import OverviewTab1 from "./components/Overview/overview-tab-1";
+// import OverviewTab1 from "./components/Overview/overview-tab-1";
 import OverviewTab2 from "./components/Overview/overview-tab-2";
 import OverviewTab3 from "./components/Overview/overview-tab-3";
 import OverviewTab4 from "./components/Overview/overview-tab-4";
@@ -55,7 +55,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="*" element={<Navigate to="/dashboard/overview" />} />
+        <Route path="*" element={<Navigate to="/dashboard/analytics" />} />
 
         <Route path="" element={<Homepage />} />
         <Route path="register" element={<Register />} />
@@ -63,8 +63,8 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="login-password" element={<LoginPassword />} />
         <Route path="dashboard" element={<Dashboard />}>
-          <Route path="overview" element={<OverviewComp />}>
-            <Route path="overview" element={<OverviewTab1 />}></Route>
+          <Route path="" element={<OverviewComp />}>
+            {/* <Route path="analytics" element={<OverviewTab1 />}></Route> */}
             <Route path="analytics" element={<OverviewTab2 />}></Route>
             <Route path="reports" element={<OverviewTab3 />}></Route>
             <Route path="notifications" element={<OverviewTab4 />}></Route>

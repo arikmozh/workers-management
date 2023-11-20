@@ -65,7 +65,7 @@ export default function DashboardPage() {
 
         dispatch(updateRootState(allData));
         const lastVisitedURL =
-          localStorage.getItem("lastVisitedURL") || "/dashboard/overview";
+          localStorage.getItem("lastVisitedURL") || "/dashboard/analytics";
         navigate(lastVisitedURL);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -113,12 +113,12 @@ export default function DashboardPage() {
           </div>
           <div className="flex space-x-4 justify-between items-center">
             <Link
-              to="/dashboard/overview"
+              to="/dashboard/analytics"
               className={`text-sm font-medium  transition-colors hover:text-primary ${
-                checkPage("overview") == true ? "" : "text-muted-foreground"
+                checkPage("analytics") == true ? "" : "text-muted-foreground"
               }`}
             >
-              Overview
+              Analytics
             </Link>
             <Link
               to="/dashboard/departments"

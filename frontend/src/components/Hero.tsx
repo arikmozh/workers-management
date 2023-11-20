@@ -8,7 +8,9 @@ const Hero = () => {
       <div className="container items-center py-20 grid grid-cols-2 max-md:grid-cols-1">
         <div className="space-y-8 z-10">
           <h1 className="md:text-7xl leading-none text-left text-4xl">
-            <span className="violet md:text-9xl text-6xl">Streamline</span>{" "}
+            <span className="violet md:text-9xl text-6xl -z-10">
+              Streamline
+            </span>{" "}
             <br />
             Your Workers Operations
           </h1>
@@ -17,7 +19,7 @@ const Hero = () => {
             Factory Management Software.
           </p>
           <div className="max-w-xl flex gap-8 flex-wrap">
-            <Input className="max-w-xs h-16" placeholder="Email/Phone number" />
+            <Input className="max-w-xs h-16" placeholder="Email" />
             <Button className="h-16">Get Started</Button>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 import {
   Popover,
@@ -40,13 +40,13 @@ const AddEmployeeForm: React.FC<AddEmployeeFormProps> = ({
   // departments,
   onAddEmployee,
 }) => {
-  const user = useSelector((state: RootState) => state.user);
+  // const user = useSelector((state: RootState) => state.user);
   const departments = useSelector((state: RootState) => state.departments);
   const [popoverContentRef, setPopoverContentRef] =
     useState<HTMLDivElement | null>(null);
 
   const [employee, setEmployee] = useState({
-    userId: user[0]._id,
+    userId: "",
     departmentId: "",
     startingDate: new Date().toISOString(),
     employeeName: "",
@@ -55,6 +55,14 @@ const AddEmployeeForm: React.FC<AddEmployeeFormProps> = ({
     employeeSalaryPerHour: 0,
   });
 
+  useEffect(() => {
+    const user = sessionStorage.getItem("Workers");
+    if (user != null) {
+      const parsedJson = JSON.parse(user).id;
+      setEmployee({ ...employee, userId: parsedJson });
+    }
+    console.log(user);
+  }, []);
   const generateAges = (): number[] => {
     return Array.from({ length: 50 }, (_, index) => index + 18);
   };

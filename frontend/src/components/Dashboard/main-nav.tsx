@@ -17,12 +17,12 @@ export function MainNav({
       {...props}
     >
       <Link
-        to="/dashboard/overview"
+        to="/dashboard/analytics"
         className={`text-sm font-medium  transition-colors hover:text-primary ${
-          checkPage("overview") == true ? "" : "text-muted-foreground"
+          checkPage("analytics") == true ? "" : "text-muted-foreground"
         }`}
       >
-        Overview
+        Analytics
       </Link>
       <Link
         to="/dashboard/departments"

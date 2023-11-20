@@ -100,7 +100,7 @@ const LoginPassword = () => {
       const allData = await getAllData();
       dispatch(updateRootState(allData));
       console.log(allData, "loginPass");
-      navigate("/dashboard/overview");
+      navigate("/dashboard/analytics");
       // Process or set state with allData here
     } catch (error) {
       setIsLoading(false);
