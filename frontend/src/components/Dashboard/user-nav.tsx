@@ -74,6 +74,35 @@ export function UserNav() {
             </div>
           )}
         </DropdownMenuLabel>
+
+        <DropdownMenuSeparator className="sm:block md:hidden" />
+        <DropdownMenuGroup>
+          <DropdownMenuItem
+            className="sm:block md:hidden cursor-pointer"
+            onClick={() => navigate("/dashboard/Analytics")}
+          >
+            Analytics
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className=" sm:block md:hidden cursor-pointer"
+            onClick={() => navigate("/dashboard/Departments")}
+          >
+            Departments
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="sm:block md:hidden cursor-pointer"
+            onClick={() => navigate("/dashboard/Shifts")}
+          >
+            Shifts
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="sm:block md:hidden cursor-pointer"
+            onClick={() => navigate("/dashboard/Employees")}
+          >
+            Employees
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem

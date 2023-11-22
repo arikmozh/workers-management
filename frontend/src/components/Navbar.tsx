@@ -26,11 +26,10 @@ import {
   // SheetFooter,
   // SheetClose,
 } from "@/components/ui/sheet";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Navbar() {
   // const [isMobileNavClicked, setIsMobileNavClicked] = useState(false);
-
   return (
     <div className="container flex items-center ">
       <div className="flex space-x-4 mr-8 max-lg:flex-1">
@@ -142,6 +141,8 @@ const ListItem = React.forwardRef<
 ListItem.displayName = "ListItem";
 
 const MobileNav: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -161,10 +162,18 @@ const MobileNav: React.FC = () => {
         </SheetHeader>
 
         <div className="grid gap-4 py-4">
-          <Button variant="outline" className="violetHover">
-            Log In{" "}
+          <Button
+            variant="outline"
+            className="violetHover"
+            onClick={() => navigate("login")}
+          >
+            Log In
           </Button>
-          <Button variant="default" className="">
+          <Button
+            variant="default"
+            className=""
+            onClick={() => navigate("register")}
+          >
             Register
           </Button>
         </div>

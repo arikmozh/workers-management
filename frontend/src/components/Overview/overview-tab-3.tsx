@@ -1,17 +1,47 @@
-import { Overview } from "@/components/Dashboard/overview";
-import { RecentSales } from "@/components/Dashboard/recent-sales";
 import { TabsContent } from "@/components/ui/tabs";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ReportComponent from "./ReportComponent";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/interface";
+import SalaryPieChart from "../Employees/SalaryPieChart";
+import ComposedResponsiveContainer from "./SubscriptionsByMonthChart";
+import SalesGrowthChart from "./SalesGrowthChart";
+import PieChartWithNeedle from "./PieChartWithNeedle";
 const OverviewTab3 = () => {
+  // const departments = useSelector((state: RootState) => state.departments);
+  // const shifts = useSelector((state: RootState) => state.shifts);
+  const data = useSelector((state: RootState) => state.data);
+  const employees = useSelector((state: RootState) => state.employees);
+
   return (
     <TabsContent value="reports" className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="h-4 w-4 text-muted-foreground"
+            >
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">+230</div>
+            <p className="text-xs text-muted-foreground">
+              +180.1% from last month
+            </p>
+            <ComposedResponsiveContainer />
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
@@ -33,31 +63,7 @@ const OverviewTab3 = () => {
             <p className="text-xs text-muted-foreground">
               +20.1% from last month
             </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
-            <p className="text-xs text-muted-foreground">
-              +180.1% from last month
-            </p>
+            <SalaryPieChart data={employees} />
           </CardContent>
         </Card>
         <Card>
@@ -82,6 +88,7 @@ const OverviewTab3 = () => {
             <p className="text-xs text-muted-foreground">
               +19% from last month
             </p>
+            <SalesGrowthChart />
           </CardContent>
         </Card>
         <Card>
@@ -105,28 +112,11 @@ const OverviewTab3 = () => {
             <p className="text-xs text-muted-foreground">
               +201 since last hour
             </p>
+            <PieChartWithNeedle />
           </CardContent>
         </Card>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
-          <CardHeader>
-            <CardTitle>Overview</CardTitle>
-          </CardHeader>
-          <CardContent className="pl-2">
-            <Overview />
-          </CardContent>
-        </Card>
-        <Card className="col-span-3">
-          <CardHeader>
-            <CardTitle>Recent Sales</CardTitle>
-            <CardDescription>You made 265 sales this month.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <RecentSales />
-          </CardContent>
-        </Card>
-      </div>
+      <ReportComponent data={data} />
     </TabsContent>
   );
 };

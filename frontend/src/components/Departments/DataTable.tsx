@@ -103,23 +103,8 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
     setFilteredDepartments(filteredDepartments);
   }, [filterSearch, departments]);
 
-  // const getTotalEmployees = (index: number) => {
-  //   let count = 0;
-
-  //   if (
-  //     departments[index]?.shiftsInThisDepartment &&
-  //     Array.isArray(departments[index].shiftsInThisDepartment)
-  //   ) {
-  //     departments[index].shiftsInThisDepartment.map((shift) => {
-  //       count += shift.employees.length;
-  //     });
-  //   }
-
-  //   return count;
-  // };
-
   const getTotalEmployees = (index: number) => {
-    console.log(departments[index]); // Check the value of departments[index]
+    console.log(departments[index]);
     let count = 0;
 
     if (

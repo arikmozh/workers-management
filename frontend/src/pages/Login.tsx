@@ -61,7 +61,8 @@ const Login = () => {
 
       <div className="py-20 max-w-3xl m-auto">
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2">
+          {/* <div className="grid grid-cols-2"> */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="text-left max-w-xs space-y-6">
               <h1 className="text-3xl font-medium">Log In</h1>
               <div>

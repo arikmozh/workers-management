@@ -8,6 +8,7 @@ const departmentsRouter = require("./routers/departmentsRouter");
 const shiftsRouter = require("./routers/shiftsRouter");
 const employeesRouter = require("./routers/employeesRouter");
 const allDataRouter = require("./routers/allDataRouter");
+require("dotenv").config();
 
 const app = express();
 const port = 8000;
