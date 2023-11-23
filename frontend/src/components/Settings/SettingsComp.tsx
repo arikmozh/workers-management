@@ -201,7 +201,7 @@ const SettingsComp = () => {
               </div>
               <div></div>
               <div className="flex justify-end">
-                <Button type="submit">save</Button>
+                <Button type="submit">Save</Button>
               </div>
             </div>
           </form>

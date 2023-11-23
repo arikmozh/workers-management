@@ -234,6 +234,53 @@ const rootReducer = (state = initialState, action) => {
         }),
       };
 
+    case "DELETE_EMPLOYEE":
+      const updatedEmployeesDel = state.employees.filter(
+        (employee) => employee._id !== action.payload._id
+      );
+
+      // Remove the employee's _id from shiftEmployees in shifts array
+      const updatedShiftsDel = state.shifts.map((shift) => {
+        if (shift.shiftEmployees.includes(action.payload._id)) {
+          return {
+            ...shift,
+            shiftEmployees: shift.shiftEmployees.filter(
+              (id) => id !== action.payload._id
+            ),
+          };
+        }
+        return shift;
+      });
+
+      // Remove the employee's _id from shiftEmployees in data array
+      const updatedDataDel = state.data.map((department) => {
+        const updatedShiftsInDepartment = department.shiftsInThisDepartment.map(
+          (shift) => {
+            if (shift.shiftEmployees.includes(action.payload._id)) {
+              return {
+                ...shift,
+                shiftEmployees: shift.shiftEmployees.filter(
+                  (id) => id !== action.payload._id
+                ),
+              };
+            }
+            return shift;
+          }
+        );
+
+        return {
+          ...department,
+          shiftsInThisDepartment: updatedShiftsInDepartment,
+        };
+      });
+
+      return {
+        ...state,
+        employees: updatedEmployeesDel,
+        shifts: updatedShiftsDel,
+        data: updatedDataDel,
+      };
+
     default:
       return state;
   }

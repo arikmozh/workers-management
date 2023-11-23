@@ -104,6 +104,13 @@ const doEditEmployee = (data) => {
   };
 };
 
+const doDeleteEmployee = (data) => {
+  return {
+    type: "DELETE_EMPLOYEE",
+    payload: data,
+  };
+};
+
 export {
   doAddRegisterPage1,
   doAddLoginPage1,
@@ -118,4 +125,5 @@ export {
   doDeleteShift,
   doAddEmployee,
   doEditEmployee,
+  doDeleteEmployee,
 };

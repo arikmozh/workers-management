@@ -23,13 +23,18 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  // SheetFooter,
-  // SheetClose,
 } from "@/components/ui/sheet";
 import { Link, useNavigate } from "react-router-dom";
 
 export function Navbar() {
-  // const [isMobileNavClicked, setIsMobileNavClicked] = useState(false);
+  const scrollToSection = (sectionId: string) => {
+    const targetSection = document.getElementById(sectionId);
+
+    if (targetSection) {
+      targetSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="container flex items-center ">
       <div className="flex space-x-4 mr-8 max-lg:flex-1">
@@ -41,51 +46,52 @@ export function Navbar() {
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger className="violetHover">
-                Item one
+                About
               </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] ">
                   <li className="row-span-3">
                     <NavigationMenuLink asChild>
                       <a
-                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                        href="/"
+                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md cursor-pointer"
+                        onClick={() => scrollToSection("FeaturesSection")}
                       >
                         <div className="mb-2 mt-4 text-lg font-medium">
-                          shadcn/ui
+                          A better workflow
                         </div>
                         <p className="text-sm leading-tight text-muted-foreground">
-                          Beautifully designed components built with Radix UI
-                          and Tailwind CSS.
+                          Lorem ipsum, dolor sit amet consectetur adipisicing
+                          elit. Maiores impedit.
                         </p>
                       </a>
                     </NavigationMenuLink>
                   </li>
-                  <ListItem href="/docs" title="Introduction">
-                    Re-usable components built using Radix UI and Tailwind CSS.
-                  </ListItem>
-                  <ListItem href="/docs/installation" title="Installation">
-                    How to install dependencies and structure your app.
+                  <ListItem
+                    className="cursor-pointer"
+                    onClick={() => scrollToSection("Stats")}
+                    title="Stats"
+                  >
+                    Lorem ipsum, dolor sit amet consectetur adipisicing.
                   </ListItem>
                   <ListItem
-                    href="/docs/primitives/typography"
-                    title="Typography"
+                    className="cursor-pointer"
+                    onClick={() => scrollToSection("Pricing")}
+                    title="Pricing"
                   >
-                    Styles for headings, paragraphs, lists...etc
+                    Lorem ipsum, dolor sit amet consectetur adipisicing.
                   </ListItem>
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-        {/* <span className="sr-only">Open main menu</span>
-        <Bars3Icon className="h-6 w-6" aria-hidden="true" /> */}
 
-        <Button variant="ghost" className="violetHover">
-          Item two
-        </Button>
-        <Button variant="ghost" className="violetHover">
-          Item three
+        <Button
+          variant="ghost"
+          className="violetHover"
+          onClick={() => scrollToSection("Contact")}
+        >
+          Contact us
         </Button>
       </div>
       <div className=" space-x-4 hidden md:flex">
@@ -94,10 +100,12 @@ export function Navbar() {
             Log In
           </Button>
         </Link>
-        <Button variant="default" className="gap-2 ">
-          <GiftIcon className="h-5 w-5" />
-          Register
-        </Button>
+        <Link to="register">
+          <Button variant="default" className="gap-2 ">
+            <GiftIcon className="h-5 w-5" />
+            Register
+          </Button>
+        </Link>
         <ModeToggle />
         <div className="hidden max-lg:flex">
           <MobileNav />
@@ -142,6 +150,13 @@ ListItem.displayName = "ListItem";
 
 const MobileNav: React.FC = () => {
   const navigate = useNavigate();
+  const scrollToSection = (sectionId: string) => {
+    const targetSection = document.getElementById(sectionId);
+
+    if (targetSection) {
+      targetSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <Sheet>
@@ -178,47 +193,33 @@ const MobileNav: React.FC = () => {
           </Button>
         </div>
         <div className="grid gap-4 py-4">
-          {/* <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger>
-   
-                Item one
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid gap-4">
-                  <Button variant="ghost" className="hover:text-violet-600">
-                    Item two
-                  </Button>
-                  <Button variant="ghost" className="hover:text-violet-600">
-                    Item two
-                  </Button>
-                  <Button variant="ghost" className="hover:text-violet-600">
-                    Item two
-                  </Button>
-                  <Button variant="ghost" className="hover:text-violet-600">
-                    Item two
-                  </Button>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion> */}
-          <Button variant="ghost" className="violetHover">
-            Item two
+          <Button
+            variant="ghost"
+            className="violetHover"
+            onClick={() => scrollToSection("FeaturesSection")}
+          >
+            About us
           </Button>
-          <Button variant="ghost" className="violetHover">
-            Item two
+          <Button
+            variant="ghost"
+            className="violetHover"
+            onClick={() => scrollToSection("Stats")}
+          >
+            Stats
           </Button>
-          <Button variant="ghost" className="violetHover">
-            Item two
+          <Button
+            variant="ghost"
+            className="violetHover"
+            onClick={() => scrollToSection("Pricing")}
+          >
+            Pricing
           </Button>
-          <Button variant="ghost" className="violetHover">
-            Item two
-          </Button>
-          <Button variant="ghost" className="violetHover">
-            Item two
-          </Button>
-          <Button variant="ghost" className="violetHover">
-            Item three
+          <Button
+            variant="ghost"
+            className="violetHover"
+            onClick={() => scrollToSection("Contact")}
+          >
+            Contact us
           </Button>
         </div>
 

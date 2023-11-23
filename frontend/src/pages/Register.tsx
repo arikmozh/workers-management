@@ -25,6 +25,10 @@ const Register = () => {
     phone: store.register.phone,
   });
 
+  useEffect(() => {
+    console.log(username);
+  }, []);
+
   const [validate, setValidate] = useState({
     fullName: true,
     email: true,
@@ -86,10 +90,14 @@ const Register = () => {
       }, 1000);
     }
   };
+  // const { emaill } = useParams();
 
-  useEffect(() => {
-    console.log(store);
-  }, []);
+  // useEffect(() => {
+  //   if (emaill) {
+  //     // Do something with the email
+  //     setUsername((prev) => ({ ...prev, email: emaill }));
+  //   }
+  // }, []);
 
   return (
     <>

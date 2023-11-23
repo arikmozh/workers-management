@@ -10,9 +10,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDispatch, useSelector } from "react-redux";
 import { Department, Employee, RootState, Shift } from "@/redux/interface";
-import { Gift, UserCheck, UserX2, Users } from "lucide-react";
+import { Gift, UserCheck, UserX2, Users, X } from "lucide-react";
 import { EmployeesByMonth } from "./employeesByMonth";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import AddEmployeeForm from "./AddEmployeeForm";
 import { addEmployeeToAPI, editEmployeeToAPI } from "@/utils/workersUtils";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
@@ -29,6 +29,25 @@ import {
 } from "../ui/select";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { deleteEmployeeToAPI } from "../../utils/workersUtils";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import { doDeleteEmployee } from "../../redux/actions";
 
 const EmployeesComp = () => {
   const dispatch = useDispatch();
@@ -237,6 +256,39 @@ const EmployeesComp = () => {
     // Your logic for adding a new employee
   };
 
+  const onDeleteEmployee = async (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    emp: any,
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault(); // Prevent the default button behavior
+
+    try {
+      const data = await deleteEmployeeToAPI(emp._id);
+      console.log(data);
+      if (data) {
+        dispatch(doDeleteEmployee(data));
+        setActiveTab("overview");
+        setShowEmployeeListTab(false);
+
+        setEditableEmp({
+          ...editableEmp,
+          _id: "",
+          userId: "",
+          departmentId: "",
+          startingDate: "",
+          employeeName: "",
+          employeeAge: "",
+          employeeContact: "",
+          employeeSalaryPerHour: 0,
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      throw error;
+    }
+  };
+
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
@@ -281,9 +333,6 @@ const EmployeesComp = () => {
           >
             {editableEmp.employeeName}
           </TabsTrigger>
-          {/* <TabsTrigger value="notifications" disabled>
-            Notifications
-          </TabsTrigger> */}
         </TabsList>
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -377,7 +426,7 @@ const EmployeesComp = () => {
                         className="flex items-center justify-between hover:border p-2 pl-3 pr-3 hover:rounded-lg cursor-pointer"
                       >
                         <Avatar className="h-9 w-9">
-                          <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                          {/* <AvatarImage src="/avatars/01.png" alt="Avatar" /> */}
                           <AvatarFallback>
                             {getInitials(emp.employeeName)}
                           </AvatarFallback>
@@ -423,7 +472,7 @@ const EmployeesComp = () => {
                       onClick={() => handleEditEmloyee(emp)}
                     >
                       <Avatar className="h-9 w-9">
-                        <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                        {/* <AvatarImage src="/avatars/01.png" alt="Avatar" /> */}
                         <AvatarFallback>
                           {getInitials(emp.employeeName)}
                         </AvatarFallback>
@@ -455,11 +504,62 @@ const EmployeesComp = () => {
             <Card className="">
               <CardContent className="p-8 overflow-auto ">
                 <div className="grid gap-4">
-                  <div className="space-y-2">
-                    {/* <h4 className="font-medium leading-none">Add employee</h4> */}
+                  <div className="space-y-2 flex items-center justify-between">
                     <p className="text-sm text-left text-muted-foreground">
                       Edit employee details.
                     </p>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Dialog>
+                            <DialogTrigger>
+                              <div className="flex justify-between items-center">
+                                <X className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer" />
+                                <X className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" />
+                              </div>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>
+                                  Are you sure you want to delete this employee?
+                                </DialogTitle>
+                                <DialogDescription>
+                                  This action cannot be undone. This will
+                                  permanently delete{" "}
+                                  <span className="text-violet-600 font-semibold">
+                                    {editableEmp.employeeName}
+                                  </span>{" "}
+                                  and remove your data from our servers.
+                                </DialogDescription>
+                              </DialogHeader>
+                              {/* <DialogFooter>
+                                <Button
+                                  type="submit"
+                                  onClick={(e) =>
+                                    onDeleteEmployee(editableEmp, e)
+                                  }
+                                >
+                                  Save changes
+                                </Button>
+                              </DialogFooter> */}
+                              <DialogFooter>
+                                <button
+                                  type="submit"
+                                  onClick={(e) =>
+                                    onDeleteEmployee(editableEmp, e)
+                                  }
+                                >
+                                  Save changes
+                                </button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Delete employee</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                   <div className="grid gap-4 max-w-min	">
                     <div className="flex items-center gap-4 justify-between">
@@ -489,8 +589,6 @@ const EmployeesComp = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                    {/* </div>
-                  <div className="grid  "> */}
                     <div className="flex items-center justify-between">
                       <Label htmlFor="name">Full name:</Label>
                       <Input
@@ -506,8 +604,6 @@ const EmployeesComp = () => {
                         }}
                       />
                     </div>
-                    {/* </div> */}
-                    {/* <div className="grid  "> */}
                     <div className="flex items-center justify-between">
                       <Label htmlFor="phone">Phone:</Label>
                       <Input
@@ -524,8 +620,6 @@ const EmployeesComp = () => {
                         }}
                       />
                     </div>
-                    {/* </div> */}
-                    {/* <div className="grid  "> */}
                     <div className="flex items-center justify-between">
                       <Label htmlFor="age">Age:</Label>
                       <Select
@@ -559,8 +653,6 @@ const EmployeesComp = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                    {/* </div> */}
-                    {/* <div className="grid "> */}
                     <div className="flex items-center justify-between">
                       <Label htmlFor="salary">Salary:</Label>
                       <Select
@@ -601,7 +693,7 @@ const EmployeesComp = () => {
                   className="flex mt-4"
                   onClick={(e) => onEditEmployee(e)}
                 >
-                  Add
+                  Save
                 </Button>
                 {error && (
                   <span className="flex mt-4 text-left text-red-500">
@@ -614,155 +706,6 @@ const EmployeesComp = () => {
         )}
       </Tabs>
     </div>
-    // <div className="flex-1 space-y-4 p-8 pt-6">
-    //   <div className="flex items-center justify-between space-y-2">
-    //     <h2 className="text-3xl font-bold tracking-tight">Employees</h2>
-    //     <div className="flex items-center space-x-2">
-    //       <CalendarDateRangePicker />
-    //       <Button>Download</Button>
-    //     </div>
-    //   </div>
-    //   <Tabs defaultValue="overview" className="space-y-4">
-    //     <TabsList>
-    //       <TabsTrigger value="overview">Overview</TabsTrigger>
-    //       <TabsTrigger value="analytics" disabled>
-    //         Analytics
-    //       </TabsTrigger>
-    //       <TabsTrigger value="reports" disabled>
-    //         Reports
-    //       </TabsTrigger>
-    //       <TabsTrigger value="notifications" disabled>
-    //         Notifications
-    //       </TabsTrigger>
-    //     </TabsList>
-    //     <TabsContent value="overview" className="space-y-4">
-    //       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-    //         <Card>
-    //           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-    //             <CardTitle className="text-sm font-medium">
-    //               Total Revenue
-    //             </CardTitle>
-    //             <svg
-    //               xmlns="http://www.w3.org/2000/svg"
-    //               viewBox="0 0 24 24"
-    //               fill="none"
-    //               stroke="currentColor"
-    //               strokeLinecap="round"
-    //               strokeLinejoin="round"
-    //               strokeWidth="2"
-    //               className="h-4 w-4 text-muted-foreground"
-    //             >
-    //               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-    //             </svg>
-    //           </CardHeader>
-    //           <CardContent>
-    //             <div className="text-2xl font-bold">$45,231.89</div>
-    //             <p className="text-xs text-muted-foreground">
-    //               +20.1% from last month
-    //             </p>
-    //           </CardContent>
-    //         </Card>
-    //         <Card>
-    //           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-    //             <CardTitle className="text-sm font-medium">
-    //               Subscriptions
-    //             </CardTitle>
-    //             <svg
-    //               xmlns="http://www.w3.org/2000/svg"
-    //               viewBox="0 0 24 24"
-    //               fill="none"
-    //               stroke="currentColor"
-    //               strokeLinecap="round"
-    //               strokeLinejoin="round"
-    //               strokeWidth="2"
-    //               className="h-4 w-4 text-muted-foreground"
-    //             >
-    //               <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-    //               <circle cx="9" cy="7" r="4" />
-    //               <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-    //             </svg>
-    //           </CardHeader>
-    //           <CardContent>
-    //             <div className="text-2xl font-bold">+2350</div>
-    //             <p className="text-xs text-muted-foreground">
-    //               +180.1% from last month
-    //             </p>
-    //           </CardContent>
-    //         </Card>
-    //         <Card>
-    //           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-    //             <CardTitle className="text-sm font-medium">Sales</CardTitle>
-    //             <svg
-    //               xmlns="http://www.w3.org/2000/svg"
-    //               viewBox="0 0 24 24"
-    //               fill="none"
-    //               stroke="currentColor"
-    //               strokeLinecap="round"
-    //               strokeLinejoin="round"
-    //               strokeWidth="2"
-    //               className="h-4 w-4 text-muted-foreground"
-    //             >
-    //               <rect width="20" height="14" x="2" y="5" rx="2" />
-    //               <path d="M2 10h20" />
-    //             </svg>
-    //           </CardHeader>
-    //           <CardContent>
-    //             <div className="text-2xl font-bold">+12,234</div>
-    //             <p className="text-xs text-muted-foreground">
-    //               +19% from last month
-    //             </p>
-    //           </CardContent>
-    //         </Card>
-    //         <Card>
-    //           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-    //             <CardTitle className="text-sm font-medium">
-    //               Active Now
-    //             </CardTitle>
-    //             <svg
-    //               xmlns="http://www.w3.org/2000/svg"
-    //               viewBox="0 0 24 24"
-    //               fill="none"
-    //               stroke="currentColor"
-    //               strokeLinecap="round"
-    //               strokeLinejoin="round"
-    //               strokeWidth="2"
-    //               className="h-4 w-4 text-muted-foreground"
-    //             >
-    //               <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-    //             </svg>
-    //           </CardHeader>
-    //           <CardContent>
-    //             <div className="text-2xl font-bold">+573</div>
-    //             <p className="text-xs text-muted-foreground">
-    //               +201 since last hour
-    //             </p>
-    //           </CardContent>
-    //         </Card>
-    //       </div>
-    //       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-    //         <Card className="col-span-4">
-    //           <CardHeader>
-    //             <CardTitle>Overview</CardTitle>
-    //           </CardHeader>
-    //           <CardContent className="pl-2">
-    //             <Overview />
-    //           </CardContent>
-    //         </Card>
-    //         <Card className="col-span-3">
-    //           <CardHeader>
-    //             <CardTitle>Recent Sales</CardTitle>
-    //             <CardDescription>
-    //               You made 265 sales this month.
-    //             </CardDescription>
-    //           </CardHeader>
-    //           <CardContent>
-    //             <RecentSales />
-    //           </CardContent>
-    //         </Card>
-    //       </div>
-    //     </TabsContent>
-    //   </Tabs>
-    // </div>
   );
 };
 

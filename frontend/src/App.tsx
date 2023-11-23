@@ -12,25 +12,13 @@ import SettingsComp from "./components/Settings/SettingsComp";
 // import OverviewTab1 from "./components/Overview/overview-tab-1";
 import OverviewTab2 from "./components/Overview/overview-tab-2";
 import OverviewTab3 from "./components/Overview/overview-tab-3";
-import OverviewTab4 from "./components/Overview/overview-tab-4";
+// import OverviewTab4 from "./components/Overview/overview-tab-4";
 import Register from "./pages/Register";
 import RegisterPassword from "./pages/RegisterPassword";
 import { useEffect } from "react";
 import ShiftComp from "./components/Shift/ShiftComp";
 
 function App() {
-  // useEffect(() => {
-  //   const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-  //     event.preventDefault();
-  //     localStorage.setItem("lastVisitedURL", window.location.pathname);
-  //   };
-
-  //   window.addEventListener("beforeunload", handleBeforeUnload);
-
-  //   return () => {
-  //     window.removeEventListener("beforeunload", handleBeforeUnload);
-  //   };
-  // }, []);
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault();
@@ -59,6 +47,7 @@ function App() {
 
         <Route path="" element={<Homepage />} />
         <Route path="register" element={<Register />} />
+        {/* <Route path="register:email" element={<Register />} /> */}
         <Route path="register-password" element={<RegisterPassword />} />
         <Route path="login" element={<Login />} />
         <Route path="login-password" element={<LoginPassword />} />
@@ -67,7 +56,7 @@ function App() {
             {/* <Route path="analytics" element={<OverviewTab1 />}></Route> */}
             <Route path="analytics" element={<OverviewTab2 />}></Route>
             <Route path="reports" element={<OverviewTab3 />}></Route>
-            <Route path="notifications" element={<OverviewTab4 />}></Route>
+            {/* <Route path="notifications" element={<OverviewTab4 />}></Route> */}
           </Route>
           <Route path="departments" element={<DepartmentsComp />}></Route>
           <Route path="shifts" element={<ShiftsComp />}></Route>

@@ -9,12 +9,15 @@ import {
 import { useSelector } from "react-redux";
 import { Employee, RootState } from "@/redux/interface";
 import { Gift, Hash, KanbanSquare, User2 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
 import { Overview } from "../Dashboard/overview";
+import { useNavigate } from "react-router-dom";
+
 const OverviewTab2 = () => {
   const departments = useSelector((state: RootState) => state.departments);
   const shifts = useSelector((state: RootState) => state.shifts);
   const employees = useSelector((state: RootState) => state.employees);
+  const navigate = useNavigate();
 
   const getRandomEmployee = (employees: Employee[]): Employee | undefined => {
     if (employees.length === 0) {
@@ -53,9 +56,12 @@ const OverviewTab2 = () => {
   return (
     <TabsContent value="analytics" className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card
+          onClick={() => navigate("/dashboard/departments")}
+          className="cursor-pointer"
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
+            <CardTitle className="text-sm font-medium ">
               Total Departments
             </CardTitle>
             <Hash className="dark:hidden h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer" />
@@ -66,7 +72,10 @@ const OverviewTab2 = () => {
             <p className="text-xs text-muted-foreground">Departments</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card
+          onClick={() => navigate("/dashboard/shifts")}
+          className="cursor-pointer"
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Shifts</CardTitle>
             <KanbanSquare className="dark:hidden h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer" />
@@ -77,7 +86,10 @@ const OverviewTab2 = () => {
             <p className="text-xs text-muted-foreground">Shifts</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card
+          onClick={() => navigate("/dashboard/employees")}
+          className="cursor-pointer"
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total Employees
@@ -138,7 +150,7 @@ const OverviewTab2 = () => {
                     className="flex items-center justify-between hover:border p-2 pl-3 pr-3 hover:rounded-lg "
                   >
                     <Avatar className="h-9 w-9">
-                      <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                      {/* <AvatarImage src="/avatars/01.png" alt="Avatar" /> */}
                       <AvatarFallback>
                         {getInitials(emp.employeeName)}
                       </AvatarFallback>

@@ -208,39 +208,10 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
                       <TooltipTrigger>
                         <Dialog>
                           <DialogTrigger>
-                            <div
-                              className="flex justify-between items-center"
-                              onClick={() => {
-                                // Handle button click logic here
-                              }}
-                            >
-                              <X
-                                className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer"
-                                onClick={() => {
-                                  // setEditingIndex(-1);
-                                  // updateDepartment(dep._id, dep.departmentName);
-                                }}
-                              />
-                              <X
-                                className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer"
-                                onClick={() => {
-                                  // setEditingIndex(-1);
-                                  // updateDepartment(dep._id, dep.departmentName);
-                                }}
-                              />
-
-                              {/* <X
-                            className={`h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:rotate-[-90deg] dark:scale-0 hover:text-violet-600 cursor-pointer`}
-                          />
-                          <X className="hidden dark:block h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" /> */}
-                              {/* <span className="sr-only">Toggle theme</span> */}
+                            <div className="flex justify-between items-center">
+                              <X className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600 cursor-pointer" />
+                              <X className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 cursor-pointer" />
                             </div>
-
-                            {/* <Button variant="ghost" size="icon">
-                          <X className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 hover:text-violet-600" />
-                          <X className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 hover:text-violet-600 " />
-                          <span className="sr-only">Toggle theme</span>
-                        </Button> */}
                           </DialogTrigger>
                           <DialogContent>
                             <DialogHeader>

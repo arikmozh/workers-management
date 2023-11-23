@@ -8,13 +8,22 @@ const data = [
   { name: "B", value: 45, color: "#00ff00" },
   { name: "C", value: 25, color: "#0000ff" },
 ];
-const cx = 150;
-const cy = 200;
+const cx = 100;
+const cy = 150;
 const iR = 50;
 const oR = 100;
-const value = 50;
+const value = 86;
 
-const needle = (value, data, cx, cy, iR, oR, color) => {
+const needle = (
+  value: number,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any[],
+  cx: number,
+  cy: number,
+  iR: number,
+  oR: number,
+  color: string | undefined
+) => {
   let total = 0;
   data.forEach((v) => {
     total += v.value;
@@ -46,7 +55,7 @@ const needle = (value, data, cx, cy, iR, oR, color) => {
 export default class Example extends PureComponent {
   render() {
     return (
-      <PieChart width={400} height={500}>
+      <PieChart width={220} height={200}>
         <Pie
           dataKey="value"
           startAngle={180}
@@ -63,7 +72,7 @@ export default class Example extends PureComponent {
             <Cell key={`cell-${index}`} fill={entry.color} />
           ))}
         </Pie>
-        {needle(value, data, cx, cy, iR, oR, "#d0d000")}
+        {needle(value, data, cx, cy, iR, oR, "#00ff00")}
       </PieChart>
     );
   }

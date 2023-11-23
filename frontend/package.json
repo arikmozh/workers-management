@@ -36,6 +36,7 @@
     "crypto-js": "^4.2.0",
     "date-fns": "^2.30.0",
     "formik": "^2.4.5",
+    "framer-motion": "^10.16.5",
     "fs": "0.0.1-security",
     "fs-extra": "^11.1.1",
     "lucide-react": "^0.288.0",

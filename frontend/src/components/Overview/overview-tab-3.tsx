@@ -15,7 +15,7 @@ const OverviewTab3 = () => {
 
   return (
     <TabsContent value="reports" className="space-y-4">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
@@ -39,7 +39,9 @@ const OverviewTab3 = () => {
             <p className="text-xs text-muted-foreground">
               +180.1% from last month
             </p>
-            <ComposedResponsiveContainer />
+            <div className="flex justify-center">
+              <ComposedResponsiveContainer />
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -63,7 +65,9 @@ const OverviewTab3 = () => {
             <p className="text-xs text-muted-foreground">
               +20.1% from last month
             </p>
-            <SalaryPieChart data={employees} />
+            <div className="flex justify-center">
+              <SalaryPieChart data={employees} />
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -88,7 +92,9 @@ const OverviewTab3 = () => {
             <p className="text-xs text-muted-foreground">
               +19% from last month
             </p>
-            <SalesGrowthChart />
+            <div className="flex justify-center">
+              <SalesGrowthChart />
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -112,7 +118,9 @@ const OverviewTab3 = () => {
             <p className="text-xs text-muted-foreground">
               +201 since last hour
             </p>
-            <PieChartWithNeedle />
+            <div className="flex justify-center">
+              <PieChartWithNeedle />
+            </div>
           </CardContent>
         </Card>
       </div>

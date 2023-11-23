@@ -22,7 +22,9 @@ export function MainNav({
       <Link
         to="/dashboard/analytics"
         className={`text-sm font-medium  transition-colors hover:text-primary ${
-          checkPage("analytics") == true ? "" : "text-muted-foreground"
+          checkPage("analytics") == true || checkPage("reports") == true
+            ? ""
+            : "text-muted-foreground"
         }`}
       >
         Analytics

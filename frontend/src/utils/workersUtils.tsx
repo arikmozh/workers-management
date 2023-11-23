@@ -212,3 +212,33 @@ export const editEmployeeToAPI = async (emp: any) => {
     return;
   }
 };
+
+export const deleteEmployeeToAPI = async (empId: string) => {
+  if (ss !== null) {
+    const storedUserData = JSON.parse(ss);
+    const token = storedUserData.token;
+    const userId = storedUserData.id;
+
+    try {
+      const { data: result } = await axios.delete(
+        `${urlData}/employees/deleteEmployee/${empId}`, // Correct endpoint
+        {
+          headers: {
+            authorization: token,
+          },
+          data: {
+            userId: userId,
+          },
+        }
+      );
+      console.log(result);
+      return result;
+    } catch (error) {
+      // Handle the error, maybe log it
+      console.error("Error:", error);
+      throw error;
+    }
+  } else {
+    return;
+  }
+};

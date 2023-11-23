@@ -1,8 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { useNavigate } from "react-router-dom";
+// import { useDispatch } from "react-redux";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+// import { doAddRegisterPage1 } from "../redux/actions";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  // const dispatch = useDispatch();
+
+  const [email, setEmail] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(true); // Track email validation
+  const [username, setUsername] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+  });
+
+  const handleNavigate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = emailRegex.test(email);
+
+    if (!isValid) {
+      // Set the state to indicate an error
+      setIsEmailValid(false);
+      setTimeout(() => {
+        setIsEmailValid(true);
+      }, 2500);
+      return;
+    }
+    console.log(username);
+    setUsername((prev) => ({ ...prev, email: email }));
+    setIsEmailValid(true);
+    // setTimeout(() => {
+    //   dispatch(doAddRegisterPage1(username));
+    navigate("/register");
+    // }, 1000);
+
+    // If email is valid, navigate to the "/register" route
+    // navigate("/register");
+  };
   return (
     <>
       <div className="container items-center py-20 grid grid-cols-2 max-md:grid-cols-1">
@@ -18,10 +58,27 @@ const Hero = () => {
             Efficiently manage production, inventory, and workforce with our
             Factory Management Software.
           </p>
-          <div className="max-w-xl flex gap-8 flex-wrap">
-            <Input className="max-w-xs h-16" placeholder="Email" />
-            <Button className="h-16">Get Started</Button>
-          </div>
+          {/* <div className="max-w-xl flex gap-8 flex-wrap"> */}
+          <form
+            onSubmit={(e) => handleNavigate(e)}
+            className="max-w-xl flex gap-8 flex-wrap"
+          >
+            <Input
+              type="email"
+              className={`max-w-xs h-16 ${!isEmailValid && "border-red-500"}`}
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Button className="h-16" type="submit">
+              Get Started
+            </Button>
+          </form>
+          {/* </div> */}
+          {!isEmailValid && (
+            <p className="text-red-500 text-left">
+              Please enter a valid email address.
+            </p>
+          )}
         </div>
         <div className="max-md:hidden justify-end flex">
           <img
