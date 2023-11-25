@@ -217,8 +217,6 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case "UPDATE_EMPLOYEE":
-      console.log("actiionnn", action.payload);
-
       return {
         ...state,
         employees: state.employees.map((emp) => {

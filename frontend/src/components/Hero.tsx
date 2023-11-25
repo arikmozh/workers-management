@@ -13,11 +13,11 @@ const Hero = () => {
 
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true); // Track email validation
-  const [username, setUsername] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-  });
+  // const [username, setUsername] = useState({
+  //   fullName: "",
+  //   email: "",
+  //   phone: "",
+  // });
 
   const handleNavigate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,8 +32,7 @@ const Hero = () => {
       }, 2500);
       return;
     }
-    console.log(username);
-    setUsername((prev) => ({ ...prev, email: email }));
+    // setUsername((prev) => ({ ...prev, email: email }));
     setIsEmailValid(true);
     // setTimeout(() => {
     //   dispatch(doAddRegisterPage1(username));

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -73,46 +73,46 @@ const EmployeesComp = () => {
 
   const [showEmployeeListTab, setShowEmployeeListTab] = useState(false);
 
-  useEffect(() => {
-    console.log(employees);
-    console.log(shifts);
-    console.log(
-      "getEmployeesCountPerShift",
-      getEmployeesCountPerShift(employees, shifts)
-    );
-    console.log(
-      "getEmployeesAssignedToAnyShift",
-      getEmployeesAssignedToAnyShift(employees, shifts)
-    );
-    console.log(
-      "getEmployeesNotAssignedToAnyShift",
-      getEmployeesNotAssignedToAnyShift(employees, shifts)
-    );
-  }, []);
+  // useEffect(() => {
+  //   console.log(employees);
+  //   console.log(shifts);
+  //   console.log(
+  //     "getEmployeesCountPerShift",
+  //     getEmployeesCountPerShift(employees, shifts)
+  //   );
+  //   console.log(
+  //     "getEmployeesAssignedToAnyShift",
+  //     getEmployeesAssignedToAnyShift(employees, shifts)
+  //   );
+  //   console.log(
+  //     "getEmployeesNotAssignedToAnyShift",
+  //     getEmployeesNotAssignedToAnyShift(employees, shifts)
+  //   );
+  // }, []);
 
-  const getEmployeesCountPerShift = (
-    employees: Employee[],
-    shifts: Shift[]
-  ) => {
-    // Create an object to store the count for each shift
-    const employeesCountPerShift: { [key: string]: number } = {};
+  // const getEmployeesCountPerShift = (
+  //   employees: Employee[],
+  //   shifts: Shift[]
+  // ) => {
+  //   // Create an object to store the count for each shift
+  //   const employeesCountPerShift: { [key: string]: number } = {};
 
-    // Iterate over each shift
-    shifts.forEach((shift) => {
-      // Get the IDs of employees assigned to the current shift
-      const assignedEmployeeIds = shift.shiftEmployees || [];
+  //   // Iterate over each shift
+  //   shifts.forEach((shift) => {
+  //     // Get the IDs of employees assigned to the current shift
+  //     const assignedEmployeeIds = shift.shiftEmployees || [];
 
-      // Filter employees array based on assigned IDs
-      const assignedEmployees = employees.filter((employee) =>
-        assignedEmployeeIds.includes(employee._id)
-      );
+  //     // Filter employees array based on assigned IDs
+  //     const assignedEmployees = employees.filter((employee) =>
+  //       assignedEmployeeIds.includes(employee._id)
+  //     );
 
-      // Assign the count to the corresponding shift ID
-      employeesCountPerShift[shift.shiftName] = assignedEmployees.length;
-    });
+  //     // Assign the count to the corresponding shift ID
+  //     employeesCountPerShift[shift.shiftName] = assignedEmployees.length;
+  //   });
 
-    return employeesCountPerShift;
-  };
+  //   return employeesCountPerShift;
+  // };
 
   const getEmployeesAssignedToAnyShift = (
     employees: Employee[],
@@ -179,7 +179,6 @@ const EmployeesComp = () => {
   };
 
   const handleEditEmloyee = (emp: Employee) => {
-    console.log(emp);
     setEditableEmp({
       ...editableEmp,
       _id: emp._id,
@@ -191,7 +190,6 @@ const EmployeesComp = () => {
       employeeContact: emp.employeeContact,
       employeeSalaryPerHour: emp.employeeSalaryPerHour,
     });
-    console.log(editableEmp, "edittttt");
     setActiveTab("employee");
     setShowEmployeeListTab(true);
   };
@@ -216,10 +214,8 @@ const EmployeesComp = () => {
 
   const onAddEmployee = async (newEmployeeData: Employ) => {
     // Your logic for adding a new employee
-    console.log("Adding employee:", newEmployeeData);
     try {
       const data = await addEmployeeToAPI(newEmployeeData);
-      console.log(data);
       if (data) {
         dispatch(doAddEmployee(data));
       }
@@ -236,10 +232,8 @@ const EmployeesComp = () => {
   const onEditEmployee = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (isEmployeeValid(editableEmp)) {
-      console.log("Edited employee:", editableEmp);
       try {
         const data = await editEmployeeToAPI(editableEmp);
-        console.log(data);
         if (data) {
           dispatch(doEditEmployee(data));
         }
@@ -265,7 +259,6 @@ const EmployeesComp = () => {
 
     try {
       const data = await deleteEmployeeToAPI(emp._id);
-      console.log(data);
       if (data) {
         dispatch(doDeleteEmployee(data));
         setActiveTab("overview");

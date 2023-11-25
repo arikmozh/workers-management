@@ -74,7 +74,6 @@ const LoginPassword = () => {
     setTimeout(() => {
       login({ email: email, password: pass })
         .then(async (res: any) => {
-          console.log("res login", res);
           const token: string = res.token;
           sessionStorage.clear();
           sessionStorage.setItem(

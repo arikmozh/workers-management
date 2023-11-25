@@ -107,7 +107,6 @@ const RegisterPassword = () => {
     setPasswordValidation2(true);
     setPasswordMatch(true);
     const pass = handlePasswordEncryption();
-    console.log(pass);
     const obj = {
       fullName: store.register.fullName,
       email: store.register.email,
@@ -122,7 +121,6 @@ const RegisterPassword = () => {
         setTimeout(() => {
           login({ email: store.register.email, password: pass })
             .then((res: any) => {
-              console.log(res);
               const token: string = res.token;
               sessionStorage.setItem(
                 "Workers",

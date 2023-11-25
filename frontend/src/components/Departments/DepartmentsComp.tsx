@@ -31,7 +31,6 @@ const DepartmentsComp = () => {
   const addDepartment = async () => {
     try {
       const data = await addDepartmentToAPI(departmentName);
-      console.log(data); // Log the data received from the API call
       if (data) {
         dispatch(doAddDepartment(data));
       }

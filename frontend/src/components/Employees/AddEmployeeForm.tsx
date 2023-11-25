@@ -61,7 +61,6 @@ const AddEmployeeForm: React.FC<AddEmployeeFormProps> = ({
       const parsedJson = JSON.parse(user).id;
       setEmployee({ ...employee, userId: parsedJson });
     }
-    console.log(user);
   }, []);
   const generateAges = (): number[] => {
     return Array.from({ length: 50 }, (_, index) => index + 18);

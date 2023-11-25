@@ -98,11 +98,9 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
   };
 
   const addShift = async () => {
-    console.log(shift);
     if (isShiftComplete() == true) {
       try {
         const data = await addShiftToAPI(shift);
-        console.log(data); // Log the data received from the API call
         if (data) {
           dispatch(doAddShift(data));
           setShowNewTeamDialog(false);

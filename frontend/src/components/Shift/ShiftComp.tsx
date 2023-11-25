@@ -75,8 +75,6 @@ const ShiftComp = () => {
   const [selectedEmployees, setSelectedEmployees] = useState<Employee[]>([]);
 
   const toggleSelection = (employee: Employee | string) => {
-    console.log(employee, "selection");
-
     if (typeof employee === "string") {
       // Handle the case where a string (employee name) is provided
       // You might want to find the employee object based on the name
@@ -145,9 +143,6 @@ const ShiftComp = () => {
   };
 
   useEffect(() => {
-    console.log("ID from route:", id);
-    console.log("shift:", shift);
-
     const foundShift = shifts.find((s) => s._id === id);
     if (foundShift) {
       setShift({
@@ -174,17 +169,13 @@ const ShiftComp = () => {
       });
       setShiftDate(new Date(foundShift.shiftDate));
       // setEditedShift(shift);
-      console.log(foundShift.shiftEmployees);
       const selectedEmployees = getEmployeesByIds(
         employees,
         foundShift.shiftEmployees
       );
-      console.log(selectedEmployees, "selectedEmployees");
 
       setSelectedEmployees(selectedEmployees);
     }
-    console.log("foundShift", foundShift);
-    console.log(employees, "Employees");
   }, [id, shifts]); // Include shifts in the dependency array as well
 
   const getEmployeesByIds = (employees: Employee[], employeeIds: string[]) => {
@@ -250,7 +241,6 @@ const ShiftComp = () => {
   const updateShift = async () => {
     try {
       const data = await updateShiftToAPI(editedShift._id, editedShift);
-      console.log(data);
       if (data) {
         dispatch(doUpdateShift(data));
       }
@@ -261,7 +251,6 @@ const ShiftComp = () => {
   };
 
   useEffect(() => {
-    console.log("Shift Date updated:", shiftDate);
     if (shiftDate != undefined) {
       const modifiedShiftDate = new Date(shiftDate);
 

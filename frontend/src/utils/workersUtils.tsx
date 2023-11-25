@@ -22,7 +22,7 @@ export const addDepartmentToAPI = async (departmentName: string) => {
         },
       }
     );
-    console.log(result);
+    console.log("addDep", result);
 
     return result;
   } else {

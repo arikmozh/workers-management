@@ -89,9 +89,7 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
     const start = updatedShifts[index].shiftStartingHour;
     const end = updatedShifts[index].shiftEndingHour;
     const diff = calculateTimeDifference(start, end);
-    console.log(diff);
     const added = addTimeDifference(selectedValue, diff);
-    console.log(added);
 
     updatedShifts[index] = {
       ...updatedShifts[index],
@@ -143,17 +141,12 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
   };
 
   const updateShift = async (shiftId: string) => {
-    console.log(shiftId);
-    console.log(filteredShifts);
-
     try {
       const shift = filteredShifts.filter((s) => {
         return s._id === shiftId;
       });
-      console.log(shift);
 
       const data = await updateShiftToAPI(shiftId, shift[0]);
-      console.log(data);
       if (data) {
         dispatch(doUpdateShift(data));
       }
@@ -171,7 +164,6 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
 
     try {
       const data = await deleteShiftToAPI(shiftId);
-      console.log(data);
       if (data) {
         dispatch(doDeleteShift(data));
       }

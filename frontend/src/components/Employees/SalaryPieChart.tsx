@@ -12,13 +12,10 @@ const SalaryPieChart: React.FC<SalaryPieChartProps> = ({ data }) => {
   const [employeesPayingLess, setEmployeesPayingLess] = useState<number>(0);
 
   useEffect(() => {
-    console.log(data);
-
     // Analyze data to count employees over 50 and those paying less than a certain amount
     const over50Count = data.filter(
       (employee) => employee.employeeSalaryPerHour === 50
     ).length;
-    console.log(over50Count);
 
     const payingLessCount = data.filter(
       (employee) => employee.employeeSalaryPerHour === 35

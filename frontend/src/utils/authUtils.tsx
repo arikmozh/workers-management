@@ -25,7 +25,6 @@ export const isLoggedIn = async () => {
       const storedUserData = JSON.parse(ss);
       const token = storedUserData.token;
       const userId = storedUserData.id;
-      console.log(token);
 
       // Set the Authorization header with the token
       const response = await axios.get(`${url}/isLoggedIn/${userId}`, {

@@ -222,12 +222,6 @@ const MobileNav: React.FC = () => {
             Contact us
           </Button>
         </div>
-
-        {/* <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose>
-        </SheetFooter> */}
       </SheetContent>
     </Sheet>
   );

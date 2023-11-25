@@ -50,7 +50,6 @@ const SettingsComp = () => {
     } else {
       try {
         const data = await updateUserToApi(formData);
-        console.log(data);
         if (data) {
           formData.userId = data._id;
           formData.email = data.email;

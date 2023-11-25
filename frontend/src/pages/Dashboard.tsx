@@ -75,7 +75,6 @@ export default function DashboardPage() {
 
     isLoggedIn()
       .then((res) => {
-        console.log("ressss", res);
         if (res === "Success") {
           fetchDataAndNavigate();
         } else {

@@ -65,7 +65,6 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
   const updateDepartment = async (depId: string, depName: string) => {
     try {
       const data = await updateDepartmentToAPI(depId, depName);
-      console.log(data);
       if (data) {
         dispatch(doUpdateDepartment(data));
       }
@@ -83,7 +82,6 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
 
     try {
       const data = await deleteDepartmentToAPI(depId);
-      console.log(data);
       if (data) {
         dispatch(doDeleteDepartment(data));
       }
@@ -104,7 +102,6 @@ const DataTable: React.FC<DataTableProps> = ({ filterSearch }) => {
   }, [filterSearch, departments]);
 
   const getTotalEmployees = (index: number) => {
-    console.log(departments[index]);
     let count = 0;
 
     if (

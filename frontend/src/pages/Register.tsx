@@ -1,5 +1,5 @@
 import NavbarBlank from "@/components/Navbar-blank";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { LockClosedIcon } from "@heroicons/react/24/solid";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,10 +24,6 @@ const Register = () => {
     email: store.register.email,
     phone: store.register.phone,
   });
-
-  useEffect(() => {
-    console.log(username);
-  }, []);
 
   const [validate, setValidate] = useState({
     fullName: true,
