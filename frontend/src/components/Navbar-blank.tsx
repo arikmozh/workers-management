@@ -1,4 +1,3 @@
-import React from "react";
 import { CubeIcon } from "@heroicons/react/24/outline";
 import { ModeToggle } from "./ui/mode-toggle";
 import { useNavigate } from "react-router-dom";

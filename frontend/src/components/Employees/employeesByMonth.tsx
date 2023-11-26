@@ -1,5 +1,4 @@
 import { Employee } from "@/redux/interface";
-import React from "react";
 import {
   Bar,
   BarChart,

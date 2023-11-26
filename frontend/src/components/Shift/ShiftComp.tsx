@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import React, { useState, Fragment } from "react";
+import { useState, Fragment } from "react";
 import { Button } from "@/components/ui/button";
 // import DataTable from "./DataTable";
 import { Input } from "../ui/input";

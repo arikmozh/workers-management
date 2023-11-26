@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import React, { PureComponent } from "react";
+import { PureComponent } from "react";
 import { PieChart, Pie, Cell } from "recharts";
 
 const RADIAN = Math.PI / 180;
