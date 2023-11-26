@@ -124,7 +124,8 @@ const Login = () => {
             <div className="flex flex-col items-center justify-end space-y-6">
               <div className="relative">
                 <img
-                  src="src/assets/qr.png"
+                  // src="src/assets/qr.png"
+                  src="https://i.ibb.co/XxwXvF8/qr.png"
                   alt=""
                   className="block max-w-full h-auto opacity-50"
                 />

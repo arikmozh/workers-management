@@ -25,6 +25,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export function Navbar() {
   const scrollToSection = (sectionId: string) => {
@@ -35,90 +36,116 @@ export function Navbar() {
     }
   };
 
-  return (
-    <div className="container flex items-center ">
-      <div className="flex space-x-4 mr-8 max-lg:flex-1">
-        <CubeIcon className="h-6 w-6 violet" />
-        <h3>Workers management</h3>
-      </div>
-      <div className="hidden lg:flex flex-1 space-x-4 ">
-        <NavigationMenu className="z-20">
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="violetHover">
-                About
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] ">
-                  <li className="row-span-3">
-                    <NavigationMenuLink asChild>
-                      <a
-                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md cursor-pointer"
-                        onClick={() => scrollToSection("FeaturesSection")}
-                      >
-                        <div className="mb-2 mt-4 text-lg font-medium">
-                          A better workflow
-                        </div>
-                        <p className="text-sm leading-tight text-muted-foreground">
-                          Lorem ipsum, dolor sit amet consectetur adipisicing
-                          elit. Maiores impedit.
-                        </p>
-                      </a>
-                    </NavigationMenuLink>
-                  </li>
-                  <ListItem
-                    className="cursor-pointer"
-                    onClick={() => scrollToSection("Stats")}
-                    title="Stats"
-                  >
-                    Lorem ipsum, dolor sit amet consectetur adipisicing.
-                  </ListItem>
-                  <ListItem
-                    className="cursor-pointer"
-                    onClick={() => scrollToSection("Pricing")}
-                    title="Pricing"
-                  >
-                    Lorem ipsum, dolor sit amet consectetur adipisicing.
-                  </ListItem>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+  const animationVariants = {
+    hidden: {
+      opacity: 0,
+      y: "-100%", // Start from the left side
+    },
+    visible: {
+      opacity: 1,
+      y: 0, // Move to the center
+      transition: {
+        type: "spring",
+        damping: 40,
+        stiffness: 120,
+        duration: 5, // Increase the duration to make it slower (in seconds)
+        delay: 1.5, // Delay before the animation starts (in seconds)
+        ease: "easeInOut",
+      },
+    },
+  };
 
-        <Button
-          variant="ghost"
-          className="violetHover"
-          onClick={() => scrollToSection("Contact")}
-        >
-          Contact us
-        </Button>
-      </div>
-      <div className=" space-x-4 hidden md:flex">
-        <Link to="login">
-          <Button variant="ghost" className="violetHover">
-            Log In
+  return (
+    <motion.nav
+      initial="hidden"
+      animate="visible"
+      variants={animationVariants}
+      // transition={{ duration: 5 }}
+    >
+      <div className="container flex items-center ">
+        <div className="flex space-x-4 mr-8 max-lg:flex-1">
+          <CubeIcon className="h-6 w-6 violet" />
+          <h3>Workers management</h3>
+        </div>
+        <div className="hidden lg:flex flex-1 space-x-4 ">
+          <NavigationMenu className="z-20">
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="violetHover">
+                  About
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] ">
+                    <li className="row-span-3">
+                      <NavigationMenuLink asChild>
+                        <a
+                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md cursor-pointer"
+                          onClick={() => scrollToSection("FeaturesSection")}
+                        >
+                          <div className="mb-2 mt-4 text-lg font-medium">
+                            A better workflow
+                          </div>
+                          <p className="text-sm leading-tight text-muted-foreground">
+                            Lorem ipsum, dolor sit amet consectetur adipisicing
+                            elit. Maiores impedit.
+                          </p>
+                        </a>
+                      </NavigationMenuLink>
+                    </li>
+                    <ListItem
+                      className="cursor-pointer"
+                      onClick={() => scrollToSection("Stats")}
+                      title="Stats"
+                    >
+                      Lorem ipsum, dolor sit amet consectetur adipisicing.
+                    </ListItem>
+                    <ListItem
+                      className="cursor-pointer"
+                      onClick={() => scrollToSection("Pricing")}
+                      title="Pricing"
+                    >
+                      Lorem ipsum, dolor sit amet consectetur adipisicing.
+                    </ListItem>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+
+          <Button
+            variant="ghost"
+            className="violetHover"
+            onClick={() => scrollToSection("Contact")}
+          >
+            Contact us
           </Button>
-        </Link>
-        <Link to="register">
-          <Button variant="default" className="gap-2 ">
-            <GiftIcon className="h-5 w-5" />
+        </div>
+        <div className=" space-x-4 hidden md:flex">
+          <Link to="login">
+            <Button variant="ghost" className="violetHover">
+              Log In
+            </Button>
+          </Link>
+          <Link to="register">
+            <Button variant="default" className="gap-2 ">
+              <GiftIcon className="h-5 w-5" />
+              Register
+            </Button>
+          </Link>
+          <ModeToggle />
+          <div className="hidden max-lg:flex">
+            <MobileNav />
+          </div>
+        </div>
+        <div className="hidden max-md:flex space-x-4">
+          <Button variant="default" className="gap-2 max-sm:hidden">
+            <GiftIcon className=" h-5 w-5 " />
             Register
           </Button>
-        </Link>
-        <ModeToggle />
-        <div className="hidden max-lg:flex">
           <MobileNav />
         </div>
       </div>
-      <div className="hidden max-md:flex space-x-4">
-        <Button variant="default" className="gap-2 max-sm:hidden">
-          <GiftIcon className=" h-5 w-5 " />
-          Register
-        </Button>
-        <MobileNav />
-      </div>
-    </div>
+    </motion.nav>
   );
 }
 
