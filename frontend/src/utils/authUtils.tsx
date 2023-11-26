@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
-const url = "http://localhost:8000/auth";
-const urlUser = "http://localhost:8000/user";
-const urlData = "http://localhost:8000/allData";
+// const url = "http://localhost:8000/auth";
+// const urlUser = "http://localhost:8000/user";
+// const urlData = "http://localhost:8000/allData";
+
+const url = "https://workersmanagementback.onrender.com/auth";
+const urlUser = "https://workersmanagementback.onrender.com/user";
+const urlData = "https://workersmanagementback.onrender.com/allData";
 
 // Get the token from storage
 
