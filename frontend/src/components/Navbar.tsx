@@ -61,14 +61,15 @@ export function Navbar() {
       animate="visible"
       variants={animationVariants}
       // transition={{ duration: 5 }}
+      className="z-50"
     >
-      <div className="container flex items-center ">
+      <div className="container flex items-center">
         <div className="flex space-x-4 mr-8 max-lg:flex-1">
           <CubeIcon className="h-6 w-6 violet" />
           <h3>Workers management</h3>
         </div>
         <div className="hidden lg:flex flex-1 space-x-4 ">
-          <NavigationMenu className="z-20">
+          <NavigationMenu className="">
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="violetHover">

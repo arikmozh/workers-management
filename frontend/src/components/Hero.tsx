@@ -43,7 +43,7 @@ const Hero = () => {
         damping: 40,
         stiffness: 120,
         duration: 5, // Increase the duration to make it slower (in seconds)
-        delay: 1.5, // Delay before the animation starts (in seconds)
+        delay: 2, // Delay before the animation starts (in seconds)
       },
     },
   };
@@ -60,24 +60,23 @@ const Hero = () => {
         damping: 40,
         stiffness: 120,
         duration: 5, // Increase the duration to make it slower (in seconds)
-        delay: 1.5, // Delay before the animation starts (in seconds)
+        delay: 2.5, // Delay before the animation starts (in seconds)
       },
     },
   };
 
   return (
     <>
-      <div className="container items-center py-20 grid grid-cols-2 max-md:grid-cols-1">
+      <div className="container items-center py-20 grid grid-cols-2 max-md:grid-cols-1 ">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={animationVariants}
+          className="-z-10"
         >
-          <div className="space-y-8 z-10">
+          <div className="space-y-8 ">
             <h1 className="md:text-7xl leading-none text-left text-4xl">
-              <span className="violet md:text-9xl text-6xl -z-10">
-                Streamline
-              </span>{" "}
+              <span className="violet md:text-9xl text-6xl ">Streamline</span>{" "}
               <br />
               Your Workers Operations
             </h1>
