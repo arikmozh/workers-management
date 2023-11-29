@@ -12,10 +12,7 @@ import { cn } from "@/lib/utils";
 import * as React from "react";
 import { CubeIcon } from "@heroicons/react/24/outline";
 import { GiftIcon } from "@heroicons/react/24/outline";
-// import { Bars3Icon } from "@heroicons/react/24/outline";
-// import { EnvelopeOpenIcon } from "@radix-ui/react-icons";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-// import { useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -39,30 +36,26 @@ export function Navbar() {
   const animationVariants = {
     hidden: {
       opacity: 0,
-      y: "-100%", // Start from the left side
+      y: "-100%",
     },
     visible: {
+      zIndex: 999,
+
       opacity: 1,
-      y: 0, // Move to the center
+      y: 0,
       transition: {
         type: "spring",
         damping: 40,
         stiffness: 120,
-        duration: 5, // Increase the duration to make it slower (in seconds)
-        delay: 1.5, // Delay before the animation starts (in seconds)
+        duration: 5,
+        delay: 1.5,
         ease: "easeInOut",
       },
     },
   };
 
   return (
-    <motion.nav
-      initial="hidden"
-      animate="visible"
-      variants={animationVariants}
-      // transition={{ duration: 5 }}
-      className="z-50"
-    >
+    <motion.nav initial="hidden" animate="visible" variants={animationVariants}>
       <div className="container flex items-center">
         <div className="flex space-x-4 mr-8 max-lg:flex-1">
           <CubeIcon className="h-6 w-6 violet" />
@@ -194,7 +187,7 @@ const MobileNav: React.FC = () => {
         </Button>
       </SheetTrigger>
       <SheetContent>
-        <SheetHeader>
+        <SheetHeader className="mb-5">
           <div className="flex space-x-4 mr-8 max-lg:flex-1">
             <CubeIcon className="h-6 w-6 violetHover" />
             <SheetTitle>Factory management</SheetTitle>
@@ -203,52 +196,53 @@ const MobileNav: React.FC = () => {
             Streamlining manufacturing operations for efficiency.
           </SheetDescription>
         </SheetHeader>
-
-        <div className="grid gap-4 py-4">
-          <Button
-            variant="outline"
-            className="violetHover"
-            onClick={() => navigate("login")}
-          >
-            Log In
-          </Button>
-          <Button
-            variant="default"
-            className=""
-            onClick={() => navigate("register")}
-          >
-            Register
-          </Button>
-        </div>
-        <div className="grid gap-4 py-4">
-          <Button
-            variant="ghost"
-            className="violetHover"
-            onClick={() => scrollToSection("FeaturesSection")}
-          >
-            About us
-          </Button>
-          <Button
-            variant="ghost"
-            className="violetHover"
-            onClick={() => scrollToSection("Stats")}
-          >
-            Stats
-          </Button>
-          <Button
-            variant="ghost"
-            className="violetHover"
-            onClick={() => scrollToSection("Pricing")}
-          >
-            Pricing
-          </Button>
-          <Button
-            variant="ghost"
-            className="violetHover"
-            onClick={() => scrollToSection("Contact")}
-          >
-            Contact us
-          </Button>
+        <div className="flex flex-col justify-between gap-4">
+          <div className="grid gap-4 py-4">
+            <Button
+              variant="outline"
+              className="violetHover"
+              onClick={() => navigate("login")}
+            >
+              Log In
+            </Button>
+            <Button
+              variant="default"
+              className=""
+              onClick={() => navigate("register")}
+            >
+              Register
+            </Button>
+          </div>
+          <div className="grid gap-4 py-4">
+            <Button
+              variant="ghost"
+              className="violetHover"
+              onClick={() => scrollToSection("FeaturesSection")}
+            >
+              About us
+            </Button>
+            <Button
+              variant="ghost"
+              className="violetHover"
+              onClick={() => scrollToSection("Stats")}
+            >
+              Stats
+            </Button>
+            <Button
+              variant="ghost"
+              className="violetHover"
+              onClick={() => scrollToSection("Pricing")}
+            >
+              Pricing
+            </Button>
+            <Button
+              variant="ghost"
+              className="violetHover"
+              onClick={() => scrollToSection("Contact")}
+            >
+              Contact us
+            </Button>
+          </div>
         </div>
       </SheetContent>
     </Sheet>

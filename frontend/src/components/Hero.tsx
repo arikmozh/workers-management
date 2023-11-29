@@ -36,6 +36,7 @@ const Hero = () => {
       x: "-100%", // Start from the left side
     },
     visible: {
+      zIndex: 1,
       opacity: 1,
       x: 0, // Move to the center
       transition: {
@@ -53,6 +54,8 @@ const Hero = () => {
       x: "100%", // Start from the right side
     },
     visible: {
+      zIndex: 1,
+
       opacity: 1,
       x: 0, // Move to the center
       transition: {
@@ -72,15 +75,14 @@ const Hero = () => {
           initial="hidden"
           animate="visible"
           variants={animationVariants}
-          className="-z-10"
         >
           <div className="space-y-8 ">
-            <h1 className="md:text-7xl leading-none text-left text-4xl">
+            <h1 className="md:text-7xl leading-none text-left text-4xl ">
               <span className="violet md:text-9xl text-6xl ">Streamline</span>{" "}
               <br />
               Your Workers Operations
             </h1>
-            <p className="text-left">
+            <p className="text-left ">
               Efficiently manage production, inventory, and workforce with our
               Factory Management Software.
             </p>
@@ -90,11 +92,13 @@ const Hero = () => {
             >
               <Input
                 type="email"
-                className={`max-w-xs h-16 ${!isEmailValid && "border-red-500"}`}
+                className={` max-w-xs h-16 ${
+                  !isEmailValid && "border-red-500"
+                }`}
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <Button className="h-16" type="submit">
+              <Button className="h-16 z-20" type="submit">
                 Get Started
               </Button>
             </form>
